@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /d/CAS_FORGE_FINAL/DummyRepo -name *.feature)",
+      "Bash(\"d:\\\\CAS_FORGE_FINAL\\\\config\\\\__init__.py\")",
+      "Bash(\"d:\\\\CAS_FORGE_FINAL\\\\db\\\\__init__.py\")",
+      "Bash(\"d:\\\\CAS_FORGE_FINAL\\\\parser\\\\__init__.py\")",
+      "Bash(\"d:\\\\CAS_FORGE_FINAL\\\\catalogue\\\\__init__.py\")",
+      "Bash(\"d:\\\\CAS_FORGE_FINAL\\\\scripts\\\\__init__.py\")",
+      "Bash(pip install:*)",
+      "Read(//d d:/**)",
+      "Bash(python scripts/ingest.py --repo-path d:CAS_FORGE_FINALDummyRepo --full-rebuild)",
+      "Bash(python scripts/ingest.py --repo-path \"d:\\\\CAS_FORGE_FINAL\\\\DummyRepo\" --full-rebuild)",
+      "Bash(python -c \":*)",
+      "Bash(python scripts/build_index.py)",
+      "Bash(python catalogue/retrieval.py committee approval)",
+      "Bash(python catalogue/retrieval.py guarantor)",
+      "Bash(python setup.py)",
+      "Bash(python scripts/ingest.py --repo-path \"d:\\\\CAS_FORGE_FINAL\\\\DummyRepo\")",
+      "Bash(*)",
+      "Read(//d d:/**)"
+    ]
+  }
+}

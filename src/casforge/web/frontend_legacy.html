@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CASForge — JIRA to Gherkin</title>
+<style>
+:root {
+  --bg:        #1a1d23;
+  --surface:   #22262e;
+  --border:    #2e3340;
+  --accent:    #4f8ef7;
+  --accent2:   #34c77b;
+  --danger:    #e05c5c;
+  --warn:      #f0a244;
+  --text:      #d4d8e2;
+  --muted:     #6b7280;
+  --given:     #5b8fd6;
+  --when:      #e6b84a;
+  --then:      #4ec97a;
+  --and:       #7ecde8;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── Header ── */
+header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; gap: 16px; height: 48px; flex-shrink: 0; }
+header h1 { font-size: 16px; font-weight: 700; color: var(--accent); letter-spacing: 0.5px; }
+header span { color: var(--muted); font-size: 12px; }
+.tab-bar { margin-left: auto; display: flex; gap: 4px; }
+.tab-btn { background: none; border: none; color: var(--muted); padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; transition: all .15s; }
+.tab-btn.active, .tab-btn:hover { background: var(--border); color: var(--text); }
+.tab-btn.active { color: var(--accent); }
+
+/* ── Layout ── */
+.main { flex: 1; display: flex; overflow: hidden; }
+.panel { display: flex; flex-direction: column; border-right: 1px solid var(--border); }
+.panel-header { padding: 10px 14px; background: var(--surface); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.panel-body { flex: 1; overflow-y: auto; padding: 12px; }
+.panel-body::-webkit-scrollbar { width: 6px; }
+.panel-body::-webkit-scrollbar-track { background: transparent; }
+.panel-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Column widths */
+#col-stories  { width: 240px; min-width: 200px; }
+#col-story    { width: 320px; min-width: 280px; }
+#col-generate { flex: 1; min-width: 300px; }
+#col-output   { flex: 1; min-width: 300px; border-right: none; }
+
+/* ── Story list ── */
+.csv-input-row { display: flex; gap: 6px; margin-bottom: 10px; }
+.csv-input-row input { flex: 1; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 6px 8px; border-radius: 4px; font-size: 12px; }
+.btn { background: var(--accent); color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; transition: opacity .15s; white-space: nowrap; }
+.btn:hover { opacity: .85; }
+.btn:disabled { opacity: .4; cursor: default; }
+.btn-sm { padding: 4px 10px; font-size: 11px; }
+.btn-success { background: var(--accent2); }
+.btn-warn { background: var(--warn); color: #1a1d23; }
+.btn-danger { background: var(--danger); }
+.btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+
+.story-list { display: flex; flex-direction: column; gap: 4px; }
+.story-item { padding: 8px 10px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; transition: all .15s; }
+.story-item:hover { background: var(--surface); border-color: var(--border); }
+.story-item.active { background: rgba(79,142,247,0.12); border-color: var(--accent); }
+.story-key { font-size: 10px; color: var(--accent); font-weight: 700; letter-spacing: 0.3px; }
+.story-summary { font-size: 12px; color: var(--text); margin-top: 2px; line-height: 1.4; }
+.story-type-badge { font-size: 9px; background: var(--border); color: var(--muted); padding: 1px 5px; border-radius: 3px; }
+
+/* ── Story detail ── */
+.detail-section { margin-bottom: 14px; }
+.detail-section h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-bottom: 6px; }
+.detail-section p { font-size: 12px; line-height: 1.6; color: var(--text); }
+.tag-pill { display: inline-block; background: rgba(79,142,247,.15); color: var(--accent); border: 1px solid rgba(79,142,247,.3); border-radius: 12px; padding: 2px 8px; font-size: 10px; font-weight: 600; margin: 2px; }
+.tag-pill.stage { background: rgba(240,162,68,.12); color: var(--warn); border-color: rgba(240,162,68,.3); }
+.tag-pill.sub { background: rgba(78,201,122,.12); color: var(--accent2); border-color: rgba(78,201,122,.3); }
+
+/* ── Generate panel ── */
+.intent-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.intent-item { display: flex; align-items: flex-start; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; }
+.intent-num { color: var(--muted); font-size: 11px; font-weight: 700; margin-top: 1px; min-width: 18px; }
+.intent-text { flex: 1; font-size: 12px; line-height: 1.5; }
+.intent-text[contenteditable=true] { outline: none; border-bottom: 1px dashed var(--border); }
+.intent-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; padding: 0 2px; }
+.intent-del:hover { color: var(--danger); }
+.add-intent-btn { background: none; border: 1px dashed var(--border); color: var(--muted); width: 100%; padding: 6px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all .15s; }
+.add-intent-btn:hover { border-color: var(--accent); color: var(--accent); }
+.intent-meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:4px; }
+.intent-meta select, .intent-meta input { background: var(--bg); border:1px solid var(--border); color:var(--text); border-radius:4px; padding:2px 6px; font-size:11px; }
+.scope-card { border:1px solid var(--border); background: var(--surface); border-radius:6px; padding:10px; margin-bottom:10px; }
+.scope-row { display:flex; gap:8px; align-items:center; margin-top:6px; flex-wrap:wrap; }
+.scope-row label { font-size:11px; color:var(--muted); min-width:54px; }
+.quality-box { margin-top:8px; font-size:11px; color:var(--muted); line-height:1.6; }
+
+.action-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.spinner { display: none; width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.status-msg { font-size: 11px; color: var(--muted); }
+.status-msg.ok  { color: var(--accent2); }
+.status-msg.err { color: var(--danger); }
+
+/* ── Feature output ── */
+.feature-editor { font-family: var(--font-mono); font-size: 12px; line-height: 1.7; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; min-height: 300px; white-space: pre-wrap; word-break: break-word; tab-size: 2; overflow-y: auto; }
+.feature-editor .kw-feature  { color: #c99af7; font-weight: 700; }
+.feature-editor .kw-scenario { color: #7ecde8; font-weight: 700; }
+.feature-editor .kw-given   { color: var(--given); }
+.feature-editor .kw-when    { color: var(--when); }
+.feature-editor .kw-then    { color: var(--then); }
+.feature-editor .kw-and     { color: var(--and); }
+.feature-editor .kw-tag     { color: #e87e78; }
+.feature-editor .kw-comment { color: var(--muted); font-style: italic; }
+.feature-editor .kw-table   { color: var(--accent2); }
+
+.output-actions { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+
+/* ── Search tab ── */
+#tab-search { display: none; flex-direction: column; height: 100%; }
+.search-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+.search-bar input { flex: 1; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 4px; font-size: 13px; }
+.result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; }
+.result-score { float: right; font-size: 11px; color: var(--muted); }
+.result-step  { font-family: var(--font-mono); font-size: 12px; margin-bottom: 4px; }
+.result-meta  { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.result-ctx   { border-top: 1px solid var(--border); margin-top: 8px; padding-top: 8px; }
+.ctx-step     { font-family: var(--font-mono); font-size: 11px; padding: 1px 0; }
+.ctx-step.match { background: rgba(79,142,247,.12); border-radius: 2px; padding: 1px 4px; }
+.kw-g { color: var(--given); } .kw-w { color: var(--when); } .kw-t { color: var(--then); } .kw-a { color: var(--and); }
+
+/* ── Empty/loading states ── */
+.empty-state { text-align: center; color: var(--muted); padding: 40px 20px; font-size: 12px; line-height: 2; }
+.empty-state .icon { font-size: 32px; display: block; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ CASForge</h1>
+  <span>JIRA → Gherkin Feature Generator</span>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('generate')">Generator</button>
+    <button class="tab-btn"       onclick="showTab('search')">Step Search</button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════ GENERATOR TAB ══════════════════════════════ -->
+<div id="tab-generate" class="main">
+
+  <!-- Col 1: Story list -->
+  <div class="panel" id="col-stories">
+    <div class="panel-header">
+      Stories
+    </div>
+    <div class="panel-body">
+      <div class="csv-input-row">
+        <input id="csv-path" type="text" placeholder="CSV path..." title="Path to JIRA CSV export">
+        <button class="btn btn-sm" onclick="loadStories()">Load</button>
+      </div>
+      <div id="story-list" class="story-list">
+        <div class="empty-state"><span class="icon">📂</span>Enter CSV path and click Load</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Col 2: Story detail -->
+  <div class="panel" id="col-story">
+    <div class="panel-header">Story Detail</div>
+    <div class="panel-body" id="story-detail">
+      <div class="empty-state"><span class="icon">📋</span>Select a story from the list</div>
+    </div>
+  </div>
+
+  <!-- Col 3: Intents + Generate -->
+  <div class="panel" id="col-generate">
+    <div class="panel-header">
+      Test Intents
+      <span id="intent-stage-tags" style="margin-left:auto"></span>
+    </div>
+    <div class="panel-body">
+      <div class="scope-card">
+        <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px;">Story Scope Defaults</div>
+        <div class="scope-row">
+          <label>LOB</label>
+          <select id="story-lob-mode" style="background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:4px; padding:4px 6px; font-size:11px;">
+            <option value="all">all</option>
+            <option value="specific">specific</option>
+          </select>
+          <input id="story-lob-values" type="text" placeholder="HL, PL, OMNI" style="min-width:180px;" />
+        </div>
+        <div class="scope-row">
+          <label>Stage</label>
+          <select id="story-stage-mode" style="background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:4px; padding:4px 6px; font-size:11px;">
+            <option value="all">all</option>
+            <option value="specific">specific</option>
+          </select>
+          <input id="story-stage-values" type="text" placeholder="Recommendation, Credit Approval" style="min-width:180px;" />
+        </div>
+      </div>
+
+      <div id="intents-area">
+        <div class="empty-state"><span class="icon">🎯</span>Select a story then click Extract Intents</div>
+      </div>
+
+      <div class="action-row" style="margin-top:12px">
+        <button class="btn" id="btn-extract" onclick="extractIntents()" disabled>Extract Intents</button>
+        <button class="btn btn-success" id="btn-generate" onclick="generateFeature()" disabled>Generate Feature</button>
+        <select id="flow-type" onchange="onFlowTypeChange()" style="background:var(--surface); border:1px solid var(--border); color:var(--text); padding:6px 10px; border-radius:4px; font-size:12px;">
+          <option value="">Select flow type</option>
+          <option value="ordered">ordered</option>
+          <option value="unordered">unordered</option>
+        </select>
+        <div class="spinner" id="spinner"></div>
+        <span class="status-msg" id="status-msg"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Col 4: Feature output -->
+  <div class="panel" id="col-output">
+    <div class="panel-header">
+      Feature File
+      <div style="margin-left:auto; display:flex; gap:6px;">
+        <button class="btn btn-sm btn-ghost" id="btn-copy" onclick="copyFeature()" style="display:none">Copy</button>
+        <button class="btn btn-sm btn-success" id="btn-download" onclick="downloadFeature()" style="display:none">Download .feature</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div id="feature-output">
+        <div class="empty-state"><span class="icon">📄</span>Generated feature file will appear here</div>
+      </div>
+      <div id="quality-summary" class="quality-box"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════ SEARCH TAB ════════════════════════════════ -->
+<div id="tab-search" class="main" style="display:none; padding:16px; flex-direction:column; overflow:hidden;">
+  <div class="search-bar">
+    <input id="search-q" type="text" placeholder="Search steps... (e.g. 'guarantor visible at recommendation stage')"
+           onkeydown="if(event.key==='Enter') doSearch()">
+    <select id="search-kw" style="background:var(--surface); border:1px solid var(--border); color:var(--text); padding:6px 10px; border-radius:4px; font-size:12px;">
+      <option value="">Any keyword</option>
+      <option value="Given">Given</option>
+      <option value="When">When</option>
+      <option value="Then">Then</option>
+      <option value="And">And</option>
+    </select>
+    <input id="search-screen" type="text" placeholder="Screen filter..." style="width:140px; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:6px 10px; border-radius:4px; font-size:12px;">
+    <select id="search-topk" style="background:var(--surface); border:1px solid var(--border); color:var(--text); padding:6px 10px; border-radius:4px; font-size:12px;">
+      <option value="5">Top 5</option>
+      <option value="10">Top 10</option>
+      <option value="20">Top 20</option>
+    </select>
+    <button class="btn" onclick="doSearch()">Search</button>
+    <div class="spinner" id="search-spinner"></div>
+  </div>
+  <div id="search-results" style="flex:1; overflow-y:auto;">
+    <div class="empty-state"><span class="icon">🔍</span>Type a query and press Enter or click Search</div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════
+// State
+// ══════════════════════════════════════════════════════════════════════
+let selectedStory  = null;   // { key, summary, type }
+let currentIntents = [];      // structured intents
+let storyScopeDefaults = {
+  lob_scope:   { mode: 'all', values: [] },
+  stage_scope: { mode: 'all', values: [] },
+};
+let currentFeature = null;   // { text, filename }
+
+// ══════════════════════════════════════════════════════════════════════
+// Tab switching
+// ══════════════════════════════════════════════════════════════════════
+function showTab(name) {
+  document.getElementById('tab-generate').style.display = name === 'generate' ? 'flex' : 'none';
+  document.getElementById('tab-search').style.display   = name === 'search'   ? 'flex' : 'none';
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && name === 'generate') || (i === 1 && name === 'search'));
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Story list
+// ══════════════════════════════════════════════════════════════════════
+async function loadStories() {
+  const csv = document.getElementById('csv-path').value.trim();
+  if (!csv) return;
+  setStatus('Loading stories...', '');
+  try {
+    const res = await fetch('/api/stories?csv=' + encodeURIComponent(csv));
+    if (!res.ok) throw new Error(await res.text());
+    const stories = await res.json();
+    renderStoryList(stories, csv);
+    setStatus(`${stories.length} stories loaded`, 'ok');
+  } catch(e) {
+    setStatus('Error: ' + e.message, 'err');
+  }
+}
+
+function renderStoryList(stories, csv) {
+  const el = document.getElementById('story-list');
+  if (!stories.length) { el.innerHTML = '<div class="empty-state">No stories found.</div>'; return; }
+  el.innerHTML = stories.map(s => `
+    <div class="story-item" onclick="selectStory('${s.key}', '${escHtml(csv)}')" id="si-${s.key}">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="story-key">${s.key}</span>
+        <span class="story-type-badge">${s.type}</span>
+      </div>
+      <div class="story-summary">${escHtml(s.summary)}</div>
+    </div>`).join('');
+}
+
+async function selectStory(key, csv) {
+  document.querySelectorAll('.story-item').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('si-' + key);
+  if (el) el.classList.add('active');
+
+  setStatus('Loading story...', '');
+  try {
+    const res = await fetch(`/api/story/${key}?csv=` + encodeURIComponent(csv));
+    if (!res.ok) throw new Error(await res.text());
+    const story = await res.json();
+    selectedStory = { ...story, csv };
+    renderStoryDetail(story);
+    document.getElementById('btn-extract').disabled  = false;
+    document.getElementById('btn-generate').disabled = true;
+    currentIntents = [];
+    storyScopeDefaults = {
+      lob_scope:   { mode: 'all', values: [] },
+      stage_scope: { mode: 'all', values: [] },
+    };
+    applyStoryScopeDefaults(storyScopeDefaults);
+    document.getElementById('intents-area').innerHTML =
+      '<div class="empty-state"><span class="icon">🎯</span>Click Extract Intents to analyse this story</div>';
+    document.getElementById('intent-stage-tags').innerHTML = '';
+    document.getElementById('quality-summary').textContent = '';
+    setStatus('', '');
+  } catch(e) {
+    setStatus('Error: ' + e.message, 'err');
+  }
+}
+
+function renderStoryDetail(story) {
+  const el = document.getElementById('story-detail');
+  el.innerHTML = `
+    <div class="detail-section">
+      <h4>Summary</h4>
+      <p><strong>${escHtml(story.summary)}</strong></p>
+    </div>
+    ${story.description ? `<div class="detail-section"><h4>User Story</h4><p>${escHtml(story.description)}</p></div>` : ''}
+    ${story.new_process ? `<div class="detail-section"><h4>New Behavior</h4><p style="max-height:140px;overflow-y:auto">${escHtml(story.new_process.substring(0,600))}${story.new_process.length>600?'…':''}</p></div>` : ''}
+    ${story.impacted_areas ? `<div class="detail-section"><h4>Impacted Areas</h4><p>${escHtml(story.impacted_areas)}</p></div>` : ''}
+    ${story.key_ui_steps ? `<div class="detail-section"><h4>Navigation</h4><p>${escHtml(story.key_ui_steps)}</p></div>` : ''}
+  `;
+}
+
+function parseScopeValues(raw) {
+  const values = String(raw || '')
+    .split(',')
+    .map(x => x.trim())
+    .filter(Boolean);
+  return Array.from(new Set(values.map(v => v.toLowerCase()))).map(
+    low => values.find(v => v.toLowerCase() === low)
+  );
+}
+
+function collectStoryScopeDefaults() {
+  const lobMode = document.getElementById('story-lob-mode').value || 'all';
+  const stageMode = document.getElementById('story-stage-mode').value || 'all';
+  const lobValues = parseScopeValues(document.getElementById('story-lob-values').value);
+  const stageValues = parseScopeValues(document.getElementById('story-stage-values').value);
+  return {
+    lob_scope: {
+      mode: lobMode,
+      values: lobMode === 'specific' ? lobValues : [],
+    },
+    stage_scope: {
+      mode: stageMode,
+      values: stageMode === 'specific' ? stageValues : [],
+    },
+  };
+}
+
+function applyStoryScopeDefaults(scope) {
+  const s = scope || {
+    lob_scope: { mode: 'all', values: [] },
+    stage_scope: { mode: 'all', values: [] },
+  };
+  document.getElementById('story-lob-mode').value = s.lob_scope?.mode || 'all';
+  document.getElementById('story-stage-mode').value = s.stage_scope?.mode || 'all';
+  document.getElementById('story-lob-values').value = (s.lob_scope?.values || []).join(', ');
+  document.getElementById('story-stage-values').value = (s.stage_scope?.values || []).join(', ');
+}
+
+function normalizeIntentItem(item, idx) {
+  if (typeof item === 'string') {
+    return {
+      id: `intent_${String(idx + 1).padStart(3, '0')}`,
+      text: item,
+      family: 'positive',
+      inherit_story_scope: true,
+      lob_scope: null,
+      stage_scope: null,
+    };
+  }
+  return {
+    id: item.id || `intent_${String(idx + 1).padStart(3, '0')}`,
+    text: item.text || '',
+    family: item.family || 'positive',
+    inherit_story_scope: item.inherit_story_scope !== false,
+    lob_scope: item.lob_scope || null,
+    stage_scope: item.stage_scope || null,
+  };
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Intent extraction
+// ══════════════════════════════════════════════════════════════════════
+async function extractIntents() {
+  if (!selectedStory) return;
+  setBusy(true, 'Extracting intents (LLM)... this takes 1-3 min on CPU');
+  document.getElementById('btn-generate').disabled = true;
+  storyScopeDefaults = collectStoryScopeDefaults();
+  try {
+    const res = await fetch('/api/intents', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        csv_path: selectedStory.csv,
+        story_key: selectedStory.issue_key,
+        story_scope_defaults: storyScopeDefaults
+      })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+    storyScopeDefaults = data.story_scope_defaults || storyScopeDefaults;
+    applyStoryScopeDefaults(storyScopeDefaults);
+    currentIntents = (data.intents || []).map((x, i) => normalizeIntentItem(x, i));
+    renderIntents(currentIntents);
+    document.getElementById('btn-generate').disabled = currentIntents.length === 0 || !document.getElementById('flow-type').value;
+    setStatus(`${currentIntents.length} intents extracted`, 'ok');
+  } catch(e) {
+    setStatus('Error: ' + e.message, 'err');
+  } finally {
+    setBusy(false);
+  }
+}
+
+function renderIntents(intents) {
+  const area = document.getElementById('intents-area');
+  if (!intents.length) {
+    area.innerHTML = '<div class="empty-state">No intents returned — try a different story or check LLM output.</div>';
+    return;
+  }
+  area.innerHTML = `
+    <div class="intent-list" id="intent-list">
+      ${intents.map((t, i) => `
+        <div class="intent-item" data-idx="${i}">
+          <span class="intent-num">${i+1}.</span>
+          <div style="flex:1">
+            <span class="intent-text" contenteditable="true" oninput="syncIntentText(${i}, this.textContent)">${escHtml(t.text || '')}</span>
+            <div class="intent-meta">
+              <select onchange="syncIntentFamily(${i}, this.value)">
+                ${['positive','validation','negative','dependency','state_movement','persistence','data_combination','edge'].map(f =>
+                  `<option value="${f}" ${t.family===f?'selected':''}>${f}</option>`
+                ).join('')}
+              </select>
+              <label style="font-size:11px; color:var(--muted); display:flex; gap:4px; align-items:center;">
+                <input type="checkbox" ${t.inherit_story_scope !== false ? 'checked' : ''} onchange="toggleIntentInherit(${i}, this.checked)" />
+                inherit story scope
+              </label>
+              <input id="intent-lob-${i}" type="text" placeholder="LOB override (comma)" value="${escHtml((t.lob_scope?.values || []).join(', '))}" ${t.inherit_story_scope !== false ? 'disabled' : ''} oninput="syncIntentScope(${i}, 'lob_scope', this.value)" />
+              <input id="intent-stage-${i}" type="text" placeholder="Stage override (comma)" value="${escHtml((t.stage_scope?.values || []).join(', '))}" ${t.inherit_story_scope !== false ? 'disabled' : ''} oninput="syncIntentScope(${i}, 'stage_scope', this.value)" />
+            </div>
+          </div>
+          <button class="intent-del" onclick="deleteIntent(${i})" title="Remove">×</button>
+        </div>`).join('')}
+    </div>
+    <button class="add-intent-btn" onclick="addIntent()">+ Add intent</button>
+  `;
+}
+
+function syncIntentText(idx, text) {
+  if (!currentIntents[idx]) return;
+  currentIntents[idx].text = String(text || '').trim();
+}
+
+function syncIntentFamily(idx, family) {
+  if (!currentIntents[idx]) return;
+  currentIntents[idx].family = family || 'positive';
+}
+
+function toggleIntentInherit(idx, checked) {
+  if (!currentIntents[idx]) return;
+  currentIntents[idx].inherit_story_scope = !!checked;
+  const lobEl = document.getElementById(`intent-lob-${idx}`);
+  const stageEl = document.getElementById(`intent-stage-${idx}`);
+  if (lobEl) lobEl.disabled = !!checked;
+  if (stageEl) stageEl.disabled = !!checked;
+}
+
+function syncIntentScope(idx, key, raw) {
+  if (!currentIntents[idx]) return;
+  const values = parseScopeValues(raw);
+  currentIntents[idx][key] = values.length ? { mode: 'specific', values } : null;
+}
+
+function deleteIntent(idx) {
+  currentIntents.splice(idx, 1);
+  renderIntents(currentIntents);
+  document.getElementById('btn-generate').disabled = currentIntents.length === 0 || !document.getElementById('flow-type').value;
+}
+
+function addIntent() {
+  const i = currentIntents.length + 1;
+  currentIntents.push({
+    id: `intent_${String(i).padStart(3, '0')}`,
+    text: '',
+    family: 'positive',
+    inherit_story_scope: true,
+    lob_scope: null,
+    stage_scope: null,
+  });
+  renderIntents(currentIntents);
+  // Focus new item
+  const items = document.querySelectorAll('.intent-text');
+  if (items.length) items[items.length-1].focus();
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Feature generation
+// ══════════════════════════════════════════════════════════════════════
+async function generateFeature() {
+  if (!selectedStory || !currentIntents.length) return;
+  const flowType = document.getElementById('flow-type').value;
+  if (!flowType) {
+    setStatus('Select flow type (ordered/unordered) before generation.', 'err');
+    return;
+  }
+  setBusy(true, 'Starting generation... (LLM runs on CPU — takes 5-15 min)');
+  storyScopeDefaults = collectStoryScopeDefaults();
+
+  const body = JSON.stringify({
+    csv_path:  selectedStory.csv,
+    story_key: selectedStory.issue_key,
+    flow_type: flowType,
+    story_scope_defaults: storyScopeDefaults,
+    intents: currentIntents
+      .map((x, i) => normalizeIntentItem(x, i))
+      .filter(x => (x.text || '').trim())
+  });
+
+  try {
+    // Use streaming endpoint for live progress feedback
+    const res = await fetch('/api/generate/stream', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body,
+    });
+    if (!res.ok) throw new Error(await res.text());
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      // SSE lines arrive as "data: {...}\n\n"
+      const lines = buffer.split('\n\n');
+      buffer = lines.pop(); // keep incomplete last chunk
+      for (const line of lines) {
+        if (!line.startsWith('data:')) continue;
+        let msg;
+        try { msg = JSON.parse(line.slice(5).trim()); } catch { continue; }
+        const { event, data } = msg;
+
+        if (event === 'status') {
+          setStatus(data, '');
+        } else if (event === 'intents') {
+          // LLM returned intents (could differ slightly from user-provided ones)
+          // Only update if user didn't provide their own
+          if (!currentIntents.length) {
+            currentIntents = (data || []).map((x, i) => normalizeIntentItem(x, i));
+            renderIntents(currentIntents);
+          }
+        } else if (event === 'feature') {
+          currentFeature = {
+            text:     data.text,
+            filename: selectedStory.issue_key.replace('-','_') + '.feature'
+          };
+          const tagsEl = document.getElementById('intent-stage-tags');
+          const tags   = [data.stage, ...(data.sub_tags || [])].filter(Boolean);
+          tagsEl.innerHTML = tags.map(t =>
+            `<span class="tag-pill ${t === data.stage ? 'stage' : 'sub'}">${escHtml(t)}</span>`
+          ).join('');
+          renderFeature(data.text);
+          document.getElementById('btn-copy').style.display = '';
+          document.getElementById('btn-download').style.display = '';
+          renderQuality(data.quality || {}, data.unresolved_steps || []);
+        } else if (event === 'done') {
+          setStatus('Feature file generated ✓', 'ok');
+        } else if (event === 'error') {
+          setStatus('Error: ' + data, 'err');
+        }
+      }
+    }
+  } catch(e) {
+    setStatus('Error: ' + e.message, 'err');
+  } finally {
+    setBusy(false);
+  }
+}
+
+function renderFeature(text) {
+  const el = document.getElementById('feature-output');
+  el.innerHTML = `<div class="feature-editor">${syntaxHighlight(text)}</div>`;
+}
+
+function syntaxHighlight(text) {
+  return escHtml(text).split('\n').map(line => {
+    const t = line.trimStart();
+    if (t.startsWith('Feature:'))          return `<span class="kw-feature">${line}</span>`;
+    if (t.startsWith('Scenario'))          return `<span class="kw-scenario">${line}</span>`;
+    if (t.startsWith('Background:'))       return `<span class="kw-scenario">${line}</span>`;
+    if (t.startsWith('Examples:'))         return `<span class="kw-and">${line}</span>`;
+    if (/^\s*\|/.test(line))               return `<span class="kw-table">${line}</span>`;
+    if (t.startsWith('Given'))             return line.replace(/^(\s*)(Given)/, '$1<span class="kw-given">$2</span>');
+    if (t.startsWith('When'))              return line.replace(/^(\s*)(When)/, '$1<span class="kw-when">$2</span>');
+    if (t.startsWith('Then'))              return line.replace(/^(\s*)(Then)/, '$1<span class="kw-then">$2</span>');
+    if (t.startsWith('And') || t.startsWith('But'))
+                                           return line.replace(/^(\s*)(And|But)/, '$1<span class="kw-and">$2</span>');
+    if (t.startsWith('@'))                 return `<span class="kw-tag">${line}</span>`;
+    if (t.startsWith('#'))                 return `<span class="kw-comment">${line}</span>`;
+    return line;
+  }).join('\n');
+}
+
+function copyFeature() {
+  if (!currentFeature) return;
+  navigator.clipboard.writeText(currentFeature.text).then(() => setStatus('Copied to clipboard ✓', 'ok'));
+}
+
+function downloadFeature() {
+  if (!currentFeature) return;
+  const blob = new Blob([currentFeature.text], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = currentFeature.filename;
+  a.click();
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// Step search
+// ══════════════════════════════════════════════════════════════════════
+async function doSearch() {
+  const q = document.getElementById('search-q').value.trim();
+  if (!q) return;
+  const kw     = document.getElementById('search-kw').value;
+  const screen = document.getElementById('search-screen').value.trim();
+  const topk   = parseInt(document.getElementById('search-topk').value);
+  document.getElementById('search-spinner').style.display = 'block';
+  try {
+    const res = await fetch('/api/search', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ query: q, top_k: topk,
+        keyword_filter: kw || null, screen_filter: screen || null })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    const results = await res.json();
+    renderSearchResults(results, q);
+  } catch(e) {
+    document.getElementById('search-results').innerHTML = `<div class="empty-state" style="color:var(--danger)">Error: ${escHtml(e.message)}</div>`;
+  } finally {
+    document.getElementById('search-spinner').style.display = 'none';
+  }
+}
+
+function renderSearchResults(results, query) {
+  const el = document.getElementById('search-results');
+  if (!results.length) { el.innerHTML = '<div class="empty-state">No results found.</div>'; return; }
+  el.innerHTML = results.map((r, i) => {
+    const scoreBar = '█'.repeat(Math.round(r.score * 20));
+    const kwClass  = { Given:'kw-g', When:'kw-w', Then:'kw-t', And:'kw-a', But:'kw-a' }[r.keyword] || '';
+    const ctxSteps = (r.scenario_steps || []).map(s => {
+      const match = s.step_text && s.step_text.toLowerCase() === r.step_text.toLowerCase();
+      const skc   = { Given:'kw-g', When:'kw-w', Then:'kw-t', And:'kw-a', But:'kw-a' }[s.keyword] || '';
+      return `<div class="ctx-step ${match?'match':''}"><span class="${skc}">${escHtml(s.keyword)}</span> ${escHtml(s.step_text)}</div>`;
+    }).join('');
+    return `<div class="result-card">
+      <span class="result-score">score ${r.score.toFixed(3)} &nbsp; ${scoreBar}</span>
+      <div class="result-step"><span class="${kwClass}">${escHtml(r.keyword)}</span> ${escHtml(r.step_text)}</div>
+      <div class="result-meta">${escHtml(r.screen_context||'—')} &nbsp;·&nbsp; ${escHtml(r.file_name||'')} &nbsp;·&nbsp; ${escHtml(r.scenario_title||'')}</div>
+      ${ctxSteps ? `<div class="result-ctx">${ctxSteps}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// UI helpers
+// ══════════════════════════════════════════════════════════════════════
+function setBusy(busy, msg) {
+  document.getElementById('spinner').style.display = busy ? 'block' : 'none';
+  document.getElementById('btn-extract').disabled  = busy || !selectedStory;
+  document.getElementById('btn-generate').disabled = busy || !currentIntents.length || !document.getElementById('flow-type').value;
+  if (msg) setStatus(msg, '');
+}
+
+function renderQuality(quality, unresolvedSteps) {
+  const el = document.getElementById('quality-summary');
+  if (!el) return;
+  const q = quality || {};
+  const unresolved = unresolvedSteps || [];
+  const lines = [
+    `Scenarios: ${q.scenario_count ?? 0}`,
+    `Grounded steps: ${q.grounded_steps ?? 0}/${q.total_steps ?? 0}`,
+    `Removed out-of-scope candidates: ${q.removed_out_of_scope_candidates ?? 0}`,
+    `Scope relaxations: ${q.scope_relaxations ?? 0}`,
+    `Unresolved steps: ${unresolved.length}`,
+  ];
+  if (unresolved.length) {
+    const preview = unresolved.slice(0, 3).map(s => `[${s.keyword}] ${s.step_text}`).join(' | ');
+    lines.push(`Unresolved preview: ${preview}`);
+  }
+  el.textContent = lines.join('  •  ');
+}
+
+function onFlowTypeChange() {
+  document.getElementById('btn-generate').disabled =
+    !selectedStory || !currentIntents.length || !document.getElementById('flow-type').value;
+}
+function setStatus(msg, cls) {
+  const el = document.getElementById('status-msg');
+  el.textContent   = msg;
+  el.className     = 'status-msg' + (cls ? ' ' + cls : '');
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+applyStoryScopeDefaults(storyScopeDefaults);
+
+// Pre-fill CSV path from URL param
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('csv')) {
+  document.getElementById('csv-path').value = urlParams.get('csv');
+  loadStories();
+}
+</script>
+</body>
+</html>

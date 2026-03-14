@@ -1,0 +1,49 @@
+WARNING:llm.intent_extractor:Could not parse intents from LLM output:
+
+WARNING:llm.intent_extractor:Could not parse intents from LLM output:
+   
+  
+WARNING:llm.feature_assembler:LLM did not produce a Feature: header � prepending one
+============================================================
+MESSY JIRA EDGE CASE TESTS
+============================================================
+
+── _split_process edge cases ──
+  [PASS] No headers → all goes to new_process
+  [PASS] No headers → current is empty
+  [PASS] Only New Process header
+  [PASS] Both headers
+  [PASS] Both headers new
+  [PASS] Markup in process headers (current)
+  [PASS] Markup in process headers (new)
+
+── _parse_intents edge cases ──
+  [PASS] Clean JSON array
+  [PASS] Markdown fenced JSON
+  [PASS] Trailing comma
+  [PASS] LLM preamble before JSON
+  [PASS] LLM explanation after JSON
+  [PASS] Numbered list fallback (≥2 items)
+  [PASS] Empty LLM output
+  [PASS] Just whitespace
+  [PASS] Single intent JSON
+
+── _clean_output edge cases ──
+  [PASS] Normal feature preserved
+  [PASS] Normal feature no trailing junk
+  [PASS] Preamble stripped
+  [PASS] Trailing explanation stripped
+  [PASS] Feature content intact after trail strip
+  [PASS] Missing Feature: header prepended
+
+── Process split: alternate header styles ──
+  [PASS] Alternate headers → raw in new_process
+
+── Story with only acceptance_criteria ──
+  [PASS] AC-only story has new_process
+  [PASS] AC-only story has acceptance_criteria
+  [PASS] AC cleaned correctly
+
+============================================================
+ALL TESTS PASSED
+Failures: 0

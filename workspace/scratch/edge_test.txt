@@ -1,0 +1,27 @@
+[PASS] '{code:java}int x=1;{code}'
+[PASS] '{code}SELECT * FROM users;{code}'
+[PASS] '{noformat}raw dump{noformat}'
+[PASS] '{-}strikethrough text{-}'
+[PASS] '||Col1||Col2||Col3||'
+[PASS] '|cell1|cell2|cell3|'
+[PASS] '{color:#ff0000}red text{color}'
+[PASS] 'h1. Big Title'
+[PASS] '*bold text here*'
+[PASS] '+underline text+'
+[PASS] '*+bold underline+*'
+[PASS] '[label|http://example.com]'
+[PASS] 'text\r\nmore\r\n'
+[PASS] '(/) done (x) not done'
+[PASS] '{quote}quoted text{quote}'
+[PASS] '{color:#172b4d}*+MANDATORY FIELD+*{color}'
+[PASS] '# First item\n# Second item\n## Nested'
+[PASS] '{-}Card Limit Update{-}'
+[PASS] 'Before table\n||H1||H2||\n|R1C1|R1C2|\nAfter table'
+[PASS] ''
+[PASS] '   \n  \n  '
+[PASS] '+*Some Bold Underline Text*+'
+
+ALL PASS (22/22)
+
+=== Artifact scan on all 20 stories ===
+Remaining artifacts: 0

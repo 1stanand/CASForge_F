@@ -1,0 +1,256 @@
+Skip to main contentSkip to sidebar
+
+Nucleus Software JIRA
+Dashboards
+Projects
+Issues
+Boards
+Plans
+Time to SLA
+Timepiece
+Create
+Search
+Give feedback to Atlassian
+Help
+User profile for Anand Singh1
+Planned Maintenance: Jira will be unavailable on Friday, 28th November 2025 from 09:00 PM to 10:00 PM IST due to scheduled maintenance.
+CAS
+Project Type: software
+CAS
+9.0_Test_subtask
+Backlog
+Active sprints
+Releases
+Reports
+Issues
+Components
+
+
+CASCAS-254473
+Corporate Loans: Deviation Policy (Facility wise)
+ Edit
+ Add comment
+Assign
+More
+Open
+SLA Report
+Share this issue
+ Export
+Details
+Type: Story
+Resolution:Unresolved
+Priority: Major
+Fix Version/s:None
+Affects Version/s:None
+Component/s:None
+Labels:None
+Epic Link:Corporate Loans
+Back Porting:No
+Key UI steps:
+The deal level deviations at every stage will be shown prior to the facility level deviations**
+App Update Recommendation, App Update Approval, Review Application (Credit, Business, Assigned To Me, Pending Deviations, All Deviations):
+
+The deviations should be visible for Deal as well as the Facilities as well as the Facilities associated with the Deal. A column named Deal/Facility ID should be added in the Deviation grid in Credit Business under Pending, All and Assigned To Me Deviations. Similarly, the column should be added in the View History Grid also.
+While raising a ** Manual Deviation**:
+A dropdown field named Facility Name should be added.
+The dropdown should contain all available facility ID, facility Name and the scheme name in a table like structure that is also used in the masters.
+On click of Rerun Deviation Policy, the data should get updated if applicable. The Rerun button will run once for Deal & Facility both and not individually.
+The Deviations should be shown as per the Product Type and every deviation should be separate for every facility.
+
+Committee Approval(Credit, Business, Assigned To Me, Pending Deviations, All Deviations):
+
+The deviations should be visible for Deal as well as the Facilities associated with the Deal. A column named Deal/Facility ID should be added in the Deviation grid in Credit Business under Pending, All and Assigned To Me Deviations. Similarly, the column should be added in the Deviation Details under Credit and Business Deviation also.
+Credit Approval screen:{}
+
+Here, all the deviations of the linked facilities with the Deal should be visible in the Deviation details.
+in the Deviation section (under Credit and Business tabs), a new column named Deal/Facility ID should be added to the grid just right to the Deviation column under Assigned to me, Pending Deviations and All deviations categories and also should be applicable in the View History. 
+While raising a ** Manual Deviation**:
+A multi-select dropdown field named Facility Name should be added.
+The dropdown should contain all available facility ID, facility Name and the scheme name in a table like structure that is also used in the masters.
+ On the click of Rerun Policy button, the data in the grid should get refreshed if applicable.
+There should be the Deviation mitigant mapping impact also. There should be the mitigant displayed for every deviation raised. 
+ The Rerun button will run once for Deal & Facility both and not individually.
+CAM Report:
+
+In the Credit and Business deviation section, the column named Deal/Facility ID will be added just after the Deviation column.
+Also, the deal level deviations will also be shown and the facility Name (Facility ID) column should remain as NA for deal level deviations. 
+Deviation Approval Screen & Business Deviation Approval Screen:
+
+On the Deviation screen (accessed via the application ID), there are three tabs:
+Assigned to Me
+All Deviations
+Pending Deviations
+A new column named Deal/Facility ID should be added immediately to the right of the Deviation column in all three tabs. 
+For manual deviations in Business deviation approval screen, Facility Name is captured at transaction via a dropdown where the Facility ID, Name and Scheme Name should be present in a table like structure. 
+For Deviations pending at Disbursal stage, the applications will be different and each application should be visible in the grid.
+Tranche Approval Screen:
+
+The deviations should be displayed of the deal as well as the facility linked with the Deal. The Deal/Facility ID will be available just next to the Deviation column in Credit/Business tabs under Assigned to me, Pending Deviations and All deviations categories and this should be applicable in the View History.
+While raising a ** Manual Deviation**:
+A multi-select dropdown field named Facility Name should be added.
+The dropdown should contain all available facility ID, facility Name and the scheme name in a table like structure that is also used in the masters.
+On the click of Rerun Policy button, the data in the grid should get refreshed. 
+Deviation History tab: After clicking on View Details button, the Deal/Facility ID column should be available just like in the View History at Tranche Approval. 
+ The Rerun button will run once for Deal & Facility both and not individually.
+System processes:
+Existing Functionality:  Currently, the deviation policy in FinnOne Neo CAS is implemented at the deal level for corporate loans. All deviations are raised and tracked for the entire deal as a whole, regardless of the number of facilities linked to it.
+
+Expected Functionality:  The deviations will be managed separately for each facility within a deal. At every stage of the workflow, the system should raise and map deviations specific to the corresponding facility, ensuring more granular tracking and control.
+
+Impacted Areas/Functionalities:
+ 
+
+Corporate Loan Workflow
+Deviation Policy
+Deviation Approval screen
+Business Deviation Approval screen
+Credit Approval stage
+Disbursal stage
+GetDeviationDetailsservice(Deviation Pack)
+Acceptance Criteria:
+Deal-level deviations must always be shown before facility-level deviations.
+A Facility Name column must be added next to the Deviation column in all deviation-related screens, including:
+Credit Approval (Credit & Business)
+Recommendation, Reconsideration, Renewal, Review Application
+Assigned to Me / Pending Deviations / All Deviations
+Deviation Approval & Business Deviation Approval
+View History
+CAM Report
+Hovering over the Facility Name must display the Facility ID.
+For deal-level deviations, Facility Name must show NA.
+If the deviation is linked to multiple facilities, it must appear only once, with comma-separated Facility Names/IDs.
+If a deal does not include a facility, the Facility Name column must be blank.
+Facility Name shown must correspond to the actual deviation policy or the manual deviation selection.
+In CAM Report, facility-level deviations must show Facility Name (Facility ID) and deal-level must show NA.
+Manual deviation raising must include a Facility Name dropdown.
+The dropdown must show Facility ID, Facility Name, and Scheme Name in a table-like structure (same as Masters).
+Manual deviations must be selected based on Product Type and captured per facility.
+A deviation linked to multiple facilities must follow one single approval workflow/authority.
+View History must display deviation records at deal and facility level with the Facility Name column.
+All deviation screens must display deviations at deal and facility level, and in case of Cash Credit, both deal and Cash Credit facility deviations must appear.
+Story Type:Functional
+Pre-Planning Status.:Done
+Download Status:Not Done
+Playback Status:Not Done
+Coding Status:Not Done
+ST Status:Not Done
+Demo Status:Not Done
+Source_From:IPMG
+Version:9.0
+GA Phase:Sprint_1
+Module:CAS
+Team:CAS
+Reopen Count:0
+Upgrade Migration Impact:No Impact
+Cross Module Dependency:
+No Impact
+DevOps Impact:No
+Development Type:Product
+Req Reference Number:202511190026
+JIRA Complexity:Low
+Customer List:Quantix Technologies
+Delivery Version:GA 9.0
+Story Points:20
+Development Subtype required:Global Conventional
+TC Review Status:Not Done
+ATDD Applicable:Planned
+GWT Writing Status:In Progress
+Story Category:Customer Commitment
+Released To PQM:None
+Description
+As a user, I want to create deviation policies for multi-facility corporate loan products at the facility level, so that deviations can be tracked and managed distinctly for each facility type under a multi-facility deal.
+
+Attachments
+
+Options
+Drop files to attach, or browse.
+Issue Links
+is cloned by
+Story - Created by Jira Software - do not edit or delete. Issue type for a user story. CAS-257442 Corporate Loans: Deviation Policy (Facility wise)- Disbursal Impact	Major - Major loss of function. Open
+Delete this link
+Story - Created by Jira Software - do not edit or delete. Issue type for a user story. CAS-257945 Backporting GA 8.5 Corporate Loans: Deviation Policy (Facility wise)	Major - Major loss of function. Open
+Delete this link
+Add Link
+Sub-Tasks
+Create Sub-Task
+
+Options
+1.
+PMG- Story + GWTs Review	Sub-task	Open	Unassigned	Actions
+2.
+Build- Impact Analysis, Recommended Test Strategy and WBS Review by Tech Lead//Peer	Sub-task	Open	Unassigned	Actions
+3.
+Build- UT Review by Tech Lead//Peer	Sub-task	Open	Unassigned	Actions
+4.
+Build- Code Review by Tech Lead//Peer	Sub-task	Open	Unassigned	Actions
+5.
+CLONE - PMG- Story + GWTs Review	Sub-task	Open	Unassigned	Actions
+6.
+CLONE - Build- Impact Analysis, Recommended Test Strategy and WBS Review by Tech Lead//Peer	Sub-task	Open	Unassigned	Actions
+7.
+CLONE - Build- UT Review by Tech Lead//Peer	Sub-task	Open	Unassigned	Actions
+8.
+CLONE - Build- Code Review by Tech Lead//Peer	Sub-task	Open	Unassigned	Actions
+Activity
+All
+Comments
+Work Log
+History
+Activity
+Transitions
+Timepiece
+SLA Overview
+
+Oldest first
+ Collapse comment: Anand Singh1 added a comment - 27/Nov/25 6:02 PM, Edited by Anand Singh1 - 27/Nov/25 6:04 PM
+
+Anand Singh1 added a comment - Yesterday - edited
+During the 3 Amigos discussion, the following open points were identified.
+
+Credit Approval – Clarifications Required
+
+Deviation Sorting Logic
+Should deviations continue to be sorted level-wise (as per existing behavior), or
+Should they now be grouped by Deal-level and Facility-level deviations?
+Final expected sorting behavior must be confirmed.
+      2. Deviation History Sorting
+
+How should sorting work in the Deviation History table?
+Should deal and facility deviations appear intermixed based on timestamp, or grouped?
+Tranche Approval Stage – Clarifications Required
+Displaying Deal-Level Deviations After Tranche Bifurcation
+Should Deal-level deviations be shown at the Facility Tranche level?
+If yes:
+Should they appear in the same table as facility deviations, or in a separate table?
+Should Deal-level deviations be read-only/disabled in this context?
+Requesting confirmation on the above points so that detailed Test Case preparation can begin.
+
+FYI Kamal Shaiva Nimisha Kulshrestha 
+
+Edit
+Delete
+
+Pin
+Add a comment...
+Pro tip: press m to comment
+People
+Assignee:
+
+ Navneet Priyadarshi 
+Assign to me
+Reporter:
+
+ Saloni Gupta 
+Votes:
+0 Vote for this issue 
+Watchers:
+2 
+Stop watching this issue 
+Dates
+Created:
+07/Oct/25 3:17 PM
+Updated:
+23 minutes ago
+Agile
+ Find on a board
+

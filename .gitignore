@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+venv/
+models/
+index/
+*.faiss
+*.db
+*.log
+*.feature

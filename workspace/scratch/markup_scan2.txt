@@ -1,0 +1,20 @@
+=== Post-fix markup scan ===
+
+Total remaining artifacts: 0
+
+=== Edge case tests for _clean() ===
+  [PASS] '{-}strikethrough text{-}' => 'strikethrough text' (expected: 'strikethrough text')
+  [PASS] '{color:#ff0000}red text{color}' => 'red text' (expected: 'red text')
+  [PASS] '||Col1||Col2||Col3||' => 'Col1 | Col2 | Col3' (expected: 'Col1 | Col2 | Col3')
+  [PASS] '|cell1|cell2|cell3|' => 'cell1 | cell2 | cell3' (expected: 'cell1 | cell2 | cell3')
+  [PASS] 'h1. Big Title' => 'Big Title' (expected: 'Big Title')
+  [PASS] '*bold text here*' => 'bold text here' (expected: 'bold text here')
+  [PASS] '+underline text+' => 'underline text' (expected: 'underline text')
+  [PASS] '*+bold underline+*' => 'bold underline' (expected: 'bold underline')
+  [PASS] '[label|http://example.com]' => 'label' (expected: 'label')
+  [FAIL] '{code:java}int x=1;{code}' => 'int x=1;' (expected: '')
+  [PASS] 'text\r\nmore' => 'text\nmore' (expected: 'text\nmore')
+  [PASS] '(/) done (x) not done' => 'done  not done' (expected: 'done  not done')
+  [PASS] '{quote}quoted text{quote}' => 'quoted text' (expected: 'quoted text')
+
+Edge cases: SOME FAILED

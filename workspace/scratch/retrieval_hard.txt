@@ -1,0 +1,27 @@
+Query                                            Stage detect           n    top pass
+-----------------------------------------------------------------------------------------------
+[OK] guarantor at creditapproval stage               @CreditApproval        5  0.650  hints=Y
+[OK] guarantor at dde stage                          @DDE                   5  0.500  hints=Y
+[OK] committee approval credit approval              @CreditApproval        5  1.300  hints=Y
+[OK] applicant information screen guarantor          (none)                 5  0.700  hints=Y
+[OK] guarant section applic info                     (none)                 5  0.500  hints=Y
+[OK] commit decis voting                             (none)                 5  0.500  hints=Y
+[FAIL] guarentor detailes creditcard                   (none)                 5  0.500  hints=N
+      stage_ok=True hint_ok=False detected=None expected=None
+[OK] guarantor                                       (none)                 5  0.507  hints=Y
+[OK] guarantor at kyc stage                          @KYC                   5  0.500  hints=Y
+[OK] move to next stage button                       (none)                 5  0.968  hints=Y
+[OK] xyzzy frobnicator nonexistent term              (none)                 5  0.500  hints=Y
+
+Hard retrieval: 10/11 passed (90%)
+
+=== Keyword filter tests ===
+  [FAIL] keyword_filter='Given': 3 results, all=Given: False
+    Then: guarantor should be added successfully in the appl
+    And: user adds another "Guarantor"
+    And: goes to "Guarantor Identification" section
+  [OK] keyword_filter='When': 3 results, all=When: True
+  [FAIL] keyword_filter='Then': 3 results, all=Then: False
+    Then: guarantor should be added successfully in the appl
+    Then: var  values in multiple updated records of all the
+    And: user adds another "Guarantor"

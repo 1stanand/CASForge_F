@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CASForge</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand-block">
+          <div class="brand-title">CASForge</div>
+          <div class="brand-subtitle">CAS Feature Orchestration and Generation Engine</div>
+        </div>
+        <div class="progress-rail">
+          <div class="progress-pill active" data-progress-pill="intake">1. Intake Forge</div>
+          <div class="progress-pill" data-progress-pill="refine">2. Refinement Gallery</div>
+          <div class="progress-pill" data-progress-pill="artifact">3. Final Artifact</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-stack">
+      <section class="page active" id="page-intake">
+        <div class="page-hero">
+          <div>
+            <h1>Frame the story. Forge the blueprint.</h1>
+            <p>Bring a JIRA export into CASForge, set story scope deliberately, and let the planner build repo-faithful intent coverage before generation.</p>
+          </div>
+          <div class="hero-chip-row">
+            <span class="hero-chip">Retrieval-first</span>
+            <span class="hero-chip">Scope-aware</span>
+            <span class="hero-chip">Repo-faithful</span>
+          </div>
+        </div>
+
+        <div class="intake-grid">
+          <article class="glass-card" data-edge-light>
+            <div class="card-pad">
+              <div class="card-head">
+                <div>
+                  <div class="card-kicker">Ingest Source Data</div>
+                  <div class="card-title">Drop or browse a CSV</div>
+                </div>
+              </div>
+              <div class="dropzone" id="dropzone">
+                <strong>Drag a CSV here</strong>
+                <p>CASForge can store the uploaded CSV into the workspace and use that saved path automatically.</p>
+                <div class="button-row">
+                  <button class="btn btn-primary" id="browse-btn" type="button">Browse CSV</button>
+                  <button class="btn btn-secondary" id="load-stories-btn" type="button">Load Queue</button>
+                </div>
+              </div>
+              <label class="field-label" for="csv-path">CSV Path</label>
+              <input class="field-input mono" id="csv-path" type="text" placeholder="workspace/samples/committee.csv">
+              <div class="status-line" id="upload-status"></div>
+            </div>
+          </article>
+
+          <article class="glass-card" data-edge-light>
+            <div class="card-pad">
+              <div class="card-head">
+                <div>
+                  <div class="card-kicker">JIRA Queue</div>
+                  <div class="card-title">Select a story</div>
+                </div>
+                <span class="meta-pill mono" id="story-count">0 loaded</span>
+              </div>
+              <div class="story-list" id="story-list"></div>
+            </div>
+          </article>
+
+          <article class="glass-card" data-edge-light>
+            <div class="card-pad">
+              <div class="card-head">
+                <div>
+                  <div class="card-kicker">JIRA Insight</div>
+                  <div class="card-title">Story context</div>
+                </div>
+                <span class="meta-pill mono" id="selected-story-key">No story</span>
+              </div>
+              <div class="insight-grid" id="story-insight"></div>
+            </div>
+          </article>
+
+          <article class="glass-card scope-span" data-edge-light>
+            <div class="card-pad">
+              <div class="card-head">
+                <div>
+                  <div class="card-kicker">LOB Injection</div>
+                  <div class="card-title">Story defaults</div>
+                </div>
+                <button class="btn btn-secondary btn-small" id="toggle-custom-scope" type="button">+ Expand Context</button>
+              </div>
+              <div class="scope-block">
+                <div class="field-label">Line of business</div>
+                <div class="chip-cloud" id="lob-chip-cloud"></div>
+              </div>
+              <div class="scope-block">
+                <div class="field-label">Application stage</div>
+                <div class="chip-cloud" id="stage-chip-cloud"></div>
+              </div>
+              <div class="custom-scope-grid is-hidden" id="custom-scope-panel">
+                <div>
+                  <label class="field-label" for="custom-lob-input">Custom LOBs</label>
+                  <input class="field-input" id="custom-lob-input" type="text" placeholder="PF, HL, OMNI">
+                  <button class="btn btn-secondary btn-small" id="add-custom-lob" type="button">Add LOB Chips</button>
+                </div>
+                <div>
+                  <label class="field-label" for="custom-stage-input">Custom stages</label>
+                  <input class="field-input" id="custom-stage-input" type="text" placeholder="Recommendation, Credit Approval">
+                  <button class="btn btn-secondary btn-small" id="add-custom-stage" type="button">Add Stage Chips</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="glass-card" data-edge-light>
+            <div class="card-pad">
+              <div class="card-head">
+                <div>
+                  <div class="card-kicker">Orchestration Settings</div>
+                  <div class="card-title">Run controls</div>
+                </div>
+              </div>
+              <label class="field-label" for="author-name">Author Name</label>
+              <input class="field-input" id="author-name" type="text" value="CASForge">
+              <div class="field-label">Flow type</div>
+              <div class="toggle-rail">
+                <button class="toggle-btn" id="flow-ordered" type="button">Ordered Sequence</button>
+                <button class="toggle-btn active" id="flow-unordered" type="button">Unbound Steps</button>
+              </div>
+              <div class="metric-stack" id="intake-metrics"></div>
+              <div class="status-line" id="intake-status"></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="page-action">
+          <button class="btn btn-primary btn-ignite" id="ignite-btn" type="button" disabled>IGNITE THE FORGE</button>
+        </div>
+      </section>
+
+      <section class="page" id="page-refine">
+        <div class="page-hero compact">
+          <div>
+            <h2>Refinement Gallery</h2>
+            <p>Refine the proposed intent set, keep only meaningful coverage, and override scope where a case belongs to a narrower lane.</p>
+          </div>
+          <div class="button-row">
+            <button class="btn btn-secondary" id="back-to-intake" type="button">Back to Intake</button>
+          </div>
+        </div>
+
+        <div class="refine-band">
+          <article class="glass-card" data-edge-light>
+            <div class="card-pad">
+              <div class="card-head">
+                <div>
+                  <div class="card-kicker">Story Frame</div>
+                  <div class="card-title" id="refine-story-title">No story selected</div>
+                </div>
+                <span class="meta-pill mono" id="refine-story-key">-</span>
+              </div>
+              <p class="card-copy" id="refine-story-summary"></p>
+              <div class="meta-cloud" id="refine-story-scope"></div>
+            </div>
+          </article>
+          <article class="glass-card" data-edge-light>
+            <div class="card-pad">
+              <div class="card-head">
+                <div>
+                  <div class="card-kicker">Coverage Map</div>
+                  <div class="card-title">Intent families</div>
+                </div>
+              </div>
+              <div class="coverage-grid" id="coverage-grid"></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="gallery-wrap">
+          <div class="gallery-grid" id="intent-gallery"></div>
+          <div class="floating-action">
+            <button class="btn btn-violet btn-generate" id="generate-btn" type="button">COMMENCE GENERATION</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-artifact">
+        <div class="page-hero compact">
+          <div>
+            <h2>Final Artifact</h2>
+            <p>Generated output is rendered in a Monaco-style reader. Any step not found in the repository is surfaced in electric cyan.</p>
+          </div>
+          <div class="button-row">
+            <button class="btn btn-secondary" id="back-to-refine" type="button">Back to Refinement</button>
+          </div>
+        </div>
+
+        <div class="artifact-grid">
+          <article class="glass-card editor-card" data-edge-light>
+            <div class="editor-toolbar">
+              <strong class="mono" id="artifact-filename">artifact.feature</strong>
+              <div class="button-row">
+                <button class="btn btn-secondary" id="copy-btn" type="button">Clone Blueprint</button>
+                <button class="btn btn-primary" id="download-btn" type="button">Export Artifact</button>
+              </div>
+            </div>
+            <div class="editor-body" id="feature-editor"></div>
+          </article>
+
+          <aside class="side-stack">
+            <article class="glass-card" data-edge-light>
+              <div class="card-pad">
+                <div class="card-head">
+                  <div>
+                    <div class="card-kicker">Overview</div>
+                    <div class="card-title">Run summary</div>
+                  </div>
+                </div>
+                <div class="metric-stack" id="artifact-overview"></div>
+              </div>
+            </article>
+            <article class="glass-card" data-edge-light>
+              <div class="card-pad">
+                <div class="card-head">
+                  <div>
+                    <div class="card-kicker">Repository Fidelity</div>
+                    <div class="card-title">Unresolved steps</div>
+                  </div>
+                </div>
+                <div class="unresolved-list" id="unresolved-list"></div>
+              </div>
+            </article>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-card" id="footer-mail">Developed by Anand Singh</div>
+    </footer>
+  </div>
+
+  <div class="modal-layer" id="synthesis-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card synthesis-card">
+      <div class="pulse-orb"></div>
+      <div class="synthesis-line" id="synthesis-line">Reading Jira logic...</div>
+      <div class="synthesis-status" id="synthesis-status">Preparing the forge...</div>
+      <div class="dot-row"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+
+  <div class="modal-layer" id="remap-modal">
+    <div class="modal-backdrop" data-close-remap></div>
+    <div class="modal-card remap-card">
+      <div class="card-head modal-head">
+        <div>
+          <div class="card-kicker">Remap Essence</div>
+          <div class="card-title">Intent scope override</div>
+        </div>
+        <button class="btn btn-secondary btn-small" id="close-remap" type="button">Close</button>
+      </div>
+      <label class="checkbox-row"><input type="checkbox" id="remap-inherit"> Inherit story scope</label>
+      <div class="scope-block">
+        <div class="field-label">Intent LOB scope</div>
+        <div class="chip-cloud" id="remap-lob-cloud"></div>
+      </div>
+      <div class="scope-block">
+        <div class="field-label">Intent stage scope</div>
+        <div class="chip-cloud" id="remap-stage-cloud"></div>
+      </div>
+      <div class="custom-scope-grid">
+        <div>
+          <label class="field-label" for="remap-custom-lob">Custom LOBs</label>
+          <input class="field-input" id="remap-custom-lob" type="text" placeholder="PF, HL, OMNI">
+        </div>
+        <div>
+          <label class="field-label" for="remap-custom-stage">Custom stages</label>
+          <input class="field-input" id="remap-custom-stage" type="text" placeholder="Recommendation, Credit Approval">
+        </div>
+      </div>
+      <div class="status-line" id="remap-preview"></div>
+      <div class="button-row">
+        <button class="btn btn-secondary" id="remap-add-custom" type="button">Add Custom Values</button>
+        <button class="btn btn-primary" id="remap-save" type="button">Seal Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <input id="csv-file-input" type="file" accept=".csv,text/csv" class="visually-hidden">
+  <script src="/static/app.js"></script>
+</body>
+</html>

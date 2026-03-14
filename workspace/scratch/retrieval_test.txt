@@ -1,0 +1,19 @@
+Query                                                   Results  Top score  TopStep
+--------------------------------------------------------------------------------------------------------------
+[OK] guarantor details credit card                       n= 5  score=0.500  goes to "Guarantor Identification" section
+[OK] guarantor section applicant information screen      n= 5  score=0.700  user opens detailed information of "guarantor
+[OK] remove guarantor applicant                          n= 5  score=0.500  user removes "Guarantor" customer
+[OK] mandatory fields guarantor validation               n= 5  score=0.690  user enters mandatory fields of guarantor ide
+[OK] committee decision                                  n= 5  score=0.500  user opens "committee_decision" accordion on 
+[OK] committee approval vote                             n= 5  score=0.515  user initiate committee approval
+[OK] credit approval stage move to next                  n= 5  score=0.700  Application should be move to "Credit Approva
+[OK] recommendation screen                               n= 5  score=1.000  user is on the Recommendation screen
+[OK] cancel confirm days LOB level                       n= 5  score=0.534  user confirms the cancellation
+[OK] add on applicant dynamic form placeholder CCDE      n= 5  score=0.500  Dynamic Form Should be present
+[OK] KYC screen display guarantor details                n= 5  score=0.683  KYC Details of Guarantor should be saved succ
+[OK] document collection release print                   n= 5  score=1.000  user open Document Collection Release Printin
+[OK] deviation policy facility wise                      n= 5  score=0.700  deviation policy should re-run successfully
+[OK] screen display button                               n= 5  score=0.600  initiate ocr button should be visible on scre
+[OK] user clicks on Move to Next Stage button            n= 5  score=1.000  user clicks on move to next stage button
+
+Retrieval accuracy: 15/15 tests passed (100%)

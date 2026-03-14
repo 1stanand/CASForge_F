@@ -1,0 +1,9 @@
+Artifacts found: 8
+  CAS-270826: [table ||] => 'nputs)\r\n\r\n||Scenario (5 Members)||Votes||Final Verdi'
+  CAS-270821: [strikethrough {-}] => 'dit card, {-}Card Limit Update{-}, Corporate Credit C'
+  CAS-270815: [table ||] => 'et Level\r\n||Field Name||Editable||Remarks||\r\n|Repaym'
+  CAS-270588: [strikethrough {-}] => 'dit card, {-}Card Limit Update{-}, Corporate Credit C'
+  CAS-267360: [table ||] => 'nputs)\r\n\r\n||Scenario (5 Members)||Votes||Final Verdi'
+  CAS-262737: [table ||] => 'et Level\r\n||Field Name||Editable||Remarks||\r\n|Repaym'
+  CAS-256008: [strikethrough {-}] => 'dit card, {-}Card Limit Update{-}, Corporate Credit C'
+  CAS-247073: [table ||] => 'nputs)\r\n\r\n||Scenario (5 Members)||Votes||Final Verdi'
