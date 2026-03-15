@@ -130,30 +130,45 @@ src/casforge/
   web/               FastAPI app + UI
   shared/            settings and path helpers
 
-tools/cli/
-  ingest.py
-  build_index.py
-  generate_feature.py
-  validate_generated_features.py
-  evaluate_retrieval.py
-  smoke_small_chunks.py
-  test_retrieval.py
+config/              JSON configuration — edit here to extend CASForge
+  domain_knowledge.json    LOBs, stages, entities, families (single source of truth)
+  planner_hints.json       planner target aliases + synthetic templates
+  assembler_hints.json     assembler term buckets + specificity hints
+
+tools/
+  cli/               Python CLI entrypoints
+  windows/           Windows .bat entrypoints
 
 assets/
-  prompts/
-  templates/
-  workflow/
+  prompts/           LLM prompt files (.txt)
+  templates/         feature file templates
+  workflow/          order.json (read-only ATDD toolchain input)
 
 workspace/
   reference_repo/    local mirror of CAS ATDD feature corpus
   samples/           sample JIRA exports
-  generated/         generated output folders such as run1 / run2 / run3
+  generated/         generated output folders such as run1 / run2
   index/             FAISS artifacts
 
 agent/
   diagnostics/       ongoing change and accuracy tracking
   reports/           analysis reports and tracked quality runs
+  claude/            Claude AI session patches
+  gemini/            Gemini review inputs/outputs
 ```
+
+## Config Ownership
+
+Generation configuration is split by ownership:
+
+- `assets/workflow/order.json`
+  - read-only ATDD/workflow input, not owned by CASForge
+- `config/*.json`
+  - CASForge-owned configuration for domain knowledge and generation hints
+  - add new LOBs, stages, entities, or hint terms here — no code changes required
+  - **not** a place for sample-JIRA rescue logic or hardcoded scenario outputs
+
+If a future change only makes one narrow sample story pass, it should not be added as hidden business logic.
 
 ## Important Files
 

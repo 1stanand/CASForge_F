@@ -51,6 +51,7 @@
                 <div class="button-row">
                   <button class="btn btn-primary" id="browse-btn" type="button">Browse CSV</button>
                   <button class="btn btn-secondary" id="load-stories-btn" type="button">Load Queue</button>
+                  <button class="btn btn-secondary" id="add-manually-btn" type="button">Add Manually</button>
                 </div>
               </div>
               <label class="field-label" for="csv-path">CSV Path</label>
@@ -139,7 +140,54 @@
         </div>
 
         <div class="page-action">
+          <button class="btn btn-secondary" id="direct-forge-entry" type="button">Direct Forge</button>
           <button class="btn btn-primary btn-ignite" id="ignite-btn" type="button" disabled>IGNITE THE FORGE</button>
+        </div>
+      </section>
+
+      <section class="page" id="page-direct">
+        <div class="page-hero compact">
+          <div>
+            <h2>Direct Forge</h2>
+            <p>Write your own test intents and go straight to assembly. Skip JIRA intake and AI extraction — use this to test retrieval quality directly.</p>
+          </div>
+          <div class="button-row">
+            <button class="btn btn-secondary" id="back-to-intake-direct" type="button">Back to Intake</button>
+          </div>
+        </div>
+
+        <div class="direct-wrap">
+          <article class="glass-card" data-edge-light>
+            <div class="card-pad">
+              <div class="card-head">
+                <div>
+                  <div class="card-kicker">Feature</div>
+                  <div class="card-title">Feature title</div>
+                </div>
+              </div>
+              <input class="field-input" id="direct-title" type="text" placeholder="e.g. Add on Applicant - Dynamic form Placeholder">
+
+              <div class="card-head" style="margin-top:20px">
+                <div>
+                  <div class="card-kicker">Test Intents</div>
+                  <div class="card-title">One intent per line</div>
+                </div>
+                <span class="meta-pill mono" id="direct-intent-count">0 intents</span>
+              </div>
+              <textarea class="field-input mono direct-textarea" id="direct-intents" rows="14" placeholder="Verify CAS_CUSTOM_FIELDS_SCREEN_ADD_ON_APPLICANT placeholder is visible at CDDE stage&#10;Verify placeholder is visible at recommendation stage&#10;Verify placeholder is visible at credit approval stage&#10;Verify dynamic fields can be captured through create service&#10;Verify fields are not editable in view only mode"></textarea>
+
+              <div class="field-label" style="margin-top:16px">Flow type</div>
+              <div class="toggle-rail">
+                <button class="toggle-btn" id="direct-flow-ordered" type="button">Ordered Sequence</button>
+                <button class="toggle-btn active" id="direct-flow-unordered" type="button">Unbound Steps</button>
+              </div>
+              <div class="status-line" id="direct-status"></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="page-action">
+          <button class="btn btn-violet btn-generate" id="direct-forge-btn" type="button">FORGE GHERKIN</button>
         </div>
       </section>
 
@@ -235,6 +283,17 @@
                 <div class="unresolved-list" id="unresolved-list"></div>
               </div>
             </article>
+            <article class="glass-card" data-edge-light>
+              <div class="card-pad">
+                <div class="card-head">
+                  <div>
+                    <div class="card-kicker">Coverage Gaps</div>
+                    <div class="card-title">Omitted intents</div>
+                  </div>
+                </div>
+                <div class="unresolved-list" id="omitted-list"></div>
+              </div>
+            </article>
           </aside>
         </div>
       </section>
@@ -288,6 +347,35 @@
       <div class="button-row">
         <button class="btn btn-secondary" id="remap-add-custom" type="button">Add Custom Values</button>
         <button class="btn btn-primary" id="remap-save" type="button">Seal Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-layer" id="manual-modal">
+    <div class="modal-backdrop" data-close-manual></div>
+    <div class="modal-card remap-card">
+      <div class="card-head modal-head">
+        <div>
+          <div class="card-kicker">Manual Entry</div>
+          <div class="card-title">Add JIRA story</div>
+        </div>
+        <button class="btn btn-secondary btn-small" id="close-manual" type="button">Close</button>
+      </div>
+      <label class="field-label" for="manual-key">JIRA ID *</label>
+      <input class="field-input mono" id="manual-key" type="text" placeholder="CAS-123456">
+      <label class="field-label" for="manual-summary">Summary *</label>
+      <input class="field-input" id="manual-summary" type="text" placeholder="Story summary">
+      <label class="field-label" for="manual-description">Description</label>
+      <textarea class="field-input" id="manual-description" rows="3" placeholder="Story description"></textarea>
+      <label class="field-label" for="manual-system-process">System Process</label>
+      <textarea class="field-input" id="manual-system-process" rows="3" placeholder="System processes..."></textarea>
+      <label class="field-label" for="manual-acceptance">Acceptance Criteria</label>
+      <textarea class="field-input" id="manual-acceptance" rows="3" placeholder="Acceptance criteria..."></textarea>
+      <label class="field-label" for="manual-impacted">Impacted Areas</label>
+      <input class="field-input" id="manual-impacted" type="text" placeholder="Screens, components, areas affected">
+      <div class="status-line" id="manual-status"></div>
+      <div class="button-row">
+        <button class="btn btn-primary" id="manual-submit" type="button">Add to Queue</button>
       </div>
     </div>
   </div>

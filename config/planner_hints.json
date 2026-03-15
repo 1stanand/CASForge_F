@@ -1,0 +1,32 @@
+﻿{
+  "target_aliases": [
+    { "match": "decision column", "canonical": "Decision column", "scope": "global" },
+    { "match": "decision checkbox", "canonical": "Decision checkbox", "scope": "global" },
+    { "match": "decision checkbox for sub loan grid", "canonical": "Decision checkbox for sub loan grid", "scope": "global" },
+    { "match": "decision checkbox for credit card grid", "canonical": "Decision checkbox for credit card grid", "scope": "global" },
+    { "match": "recommendation decision dropdown", "canonical": "Recommendation Decision dropdown", "scope": "global" },
+    { "match": "application level decision", "canonical": "Application level decision", "scope": "global" },
+    { "match": "recommended limit field", "canonical": "Recommended Limit field", "scope": "global" },
+    { "match": "recommended amount field", "canonical": "Recommended Amount field", "scope": "global" },
+    { "match": "credit approval stage", "canonical": "Credit Approval stage", "scope": "global" }
+  ],
+  "synthetic_entity_blocklist": [
+    "business behavior",
+    "product type decision list",
+    "sub loan",
+    "credit card grid",
+    "application stage",
+    "stage"
+  ],
+  "synthetic_templates": {
+    "generic_visibility": ["Display {target}"],
+    "generic_default_state": ["Keep {target} checked by default"],
+    "generic_enablement": ["Resolve {target} enablement"],
+    "generic_derivation": ["Derive {target} from related selection"],
+    "generic_validation": ["Validate {target} for invalid values"],
+    "generic_transition": ["Move application with {target} to next stage"],
+    "generic_persistence": ["Retain {target} after save and reopen"],
+    "generic_combination": ["Handle combinations for {target}"],
+    "generic_edge": ["Handle edge state for {target}"]
+  }
+}

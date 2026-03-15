@@ -26,6 +26,7 @@ class StoryInfo(BaseModel):
     impacted_areas:      str
     key_ui_steps:        str
     acceptance_criteria: str
+    supplemental_comments: str = ""
 
 
 class StorySummary(BaseModel):
@@ -97,6 +98,12 @@ class GenerateResponse(BaseModel):
     scenario_debug: List[dict[str, Any]] = Field(default_factory=list)
     coverage_gaps: List[dict[str, Any]] = Field(default_factory=list)
     omitted_plan_items: List[dict[str, Any]] = Field(default_factory=list)
+
+
+class DirectForgeRequest(BaseModel):
+    title: str = ""
+    intents_text: str
+    flow_type: Literal["ordered", "unordered"] = "unordered"
 
 
 class UploadCsvRequest(BaseModel):

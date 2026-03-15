@@ -1,0 +1,45 @@
+﻿{
+  "specificity_conflicts": [
+    {
+      "candidate_markers": ["credit card", "primary card", "add on card", "addon card"],
+      "intent_markers": ["credit card", "card", "primary card", "add on card", "addon card"]
+    },
+    {
+      "candidate_markers": ["sub loan", "subloan"],
+      "intent_markers": ["sub loan", "subloan"]
+    },
+    {
+      "candidate_markers": ["checkbox"],
+      "intent_markers": ["checkbox", "check box", "checked"]
+    }
+  ],
+  "family_terms": {
+    "validation": ["validation", "mandatory", "required", "error", "invalid", "zero", "reject"],
+    "dependency": ["based", "same", "derived", "enable", "disable", "selected", "decision"],
+    "state_movement": ["move", "stage", "next", "approval", "transition", "proceed"],
+    "persistence": ["save", "saved", "retain", "retained", "persist", "reopen"],
+    "negative": ["error", "reject", "invalid", "prevent", "disabled"]
+  },
+  "section_terms": {
+    "ui_structure": ["display", "visible", "show", "column", "availability", "grid", "screen"],
+    "checkbox_state": ["checkbox", "checked", "unchecked", "default", "selected", "enabled", "disabled"],
+    "dependency": ["derived", "based", "depends", "same", "selected", "if", "any", "all"],
+    "field_enablement": ["enabled", "disabled", "editable", "readonly", "field", "limit", "amount"],
+    "decision_logic": ["decision", "dropdown", "verdict", "recommended", "approved", "rejected"],
+    "validation": ["validation", "error", "invalid", "mandatory", "required", "zero"],
+    "state_movement": ["move", "stage", "next", "approval", "rejected", "credit", "transition"],
+    "persistence": ["save", "saved", "retain", "retained", "persist", "reopen"],
+    "data_combination": ["any", "all", "none", "mixed", "combination"],
+    "edge": ["zero", "blank", "duplicate", "none"]
+  },
+  "matrix_terms": {
+    "any": ["any", "least", "one"],
+    "all": ["all"],
+    "none": ["none", "unchecked", "not"],
+    "mixed": ["mixed", "combination", "split"],
+    "dependent_card": ["primary", "addon", "card"],
+    "credit_card": ["credit", "card", "primary", "addon"],
+    "subloan": ["sub", "loan", "product", "products"]
+  },
+  "path_domain_stopwords": ["feature", "features", "screen", "details", "validation", "viewer", "workspace", "reference", "repo", "generated"]
+}

@@ -1,40 +1,58 @@
-﻿# CASForge - How To Run
+# CASForge - How To Run
 
-Run every command from the repository root: `D:\CAS_FORGE_FINAL - Copy`
+Run every command from the repository root: `D:\CASForge_F`
 
-## 1. Canonical Structure
+## 1. Project Structure
 
 ```text
-src/casforge/               runtime code
-  web/                      FastAPI app + UI serving
-  generation/               intent planning + feature assembly
-  retrieval/                retrieval + embeddings
-  parsing/                  jira + gherkin parsing
-  workflow/                 order/stage rules
-  storage/                  DB helpers + schema
-  shared/                   settings + path helpers
+src/casforge/           runtime Python source
+  web/                  FastAPI app + UI serving
+  generation/           intent planning + feature assembly
+  retrieval/            retrieval + embeddings
+  parsing/              jira + gherkin parsing
+  workflow/             order/stage rules
+  storage/              DB helpers + schema
+  shared/               settings + path helpers
 
-tools/cli/                  canonical Python CLI entrypoints
-tools/windows/              canonical Windows bat entrypoints
-assets/templates/           ordered/unordered feature templates
-assets/prompts/             LLM prompt files
-assets/workflow/            order.json and workflow assets
-workspace/reference_repo/   local ATDD corpus mirror
-workspace/samples/          sample JIRA inputs
-workspace/generated/        generated .feature outputs
-workspace/index/            FAISS index artifacts
+config/                 JSON configuration files (edit to extend)
+  domain_knowledge.json LOBs, stages, entities, families — single source of truth
+  planner_hints.json    planner target aliases + synthetic templates
+  assembler_hints.json  assembler term buckets + specificity hints
+
+assets/
+  prompts/              LLM prompt files (.txt)
+  templates/            ordered/unordered feature templates (.feature)
+  workflow/             order.json (read-only ATDD toolchain input)
+
+tools/
+  cli/                  Python CLI entrypoints
+  windows/              Windows .bat entrypoints
+
+test/                   Unit tests
+docs/                   Documentation
+workspace/
+  reference_repo/       local ATDD corpus mirror
+  samples/              sample JIRA inputs
+  generated/            generated .feature outputs
+  index/                FAISS index artifacts
+
+agent/                  AI agent notes, diagnostics, reports
+casforge/               import stub (redirects to src/casforge/)
 ```
 
-## 2. Compatibility Wrappers
+## 2. Adding New LOBs or Stages
 
-The new canonical entrypoints live in `tools/cli/` and `tools/windows/`.
-The old entrypoints still work through thin wrappers:
+Edit `config/domain_knowledge.json` — no code changes needed:
 
-- `bat\*.bat` delegates to `tools\windows\*.bat`
-- `scripts\*.py` delegates to `tools\cli\*.py`
-- `api\app.py` re-exports `casforge.web.app`
+```json
+// Add a new LOB:
+{ "canonical": "MY_LOB", "phrases": ["my lob name", "my lob"] }
 
-Use the canonical paths in new docs and automation. Keep the wrapper paths only for backward compatibility.
+// Add a new stage:
+{ "canonical": "My Stage", "aliases": ["my stage"] }
+```
+
+The UI dropdowns and intent extraction pick up changes automatically on next server start.
 
 ## 3. Important Paths
 
@@ -43,11 +61,8 @@ Use the canonical paths in new docs and automation. Keep the wrapper paths only 
 - Ordered/unordered templates: `assets\templates\`
 - Prompt files: `assets\prompts\`
 - Workflow order file: `assets\workflow\order.json`
+- Generation config: `config\` (domain_knowledge.json, planner_hints.json, assembler_hints.json)
 - Default generated output: `workspace\generated\output`
-- Preserved legacy-style output folders:
-  - `workspace\generated\output_final`
-  - `workspace\generated\output_ordered`
-  - `workspace\generated\output_unordered`
 - Default FAISS index location: `workspace\index`
 
 ## 4. First-Time Setup
@@ -72,16 +87,14 @@ If you want to ingest from another repository checkout, point `FEATURES_REPO_PAT
 
 ### Setup database + ingest + index
 
-Canonical:
-
 ```powershell
 python setup.py
 ```
 
-Wrapper:
+Or via bat:
 
 ```powershell
-bat\setup.bat
+tools\windows\setup.bat
 ```
 
 This will:
@@ -95,43 +108,37 @@ This will:
 
 ### Incremental ingest
 
-Canonical:
-
 ```powershell
 python tools/cli/ingest.py
 python tools/cli/build_index.py
 ```
 
-Wrappers:
+Or via bat:
 
 ```powershell
-bat\ingest_incremental.bat
+tools\windows\ingest_incremental.bat
 ```
 
 ### Full rebuild
-
-Canonical:
 
 ```powershell
 python tools/cli/ingest.py --full-rebuild
 python tools/cli/build_index.py
 ```
 
-Wrappers:
+Or via bat:
 
 ```powershell
-bat\ingest_full_rebuild.bat
+tools\windows\ingest_full_rebuild.bat
 ```
 
 ## 6. Start The Web UI / API
 
-Wrapper:
-
 ```powershell
-bat\start_server.bat
+tools\windows\start_server.bat
 ```
 
-Canonical:
+Or directly:
 
 ```powershell
 python -m uvicorn casforge.web.app:app --host 0.0.0.0 --port 8000 --reload
@@ -140,10 +147,10 @@ python -m uvicorn casforge.web.app:app --host 0.0.0.0 --port 8000 --reload
 Then open: `http://localhost:8000`
 
 UI flow:
-1. Enter a CSV path from `workspace\samples\sampleJira\...` or your own export
+1. Enter a CSV path from `workspace\samples\sampleJira\...` or upload your own
 2. Load stories
 3. Extract intents
-4. Review/edit intents and scope
+4. Review/edit intents and scope (LOB / Stage dropdowns populated from `config\domain_knowledge.json`)
 5. Generate the feature file
 6. Review/download the output
 
@@ -171,12 +178,6 @@ python tools/cli/generate_feature.py --csv workspace/samples/sampleJira/HD_BANK_
 
 ```powershell
 python tools/cli/generate_feature.py --csv workspace/samples/sampleJira/HD_BANK_EPIC.csv --story CAS-256008 --flow-type ordered --output workspace/generated/custom
-```
-
-Wrapper-compatible legacy commands still work too:
-
-```powershell
-python scripts/generate_feature.py --csv workspace/samples/sampleJira/HD_BANK_EPIC.csv --story CAS-256008 --flow-type unordered
 ```
 
 Generated files are written to `workspace\generated\output` by default unless `OUTPUT_DIR` or `--output` overrides it.
@@ -210,13 +211,11 @@ python tools/cli/validate_generated_features.py --dir workspace/generated/output
 
 ## 9. Interactive Retrieval Tester
 
-Wrapper:
-
 ```powershell
-bat\test_retrieval.bat
+tools\windows\test_retrieval.bat
 ```
 
-Canonical:
+Or directly:
 
 ```powershell
 python tools/cli/test_retrieval.py
@@ -260,5 +259,5 @@ Check `LLM_MODEL_PATH` in `.env` and make sure it points to an absolute `.gguf` 
 **Generation is very slow on 8 GB RAM**
 Close other heavy apps, reduce `LLM_CONTEXT_LENGTH`, lower `LLM_NUM_THREADS`, or offload layers with `LLM_GPU_LAYERS` if you have a GPU.
 
-**`ModuleNotFoundError` on old wrapper commands**
-Run commands from the repository root. The wrappers assume the repo root is the working directory.
+**`ModuleNotFoundError: No module named 'casforge'`**
+Run commands from the repository root (`D:\CASForge_F`). The `casforge/` stub at root redirects imports to `src/casforge/`.

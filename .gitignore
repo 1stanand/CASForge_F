@@ -7,4 +7,6 @@ index/
 *.faiss
 *.db
 *.log
-*.feature
+workspace/reference_repo/Features/*
+workspace/generated
+.vscodecounter

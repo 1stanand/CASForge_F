@@ -1,0 +1,195 @@
+﻿{
+  "lob_aliases": [
+    { "canonical": "OMNI", "phrases": ["omni loan", "omni"] },
+    { "canonical": "HL", "phrases": ["home loan"] },
+    { "canonical": "PL", "phrases": ["personal loan"] },
+    { "canonical": "LAP", "phrases": ["loan against property", "lap"] },
+    { "canonical": "MHL", "phrases": ["micro home loan", "mhl"] },
+    { "canonical": "CV", "phrases": ["commercial vehicle", "consumer vehicle", "cv"] },
+    { "canonical": "EDU", "phrases": ["education loan", "education", "edu"] },
+    { "canonical": "PF", "phrases": ["personal finance", "pf"] },
+    { "canonical": "BL", "phrases": ["business loan", "bl"] }
+  ],
+  "entities": [
+    {
+      "canonical": "decision column",
+      "aliases": ["decision column", "column decision", "new column decision", "new column 'decision'", "new column \"decision\""],
+      "family": "ui_structure",
+      "screens": []
+    },
+    {
+      "canonical": "decision checkbox",
+      "aliases": ["decision checkbox", "decision check box", "checkbox in decision column"],
+      "family": "default_state",
+      "screens": []
+    },
+    {
+      "canonical": "decision checkbox for sub loan grid",
+      "aliases": ["decision checkbox for sub loan grid", "decision checkbox for subloan grid", "decision checkbox for sub loans", "checkbox for sub loans", "checkbox for sub products"],
+      "family": "default_state",
+      "screens": []
+    },
+    {
+      "canonical": "decision checkbox for credit card grid",
+      "aliases": ["decision checkbox for credit card grid", "checkbox for credit cards", "checkbox for add on cards"],
+      "family": "default_state",
+      "screens": []
+    },
+    {
+      "canonical": "recommendation decision dropdown",
+      "aliases": ["recommendation decision dropdown", "recommendation decision"],
+      "family": "dependency",
+      "screens": ["Recommendation Decisions"]
+    },
+    {
+      "canonical": "application level decision",
+      "aliases": ["application level decision", "application decision"],
+      "family": "dependency",
+      "screens": []
+    },
+    {
+      "canonical": "sub product decision",
+      "aliases": ["sub product decision", "sub loan decision", "separate decision", "sub loan level decision", "separate recommendation decision"],
+      "family": "dependency",
+      "screens": []
+    },
+    {
+      "canonical": "recommended amount field",
+      "aliases": ["recommended amount field", "recommended amount"],
+      "family": "field_enablement",
+      "screens": []
+    },
+    {
+      "canonical": "recommended limit field",
+      "aliases": ["recommended limit field", "recommended limit"],
+      "family": "field_enablement",
+      "screens": []
+    },
+    {
+      "canonical": "primary card",
+      "aliases": ["primary card"],
+      "family": "data_combination",
+      "screens": []
+    },
+    {
+      "canonical": "add-on card",
+      "aliases": ["add-on card", "addon card", "add on card"],
+      "family": "data_combination",
+      "screens": []
+    },
+    {
+      "canonical": "product type decision list",
+      "aliases": ["product type decision list"],
+      "family": "ui_structure",
+      "screens": ["Product Type Decision List"]
+    },
+    {
+      "canonical": "sub loan",
+      "aliases": ["sub loan", "subloan", "sub loans", "subloans"],
+      "family": "data_combination",
+      "screens": []
+    },
+    {
+      "canonical": "credit card grid",
+      "aliases": ["credit card grid", "credit card", "card grid"],
+      "family": "data_combination",
+      "screens": []
+    },
+    {
+      "canonical": "committee verdict",
+      "aliases": ["committee verdict", "committee decision", "verdict"],
+      "family": "decision_logic",
+      "screens": ["Decision Drawer"]
+    }
+  ],
+  "stages": [
+    { "canonical": "Lead Details", "aliases": ["lead details", "lead"] },
+    { "canonical": "DDE", "aliases": ["dde", "data entry"] },
+    { "canonical": "Recommendation", "aliases": ["recommendation"] },
+    { "canonical": "Credit Approval", "aliases": ["credit approval"] },
+    { "canonical": "Committee Approval", "aliases": ["committee approval"] },
+    { "canonical": "Reconsideration", "aliases": ["reconsideration"] },
+    { "canonical": "Disbursal Initiation", "aliases": ["disbursal initiation", "disbursal"] }
+  ],
+  "families": [
+    { "key": "ui_structure", "terms": ["new column", "display", "show", "visible", "grid", "screen", "accordion"] },
+    { "key": "default_state", "terms": ["by default", "default", "checked", "unchecked", "selected"] },
+    { "key": "dependency", "terms": ["if any", "if all", "based on", "depending on", "derived from", "same as"] },
+    { "key": "field_enablement", "terms": ["enable", "enabled", "disable", "disabled", "editable", "read only", "readonly"] },
+    { "key": "derived_decision", "terms": ["derive", "derived", "calculated", "same as", "application will"] },
+    { "key": "validation", "terms": ["validation", "mandatory", "required", "invalid", "error", "reject", "prevent", "zero"] },
+    { "key": "state_movement", "terms": ["move to", "move next", "next stage", "transition", "proceed to", "mtns"] },
+    { "key": "persistence", "terms": ["save", "saved", "retain", "retained", "reopen", "persist"] },
+    { "key": "data_combination", "terms": ["combination", "multiple", "both", "all", "any", "none", "mixed"] },
+    { "key": "edge", "terms": ["blank", "null", "duplicate", "empty", "zero"] }
+  ],
+  "sections": [
+    {
+      "key": "ui_structure",
+      "display_name": "UI Structure Validation",
+      "terms": ["display", "visible", "show", "column", "availability", "grid", "screen"]
+    },
+    {
+      "key": "checkbox_state",
+      "display_name": "Checkbox Availability & Default State",
+      "terms": ["checkbox", "checked", "unchecked", "default", "selected", "enabled"]
+    },
+    {
+      "key": "dependency",
+      "display_name": "Dependency Behaviour",
+      "terms": ["dependency", "based", "derived", "same", "depends", "selected", "if any", "if all"]
+    },
+    {
+      "key": "field_enablement",
+      "display_name": "Field Enablement Behaviour",
+      "terms": ["enabled", "disabled", "editable", "readonly", "field", "limit", "amount"]
+    },
+    {
+      "key": "decision_logic",
+      "display_name": "Decision Logic Behaviour",
+      "terms": ["decision", "dropdown", "verdict", "approved", "rejected", "recommended", "not recommended"]
+    },
+    {
+      "key": "validation",
+      "display_name": "Validation Coverage",
+      "terms": ["validation", "error", "invalid", "mandatory", "required", "zero"]
+    },
+    {
+      "key": "state_movement",
+      "display_name": "Move To Next Stage Validations",
+      "terms": ["move", "stage", "next", "mtns", "approval", "reject"]
+    },
+    {
+      "key": "persistence",
+      "display_name": "Persistence / Save Behaviour",
+      "terms": ["save", "saved", "persist", "retained", "reopen"]
+    },
+    {
+      "key": "data_combination",
+      "display_name": "Data Combination Coverage",
+      "terms": ["any", "all", "none", "mixed", "combination", "matrix"]
+    },
+    {
+      "key": "edge",
+      "display_name": "Edge Coverage",
+      "terms": ["zero", "blank", "duplicate", "none", "edge"]
+    },
+    {
+      "key": "core_flow",
+      "display_name": "Core Flow Coverage",
+      "terms": ["display", "open", "save", "flow"]
+    }
+  ],
+  "matrix_terms": [
+    { "key": "any", "terms": ["if any", "any subloan", "any sub loan", "at least one"] },
+    { "key": "all", "terms": ["if all", "all subloans", "all sub loans", "all the subloans"] },
+    { "key": "none", "terms": ["if none", "no subloan", "none selected", "no majority"] },
+    { "key": "mixed", "terms": ["mixed", "tie", "combination", "split"] },
+    { "key": "dependent_card", "terms": ["primary card", "add-on card", "addon card", "add on card"] },
+    { "key": "zero_value", "terms": ["zero", "0 value", "0 amount", "amt to be zero"] },
+    { "key": "multi_grid", "terms": ["both grids", "both subloan and credit card", "credit card grids"] },
+    { "key": "credit_card", "terms": ["credit card", "card grid"] },
+    { "key": "subloan", "terms": ["sub loan", "subloan", "sub products"] }
+  ],
+  "state_transition_terms": ["credit approval", "committee approval", "disbursal", "recommendation", "stage"]
+}

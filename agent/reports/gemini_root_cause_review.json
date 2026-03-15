@@ -1,0 +1,65 @@
+{
+  "primary_bottleneck": "src/casforge/generation/feature_assembler.py",
+  "confidence": "High",
+  "top_findings": [
+    {
+      "rank": 1,
+      "title": "Aggressive Fallback Mechanisms Invent Bad Scenarios",
+      "stage": "Feature Assembly",
+      "files": ["src/casforge/generation/feature_assembler.py"],
+      "why_it_matters": "Instead of admitting a gap in understanding, the system generates scenarios from weak or unrelated data, which is a primary source of business logic errors in the final output.",
+      "suggested_fix": "Disable fallback routines (_build_fallback_plan, _build_scaffold_plan_from_related_hits). If no high-confidence anchor is found, the system should report a coverage gap and omit the scenario."
+    },
+    {
+      "rank": 2,
+      "title": "Dangerous Post-Render 'Grounding' Corrupts Good Steps",
+      "stage": "Feature Assembly (Post-processing)",
+      "files": ["src/casforge/generation/feature_assembler.py"],
+      "why_it_matters": "This final step silently rewrites generated steps with repository steps that are only superficially similar, introducing semantic errors into otherwise correct scenarios and undermining the entire generation process.",
+      "suggested_fix": "Immediately refactor the `_ground_steps_to_repo` function. It should only report non-existent steps using the 'NEW_STEP_NOT_IN_REPO' marker, not automatically replace them."
+    },
+    {
+      "rank": 3,
+      "title": "Initial Story Understanding is Brittle and Overfit",
+      "stage": "Story Fact Extraction",
+      "files": ["src/casforge/generation/story_facts.py"],
+      "why_it_matters": "The entire pipeline is built on the initial facts extracted from the Jira story. The heavy reliance on brittle, overfitted heuristics means this foundation is often sparse and inaccurate, leading to compounding errors downstream.",
+      "suggested_fix": "Deprecate the heuristic-first approach. The system should be re-architected to use a well-prompted LLM as the primary driver for interpreting the story and creating a structured plan."
+    },
+    {
+      "rank": 4,
+      "title": "Synthetic Plan Generation Fills Gaps with Generic Tests",
+      "stage": "Scenario Planning",
+      "files": ["src/casforge/generation/scenario_planner.py"],
+      "why_it_matters": "When rule-based fact extraction is sparse, the planner invents generic scenarios. This pollutes the final output with low-value tests that don't reflect the specific business requirements.",
+      "suggested_fix": "Remove the `_synthetic_items_from_signals` logic. The planner should only plan from high-confidence facts extracted from the story."
+    },
+    {
+      "rank": 5,
+      "title": "Overly Complex and Fragile Heuristics",
+      "stage": "Generation (All stages)",
+      "files": [
+        "src/casforge/generation/feature_assembler.py",
+        "src/casforge/generation/scenario_planner.py"
+      ],
+      "why_it_matters": "The system is a maze of heuristic-based scoring, ranking, and filtering. This extreme complexity makes it unpredictable, hard to debug, and highly sensitive to small variations in input text, causing a cascade of failures.",
+      "suggested_fix": "Systematically refactor and simplify the generation logic, starting with breaking `feature_assembler.py` into smaller modules. Replace complex scoring with clearer, more decisive rules."
+    }
+  ],
+  "priority_files": [
+    "src/casforge/generation/feature_assembler.py",
+    "src/casforge/generation/story_facts.py",
+    "src/casforge/generation/scenario_planner.py"
+  ],
+  "recommended_fix_order": [
+    "Disable and refactor the 'grounding' pass in `_ground_steps_to_repo` to only report, not replace, steps.",
+    "Remove fallback scenario generation (`_build_fallback_plan`, `_build_scaffold_plan_from_related_hits`).",
+    "Harden assertion retrieval to prevent falling back to generic or irrelevant `Then` steps.",
+    "Begin deprecating the heuristic-first fact extraction in `story_facts.py` in favor of a more robust method.",
+    "Refactor the monolithic `feature_assembler.py` into smaller, single-responsibility modules."
+  ],
+  "docs_that_may_be_overconfident": [
+    "Continuation_Guide.md: The statement 'Retrieval remains a core strength' is true for document retrieval but masks the weakness in selecting the correct, semantically relevant scenario from those results.",
+    "PIPELINE_OVERVIEW.md: The statement 'planning is deterministic' is technically true but misleading, as it's deterministically processing flawed inputs, which consistently leads to flawed outputs."
+  ]
+}

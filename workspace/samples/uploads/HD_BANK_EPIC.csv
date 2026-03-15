@@ -1,0 +1,791 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Fix Version/s,Component/s,Due Date,Votes,Labels,Labels,Description,Environment,Watchers,Watchers,Watchers,Watchers,Log Work,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Inward issue link (Blocks),Outward issue link (Bonfire Testing),Inward issue link (Cloners),Inward issue link (Cloners),Outward issue link (Cloners),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Inward issue link (Relates),Outward issue link (Relates),Outward issue link (Relates),Outward issue link (Relates),Outward issue link (Relates),Attachment,Attachment,Attachment,Attachment,Attachment,Attachment,Attachment,Attachment,Attachment,Attachment,Custom field (API names),Custom field (ATDD Status),Custom field (ATDD_Status),Custom field (Acceptance),Custom field (Acceptance Criteria),Custom field (Acceptance_),Custom field (Accepted/Rejected),Custom field (Action Done),Custom field (Action Plan),Custom field (Action_for_ resolution),Custom field (Actual Closure Date),Custom field (Actual Completion),Custom field (Actual Completion Date),Custom field (Actual Participants),Custom field (Actual Reviewed Date),Custom field (Affected Assets),Custom field (Amigo Discussion End Date),Custom field (Amigo Discussion Start Date),Custom field (Amigo SPOC),Custom field (Analysis / Playback by),Custom field (Analysis Provided),Custom field (Analysis Received),Custom field (Analysis/Playback date),Custom field (Annual Business Benefit Amount),Custom field (Annual Business Benefit Currency),"Custom field (Any reference material, Links)",Custom field (App Version),Custom field (Application Business Owner:),Custom field (Approver Authority),Custom field (Approver Name),Custom field (Approximate Impacted Time(Minutes)),Custom field (Assigned Date),Custom field (Assigned Group),Custom field (Assignee's Comments),Custom field (Associated Record Identifier),Custom field (Author Name),Custom field (Author Name),Custom field (Automation Flag),Custom field (Automation Version Covered),Custom field (Availability Verified),Custom field (Available For ST),Custom field (BRD/ BRS Check in Path),Custom field (Back Porting),Custom field (Backend),Custom field (Backlog),Custom field (Backport GA Version),Custom field (Backporting Approval Status From PS),Custom field (Backward Merging Required),Custom field (Benefits),Custom field (Benefits Case (Non-quantifiable)),Custom field (Benefits Case (Quantifiable)),Custom field (Browser),Custom field (Bug Classification),Custom field (Bug Classification),Custom field (Bug ID),Custom field (Build GWT Reviewer),Custom field (Build Review End Date),Custom field (Build Review Start Date),Custom field (Business Area),Custom field (Business Critical),Custom field (Business Efficiency Impact),Custom field (Business Need),Custom field (Business Requirement (Explain the business requirement to be satisfied)),Custom field (Business Value),Custom field (Business Workaround until CR can be implemented),Custom field (Business scenarios: Exceptions),Custom field (Business scenarios: Validations and corner cases),Custom field (Business value),Custom field (CAB Approval),Custom field (CR Assumptions),Custom field (CR Data from External Interfaces),Custom field (CR Formulae (attach)),Custom field (CR Impact on EOD/BOD Processes),Custom field (CR Input Forms Formats (attach)),Custom field (CR No.),Custom field (CR Objective),Custom field (CR Query Screen Formats(attach)),Custom field (CR Report Formats (attach)),Custom field (CR Sorting Criteria),Custom field (CR Status),Custom field (CR Test Data Required(Share details /attach as necessary)),Custom field (CR/Ref),Custom field (CUSTOMER SEVERITY),Custom field (CVSS Score),Custom field (CWC Check in Path),Custom field (Category),Custom field (Cause 1),Custom field (Cause 2),Custom field (Cause 3),Custom field (Cause 4),Custom field (Cause 5),Custom field (Change Approver),Custom field (Change Category),Custom field (Change Complexity),Custom field (Change Impact),Custom field (Change Title),Custom field (Change Type),Custom field (Changes done - Services / Screens),Custom field (Classification),Custom field (Client Ref. No.),Custom field (Closed Date),Custom field (Code Refactoring Required?),Custom field (Code Review Done By),Custom field (Code Review Status),Custom field (Code review (CR)),Custom field (Code review (CR) Done by),Custom field (Coding Status),Custom field (Comments from Bank),Custom field (Comments from Nucleus),Custom field (Commercial),Custom field (Commercials Charged),Custom field (Communication of Closure),Custom field (Communication of Down Time),Custom field (ComplexityAndSize),Custom field (ComplexityAndSize),Custom field (Component Names),Custom field (Computation / logic),Custom field (Computation/ logic),Custom field (ConfidenceAndClarity),Custom field (ConfidenceAndClarity),Custom field (Continuous Pass Count),Custom field (Count of Test Cases),Custom field (Count of Test Steps),Custom field (Count of Test Steps Blocked),Custom field (Count of Test Steps Executed),Custom field (Count of Test Steps Failed),Custom field (Count of Test Steps Passed),Custom field (Country),Custom field (Created Time),Custom field (Cross Module Dependency),Custom field (Current GA Version),Custom field (Current Stage),Custom field (Current Status),Custom field (Current stage),Custom field (Custom Closure Date),Custom field (Custom Issue Type),Custom field (Custom Priority),Custom field (Custom_priority),Custom field (Customer),Custom field (Customer Issue Type),Custom field (Customer JIRA Reference ID),Custom field (Customer Jira Key),Custom field (Customer List),Custom field (Customer Name),Custom field (Customer Release Date),Custom field (Customer Remarks),Custom field (Customer UAT Cycle),Custom field (Customer UAT Status),Custom field (Customer Verification Status),Custom field (Customer's Name),Custom field (Cycle No),Custom field (DB And Contract Changes),Custom field (DB And Contract Changes.),Custom field (DB Impacts),Custom field (DEFECT AREA),Custom field (Data Prearation SPOC),Custom field (Data Preparation End Date),Custom field (Data Preparation Start Date),Custom field (Data base Impact),Custom field (Data fields),Custom field (Database Impacts),Custom field (Defect),Custom field (Defect -category),Custom field (Defect ID),Custom field (Defect Source),Custom field (Defect phase),Custom field (Defect source),Custom field (Delivery Phase),Custom field (Delivery Reviewed by),Custom field (Delivery Version),Custom field (Delivery to QCT / Coding done),Custom field (Delivery to QCT / Coding done Done by),Custom field (Demo Acceptance Status),Custom field (Demo Status),Custom field (Demo for test),Custom field (Dependent Module Revision Number),Custom field (Detailed RCA of Blocker Incident),Custom field (Details Attached),Custom field (Details Received),Custom field (Dev Actual Completion Date),Custom field (Dev Due Date),Custom field (DevOps Impact),Custom field (Development Subtype required),Custom field (Development Type),Custom field (Document Path in Repository),Custom field (Document Status),Custom field (Document Writing Actual Date),Custom field (Document Writing Planned Date),Custom field (Documents Updated),Custom field (Done by),Custom field (Done by_),Custom field (DownTime),Custom field (Download / KT Done by),Custom field (Download Status),Custom field (Download/ KT date),Custom field (Duplicate Incident Id),Custom field (Effort),Custom field (End Date),Custom field (End Date And Time),Custom field (Engineering Story Points),Custom field (Environment on which patch to be applied),Custom field (Epic Link),Custom field (Epic/Theme),Custom field (Estimated MD),Custom field (Execution Status),Custom field (Expected Results),Custom field (F1/FN Category),Custom field (Feasibility Status),Custom field (Feature),Custom field (Feature File Check In Path),Custom field (Features),Custom field (Final Review Status),Custom field (FindingCount),Custom field (First LeveL RCA),Custom field (Fixed in Version),Custom field (Flagged),Custom field (Found in Sprint),Custom field (Framework),Custom field (Front porting completed),Custom field (Frontend),Custom field (Function Type),Custom field (Function_Type),Custom field (Functional Area),Custom field (Functional Review),Custom field (Functional Specification),Custom field (Functional_Area),Custom field (Functionality Impacted),Custom field (Functionality Released In),Custom field (Functionality details),Custom field (Functionality_Impacted),Custom field (GA Phase),Custom field (GA Validation Status),Custom field (GA Validation Status),Custom field (GA Version – Customer),Custom field (GA/Sprint version fixed),Custom field (GCC Use case),Custom field (GIT_COMMIT_HASH),Custom field (GWT Developer),Custom field (GWT Merge Date),Custom field (GWT Review Incorporation End Date),Custom field (GWT Review Incorporation Start Date),Custom field (GWT Writing End Date),Custom field (GWT Writing SPOC),Custom field (GWT Writing Start Date),Custom field (GWT Writing Status),Custom field (GWT Writing Status),Custom field (Group),Custom field (Group),Custom field (HLE/ Estimates),Custom field (I-Givers),Custom field (I-Implementers),Custom field (IA Reviewed By),Custom field (IA Reviewed By_),Custom field (IAD Check in Path),Custom field (ICICI Attachments),Custom field (ICICI Issue Type),Custom field (ICICI Priority),Custom field (IPMG Acceptance),Custom field (IPMG Team Member),Custom field (IRB),Custom field (Impact Analysis),Custom field (Impact on Other Epcis),Custom field (Impact on Other Epcis),Custom field (Impact on other Modules),Custom field (Impacted Area/ Components),Custom field (Impacted Areas/Functionalities),Custom field (Impacted Module),Custom field (Impacted Module),Custom field (Impacted Processes (Others -Please specify)),Custom field (Impacted Processes/Stage),Custom field (Impacted Products /Business Lines),Custom field (Implemented Date),Custom field (Incident Configuration Items),Custom field (Incident Impact),Custom field (Incident Priority),Custom field (Incident RCA),Custom field (Incident Recording Time),Custom field (Incident Resolution Plan),Custom field (Incident Type),Custom field (Initial Baselined target date),Custom field (Initiated Date),Custom field (Initiative),Custom field (Injected By),Custom field (Injected by),Custom field (Input source),Custom field (Interface SIT Status),Custom field (Interface Type),Custom field (Interface Url),Custom field (Is Redis Flush Required),Custom field (Issue Category),Custom field (Issue Logged In),Custom field (Issue Resolution Date),Custom field (JIRA Complexity),Custom field (Jenkins Path),Custom field (Job Sheet Actual Date),Custom field (Job Sheet Preparation Done by),Custom field (Job Sheet Prepared),Custom field (Job Sheet Target Date),Custom field (Job Sheet(JS) Preparation),Custom field (Job Sheet(JS) Review),Custom field (Job Sheet(JS) Review Done by),Custom field (KT Actual Date),Custom field (KT Done),Custom field (KT Target Date),Custom field (Key UI steps),Custom field (Last Reopened By),Custom field (Last Reopened Date),Custom field (Leadership Approval Status),Custom field (License details),Custom field (Linked Feature file),Custom field (Linked Test Case),Custom field (LoB Type),Custom field (LoB Type),Custom field (LoB Type),Custom field (MG checks),Custom field (Merge Request Number),Custom field (Migration field),Custom field (Module),Custom field (Module.),Custom field (Module/Feature),Custom field (Modules),Custom field (NPP Request ID),Custom field (Nature of Issue),Custom field (Neo Online date),Custom field (New Root Cause Category),Custom field (Next Steps),Custom field (Non-functional requirements),Custom field (Nucleus Remarks),Custom field (Number of Examples),Custom field (Number of Failed Examples),Custom field (On Hold Reason),Custom field (Open Source),Custom field (Original GA),Custom field (Original GA),Custom field (Original story points),Custom field (Original_Assignee),Custom field (Originated from),Custom field (Originated_from),Custom field (Originated_from),Custom field (Origination Phase),Custom field (Originator Phone),Custom field (Originator Title),Custom field (Originator name),Custom field (Other Impacts (please specify below)),Custom field (Out of Scope),Custom field (Output),Custom field (Overdue Status),Custom field (Ownership),Custom field (Ownership),Custom field (PC),Custom field (PMD Review Comments),Custom field (PMD Review Comments),Custom field (PMG GWT Reviewer),Custom field (PMG Review End Date),Custom field (PMG Review Start Date),Custom field (PMG Story Reviewer),Custom field (POC results),Custom field (PQM Release Date),Custom field (PQM TC Applicable),Custom field (PQM Testable),Custom field (PQMTestCaseID),Custom field (PS SVN Check in Path),Custom field (PS SVN Revision no),Custom field (PSG Story Point),Custom field (PSG/PS Analysis),Custom field (PSG/PS Analysis),Custom field (Parent Link),Custom field (Part of Build),Custom field (Patch Environment),Custom field (Patch Environment IP),Custom field (Patch Files),Custom field (Patch Release Date),Custom field (Percentage Complete),Custom field (Performance Impact On),Custom field (Perspective 1),Custom field (Perspective 2),Custom field (Plan to productize CR),Custom field (Planned / Not Planned),Custom field (Planned Participants),Custom field (Planned Review Date),Custom field (Planned//Release-in),Custom field (Playback Status),Custom field (Playback Understanding),Custom field (Potential wow factor),Custom field (Pre sprint Planning Actual Dates),Custom field (Pre sprint Planning Planned Dates),Custom field (Pre-Planning Status),Custom field (Pre-Planning Status.),Custom field (Preventive Action Description (Description/ToBeCreated/NotApplicable)),Custom field (Preventive Action Owner),Custom field (Preventive Action TaskID),Custom field (Preventive Action Type),Custom field (Product Board Approval date),Custom field (Product Dev Status),Custom field (Product Remarks),Custom field (Program Specifications Check In Path),Custom field (Progress so far),Custom field (QCT Category),Custom field (QCT Ready),Custom field (QCT Status),Custom field (QCT Status.),Custom field (QCT Test Case (QTC) Preparation),Custom field (QCT Test Case (QTC) Preparation Done by),Custom field (QCT Test Case (QTC) Review),Custom field (QCT Test Case (QTC) Review Done by),Custom field (QCT Test Case Execution (Sprinting)),Custom field (QCT Test Case Execution (Sprinting) Done by),Custom field (QCT Test Case ID),Custom field (QCT end date),Custom field (QCT target date),Custom field (RCA Remarks.),Custom field (RCA Review Status),Custom field (RCA Source Phase),Custom field (RCA and Preventive Action Review Status),Custom field (ROI Factor),Custom field (ROI Score),Custom field (Rank),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Re-Open),Custom field (ReQueST Logged By),Custom field (Regulatory/compliance requirement),Custom field (Release),Custom field (Release Date),Custom field (Release Type),Custom field (Released),Custom field (Released To Customer),Custom field (Released To PQM),Custom field (Reopen),Custom field (Reopen Count),Custom field (Reopen count),Custom field (Reopened By),Custom field (Reported By),Custom field (Reported By.),Custom field (Reported Through),Custom field (Reporting Date),Custom field (Req Categorisation),Custom field (Req Categorisation),Custom field (Req Reference Number),Custom field (Req Type),Custom field (ReqId),Custom field (ReqId),Custom field (Request ID),Custom field (Requested Implementation Date:),Custom field (Requirement Status),Custom field (Requirement Status.),Custom field (Resolution Date),Custom field (Review By),Custom field (Review Comments),Custom field (Review Comments),Custom field (Review Completion Date),Custom field (Review Date),Custom field (Review Date),Custom field (Reviewer),Custom field (Reviewer),Custom field (Reviewer Status),Custom field (Reviewer's Remarks),Custom field (Revised Due Date),Custom field (Revised SP),Custom field (Revision Number),Custom field (Revision Number-not used),Custom field (Revision number),Custom field (Rollback Plan),Custom field (Root Cause Category),Custom field (Root Cause.),Custom field (Root cause),Custom field (Root cause Description),Custom field (Root cause analysis),Custom field (SCM Path),Custom field (SLA Belongs To),Custom field (SLA Exceed Category),Custom field (SLA Exceed Remarks),Custom field (SLR),Custom field (SPOC),Custom field (ST Cases Status),Custom field (ST Cases Status.),Custom field (ST Closure Date),Custom field (ST Status),Custom field (ST Story ID),Custom field (Scenario Count),Custom field (Scenarios & TC Actual Date),Custom field (Scenarios & TC Prepared),Custom field (Scenarios & TC Review Actual Date),Custom field (Scenarios & TC Review Target Date),Custom field (Scenarios & TC Reviewed),Custom field (Scenarios & TC Target Date),Custom field (Scenarios and TC Prepared),Custom field (Schedule of the change),Custom field (Screen/Functionality),Custom field (Second LeveL RCA),Custom field (Simulation Step Provided),Custom field (Simulation Step Received),Custom field (Simulation Steps ),Custom field (Solution Type),Custom field (Solution Type),Custom field (Solutioning),Custom field (Solutioning),Custom field (Sonar Applicable),Custom field (Source),Custom field (Source Files),Custom field (Source Of Issue),Custom field (Source_From),Custom field (Specific Area),Custom field (Specific_Area),Sprint,Custom field (Sprint No),Custom field (Sprint Planning Actual Dates),Custom field (Sprint Planning Planned Dates),Custom field (Sprint Tester),Custom field (Sprint retrospectives status),Sprint,Custom field (Stage),Custom field (Start Date And Time),Custom field (Status),Custom field (Story Category),Custom field (Story Description),Custom field (Story Developed By),Custom field (Story Points),Custom field (Story Points Agreed),Custom field (Story Preparation Actual Date),Custom field (Story Preparation Target Date),Custom field (Story Prepared),Custom field (Story Review Status),Custom field (Story Size),Custom field (Story Type),Custom field (Story Writing Status),Custom field (Story available for Sprint testing),Custom field (Story deployment for Sprint testing),Custom field (Story size),Custom field (Strategy),Custom field (Sub Function),Custom field (Sub-category),Custom field (Support Issue Source),Custom field (System processes),Custom field (TC Available),Custom field (TC Execution),Custom field (TC Id./No.),Custom field (TC Review Status),Custom field (TC Type/Issue Found),Custom field (TLR),Custom field (TN),Custom field (Tag-1),Custom field (Tag-10),Custom field (Tag-2),Custom field (Tag-3),Custom field (Tag-4),Custom field (Tag-5),Custom field (Tag-6),Custom field (Tag-7),Custom field (Tag-8),Custom field (Tag-8),Custom field (Tag-9),Custom field (Tag1),Custom field (Tag2),Custom field (Tag3),Custom field (Tag4),Custom field (Tag5),Custom field (Tag6),Custom field (Target Closure Date),Custom field (Target Date),Custom field (Target end),Custom field (Target start),Custom field (Task Allocation Date),Custom field (Task Category),Custom field (Task Code),Custom field (Task Completion Date),Custom field (Task Group),Custom field (Task Initiation Date),Custom field (Task Type),Custom field (Team),Custom field (Team),Custom field (Team),Custom field (Team Name),Custom field (TeamName),Custom field (Technical Specfication),Custom field (Technology  Impact),Custom field (Test Blocked #),Custom field (Test Case #),Custom field (Test Case Included by QCT),Custom field (Test Case Steps),Custom field (Test Case Type),Custom field (Test Case/ Checklist Mapped (Y/N)),Custom field (Test Cases Reviewed By),Custom field (Test Executed #),Custom field (Test Failed #),Custom field (Test Passed #),Custom field (Test Results),Custom field (Test Steps),Custom field (Test Team Remarks),Custom field (Test Verified #),Custom field (Testcase ID),Custom field (Tester Name),Custom field (Testing Cycle),Custom field (Testing Log Check In Path),Custom field (Theme),Custom field (Ticket No),Custom field (Time Spent),Custom field (Time Spent – PQM - Analysis),Custom field (Time Spent – PQM Testing),Custom field (Time Spent – PQM- Automation),Custom field (Time Spent – PQM- Review),Custom field (Time Spent – Review),Custom field (Time Spent- Analysis(Hours)),Custom field (Time Spent- Coding(Hours)),Custom field (Time Spent- Dev Testing),Custom field (Time Spent- Others(Hours)),Custom field (Time Spent- RCA(Hours)),Custom field (Time Spent- Testing),Custom field (Time to SLA),Custom field (To be referred in future sprint),Custom field (Track),Custom field (Type),Custom field (Type_of_resoution),Custom field (UAT Time (Hours)),Custom field (UD/ FSD Check in Path),Custom field (UI Impact),Custom field (UTP Check in Path),Custom field (UTP Executed),Custom field (Unit Test Case (UTC) preparation),Custom field (Unit Test Case (UTC) preparation Done by),Custom field (Upgrade Migration Impact),Custom field (Upgrade Migration Requirement),Custom field (Value Analysis),Custom field (Value of Commercials Charged),Custom field (Verification Status),Custom field (Version),Custom field (WBS Status),Custom field (WSEM ID),Custom field (Why 1),Custom field (Why 2),Custom field (Why 3),Custom field (Why 4),Custom field (Why 5),Custom field (Wireframes),Custom field (Won't Fix Reason),Custom field (Won't Fix Reason),Custom field (cause 1),Custom field (cause 2),Custom field (cause 3),Custom field (cause 4),Custom field (cause 5),Custom field (date Of Request),Custom field (p),Custom field (pf),Custom field (rc),Custom field (rr),Custom field (sz),Custom field (tcrbp),Custom field (test),Comment,Comment,Comment,Comment,Comment,Comment,Comment
+ATDD - Committee Decision Logic Change,CAS-270826,1109883,Story,Open,CAS,CAS,software,Shailja.Mishra,,,Major,,yash.sharma,yuvraj.raghuwanshi,yuvraj.raghuwanshi,03/Mar/26 3:31 PM,12/Mar/26 8:53 PM,03/Mar/26 4:34 PM,,,,,,0,code_done_gwt_pending,PQM_ATDD,"As a user, I want documents of account aggregator to be stored in single document code , so that all the respective documents can be found at single place only.",,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-247073,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,GWT Merged,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Regular,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - On Time,,,,,,,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_5,,,,,,,,,,,,anand.singh1,,Completed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,aanchal.agarwal,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,tarun.gupta,,,,,,,,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,Story Developed ,Pending,,Pending,,,9223372036854775807,"1|i31jzb:",9223372036854775807,,,,,,,,NO,,,0,,aanchal.agarwal,,,,,,,TBD,,,,,,,,,,,,,,,,,,,,5.0,,,d2bc058e2a7c3cce557830350bce3e307fa5bbc1,,,,,,,,,,,,,,,,Not Done,,94.0,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,5.0,,,,,Review Pending,,,,,,,,,,,"'+*Current Process*+
+
+Within the system, there are currently *three types of committee approval mechanisms* configured for decision-making on applications:
+|*Committee Type*|*Description*|
+|*Minimum Approvals*|A decision is considered final if *Minimum approval is provided*|
+|*Decision Maker* |A designated *single decision maker’s* input is treated as the *final verdict* of the committee.|
+|*General Majority*|The committee verdict is finalized based on *majority votes* from all configured members.|
+
+In the Minimum Approval Committee, the verdict is finalized prematurely when minimum members provide their decision (Approve/Reject), excluding the other member from the process entirely.
+
+Additionally, when mixed decisions are provided by the members (e.g., 3 approve, 1 reject in a 5-member committee), the final verdict remains pending indefinitely, causing confusion and delays.
+
+ 
+
++*New Process:-*+
+
+The *Minimum Approval Committee logic should be enhanced* to:
+ * Minimum Approval Committee
+ ** New Rule
+ *** Final verdict is derived post minimum approval but 100% member participation shall be ensured
+ *** Verdict Logic (After All Inputs)
+
+||Scenario (5 Members)||Votes||Final Verdict||
+|4 Approve, 1 Any|Minimum Approval|*APPROVED*|
+|4 Reject, 1 Any|Minimum Rejected|*REJECTED*|
+|3 Approve, 2 Reject|Minimum Approved|*Approved*|
+|Any Split|Mixed|*As per majority view*|
+ * The system should *not finalize or block* a verdict prematurely or indefinitely.
+
+*Decision Authority*
+ * *Decision Maker’s vote still determines the committee verdict*
+
+New Participation Rule
+ * Other members *must still submit their decisions*
+ ** Their votes are:
+ *** Stored for *audit*
+ *** Visible in *committee history*
+ *** Not used for verdict calculation
+ * Committee Status Flow
+ * Committee members tasks of other members remain open
+
+h3. Majority Approval Committee
+h4. Decision Logic
+ * Majority rule *unchanged*
+ * Participation Rule (New)
+ * All members must provide inputs *even after majority is achieved*
+
+h4. Status Flow
+ * Verdict: Declared as soon as majority is mathematically reached
+ * Committee Status remains open until:
+ ** *All member decisions are captured*
+
+*It needs to be build in configurable manner so as existing implementation don't get impacted, with by default nature to be as is working*",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+ATDD - Guarantor details capturing for Credit Card application,CAS-270821,1109878,Story,Open,CAS,CAS,software,Shailja.Mishra,,,Major,,prashant.nandan,yuvraj.raghuwanshi,yuvraj.raghuwanshi,03/Mar/26 3:29 PM,10/Mar/26 6:27 PM,13/Mar/26 3:08 AM,,,,,,0,code_done_gwt_pending,PQM_ATDD,"As a user, I want guarantor details to be captured for credit card application, so that loans for which primary collateral is not sufficient can be given through guarantor.",,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-256008,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,GWT Merge Pending,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,A customer applies for a secured credit card but does not have sufficient personal collateral. The bank allows a guarantor (another individual) to provide collateral on behalf of the customer to ensure end-to-end processing and visibility of this relationship.,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - On Time,,,,,,,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_5,,,,,,,,,,,23/Feb/26 12:00 AM,anand.singh1,,Completed,,,,,,,,,,,,,,,,,,,,,"# Sourcing Details
+ # Credit Approval
+ #  ",,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,Log in to FinnOne Neo>>CAS>>Aplications>>Credit Card Application,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,tarun.gupta,,,,,,,,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i31jy7:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202506110023,,,,,,,,,,,,,,,,,,,,5.0,,,,,,,,,,,,,,,,,,,Not Done,,228.0,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,5.0,,,,,Review Done,,Functional,,,,,,,,,"'+*Current Process:-*+
+
+There is no provision to capture the guarantor details for credit card application.
+
++*New Process:-*+
+
+Provision to be made to capture the guarantor details for credit card application in the system. This should be application for all the request type(Add on Card, Business Credit card, {-}Card Limit Update{-}, Corporate Credit Credit, Individual business Credit card, Individual Corporate Credit Card, New Credit Card application, Prepaid Card ) available in sourcing details.
+ * Activity should be updated as per the details for any LOB in which guarantor is added on every screen as per the existing functionality.
+ * Customer communication history to be updated as per the existing functionality.
+
+1. Changes in Applicant Information page at CCDE stage
+ * Add Add-on applicant should be renamed to add another applicant
+ * When user click on this, applicant type should be enabled and 2 values(Add-on & Guarantor) should be displayed in the drop down. When Guarantor is selected, relationship field should be displayed as mandatory.
+ * Applicant type for New customer(Individual, non-individual) and existing customer should work as it is. Cascading fields corresponding should be displayed as it is.
+ * Remove button should be available to remove the applicant.
+ * Personal Information, employment details, financial details, Bank / Credit Card details & KYC details piano bars should be displayed to capture the guaranor details with all the existing fields, buttons and accordions to be displayed and saved as per the exisiting functionality.
+ * Customer swap, remove and customer refresh functionality to work as it is.
+ * -*Placeholder to be added for add-on applicant information page.*-
+
+In income details, following accordions are present for each employment type:-
+ * Agriculture: Agriculture income, crop income, agriculture, assets and liability details are present
+ * For others: Assets and liability details
+ * For Salaried: Assets and liabilities
+ * SENP: Income details, other income details,deductions, expense details, asset and liabilities
+ * SEP: Income details, other income details,deductions, expense details, asset and liability details.
+
+Also, fields are present for agriculture, salaried, others
+
+3. Changes in KYC/Video KYC
+ * Applicant type as guarantor should be present in KYC below primary applicant and add-on applicant. 
+ * Dedupe summary and KYC checklist should be same as per the existing functionality of the KYC.
+ * Video KYC can be initiated for guarantor as well.
+
+4. Changes in documents
+ * Documents related to guarantor should be available in the documents tab. All the existing functionalities should work as it is.
+ * Impact to be taken in view summary in documents tab as well for received, pending and deferred documents of guarantor. Also, in upper ribbon, guarantor name should be present as well as attached in the Screenshot. Same should be printed in the pdf & print also.
+ * In accept additional documents, when refernce type is selected as customer, then in entity type guarantor name shoule be visible & its corresponding documents should be visible in documents dropdown.
+ * In Available documents(Under Raise query), guarantor documents should be visible in the list. Also, in applicants list available in raise query, co-applicant along with the name should be visible.
+
+5. Changes in KYC (KYC check)
+ * KYC check should be applicable for guarantor as well. All other functionalities should be same as well.  Applicants, de dupe summary, kyc checklist should be visible as well. All interfaces applicable fro guarantor should be visible.
+
+6. Changes in FII, FIV, FIC
+ * FI should be initiated for guarantor as well. A separate column for gurantor should be visible. All other functionalities should work as it is. All type of verifications are applicable for guarantor as well. 
+
+7. Changes in recommendation
+ * In applicant information accordion, guarantor details should also be visible .Mock has been attached. When applicant details is clicked for guarantor, all the details should be present.
+ * In intent indicators, Field investigations, KYC check, Video KYC, Credit bureau check results should also be visible for guarantor.
+ * Exposure details should be applicable for guarantor also. All the functionalities as per the exposure details should be applicable for this also.
+
+8. Changes in credit approval
+ * All the policies and ratios which are run at backend should include guarantor details also for the result.
+ * In applicant's profile, guarantor details should also be visible. All the functionalities for this should work as it is.
+ * In CAM report, provision should be added to view guarantor details in applicant information section, employment details, financial details, Bank / Credit Card details, KYC details, verification details, document received for(include guarantor details)
+
+9. Miscellaneous Changes
+ * Activity impact to be taken.
+ * In enquiry, all the impact to be considered.
+
+10. Sent to Card management system
+ * In CMS, gurantor details should be visible in applicant information. 
+ * Eligibility policy ratios to include guranator details as in other product types. Also, in exposure details, guarantor details to be included
+
+Services Impact
+ # createApplication[CAS_Appl_01]
+ # UpdateApplication[CAS_Appl_2]
+ # createCustomer[GCD_01]
+ # updateCustomer[GCD_02]
+ # Copy application
+ # Search Application
+
+ 
+
+ ",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Backporting GA 7.0 - Asset-wise Repayment Parameter Configuration for Multiple Asset Loans,CAS-270815,1109867,Story,Open,CAS,CAS,software,Shailja.Mishra,,,Major,,gaurav.agarwal,yuvraj.raghuwanshi,yuvraj.raghuwanshi,03/Mar/26 3:14 PM,03/Mar/26 3:17 PM,13/Mar/26 3:08 AM,,,,,,0,,,"*As a* Credit/Operations User
+*I want* to define and maintain repayment parameters separately for each asset within a Multiple Asset Loan application
+*So that* different assets with varying repayment terms can have customized, accurate, and flexible repayment structures instead of relying on common repayment parameters.",GA 7.0,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-262737,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Planned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Yes,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 7.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Not Done,,,,,,,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_5,,,,,,,,,,,,,,In Progress,In Progress,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,Not Done,Not Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i31jvr:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202402280040,,,,202402280040,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,6.0,,,,,,,,,,,,,,,,"Expected Process
+h4. Asset-wise Repayment Configuration
+ * Each asset captured in the Multiple Asset section have its *own Repayment Parameter screen*
+
+ * Repayment parameters defined at asset level shall override common repayment parameters (if any)
+
+h4. 2. Core Fields Available at Asset Level
+||Field Name||Editable||Remarks||
+|Repayment Type|Y| |
+|Repayment Frequency|Y| |
+|Tenure|Y| |
+|Tenure In|Y|New Field Addition|
+|Installment Type|Y|New Field Addition|
+|Installment Based On|Y| |
+|Installment Mode|Y|New Field Addition|
+|Number of Advanced Installments|Y|New Field Addition|
+|Interest Charge Method|Y|New Field Addition|
+|Interest Rate Type|Y|New Field Addition|
+|Moratorium|Y| |
+|Moratorium Handling|Y| |
+|Moratorium Type|Y| |
+|Moratorium Period (in Installments)|Y| |
+h4. 3. Dynamic Repayment Parameter Placeholder
+ * A dynamic form container shall be provided at the multi asset level",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"Backporting GA 7.0 - Multiple Credit Card processing in Omni Loan | Req type - Business and Corporate credit card ",CAS-270809,1109859,Story,Open,CAS,CAS,software,Shailja.Mishra,,,Major,,arshpreet.singh,yuvraj.raghuwanshi,yuvraj.raghuwanshi,03/Mar/26 3:12 PM,11/Mar/26 4:26 PM,13/Mar/26 3:08 AM,,,,,,0,,,"As a system user, I want that I should be able to attach one or more secured credit card or unsecured credit card for the same primary customer. so, that I should be able to add the same in the omni loan package and process them together so, that the processing time could be saved.",,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-225545,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"Not Applicable (POC, Backporting, Design,NoCodeChange)",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,,,,,,,,,,,,,,,"*{color:#172b4d}+LEAD DETAILS: LOAN DETAILS: SOURCING DETAILS+{color}*
+ * {color:#172b4d}Multiple Business/Corporate cards of same primary customer with different card types can be added in the Omni-loan application.{color}
+ * {color:#172b4d}When user selects the product type as credit card then application type will change to request type and values will be new credit card application, Business credit cards and corporate credit cards. {color}
+ * {color:#172b4d}When user selects the request type only then the add/view card details hyperlink will be visible.{color}
+ * When request type - new credit card application will be selected then there will be no change in the hyperlink except request type will be outside the hyperlink and product field will come in place of request type. 
+ * When request type - business/corporate credit card will be selected and user clicks on the add/view credit card details hyperlink then header name will change to 'commercial card details' and multiple credit cards can be added as given in the screenshot (Refer screenshot 1). Is primary product will also be removed as it is moved inside the hyperlink.
+ * Calculation of total card limit requested field will remain as is and will consider the card limit of corporate/business card as well.
+ * Loan purpose will be brought at sub loan level on sourcing and will be removed from omni level.
+ * At sourcing now user should be able to take multiple sub loans with same product type, product and scheme. However, the combination of product type, product, scheme and loan purpose should be unique. Validation is required to handle the same 'Sub-loan with the same Product Type, Product, Scheme, and Loan Purpose already exists.'
+
+ *+LEAD DETAILS: LOAN DETAILS: CARD DETAILS+*
+ * Request type for business/corporate card in card details will be as per the request type selected at sourcing.
+ * Add on cards and companion cards are not supported for business/corporate cards.
+ * Sorting is required in every column of card details grid.
+ * Currency of requested limit in card details will be as per mapping in product. Also, add on card currency will be same as of primary card and will be non-editable.
+
+*+DDE : COLLATERAL DETAILS+*
+ * The system should allow the user to take the relevant collateral for the Secured Credit Card tranches. Collateral for credit cards should adhere all the details mentioned in this story CAS-219307
+ * Collateral investigation stages are required to be seeded in product for credit cards and details should be visible on recommendation, credit approval and reconsideration stages like other LOBs.
+
+{color:#172b4d}*+RECOMMENDATION+*{color}
+ * Business/corporate credit cards will also be visible under product type decision list and the behaviour will be same as is wroking currently for other credit cards.
+
+*{color:#172b4d}+CREDIT APPROVAL : PRODUCT TYPE DECISION LIST+{color}*
+ * Business/corporate credit cards will also be visible under product type decision list and the behaviour will be same as is wroking currently for other credit cards.
+
+*{color:#172b4d}+RECONSIDERATION:+{color}*
+ * Behavior will be same as individual cards.
+
+*{color:#172b4d}+OPERATIONS CHECK:+{color}*
+ * Behavior will be same as individual cards.
+
++{color:#172b4d}*SEND TO CARD MANAGEMENT SYSTEM:*{color}+
+ *  Recommendation page of Omni loan with only credit cards should be visible.
+ ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,HD Bank,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 7.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Not Done,,,,,,,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Sprint_5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,,,,,Low,,,,,,,,,,,,,,,,,,,,,,,,,CAS,LA,,,,,,,,Note : The impacted areas as analysed by PSG are as mentioned in the Story. Engineering to check and confirm regarding any other areas which have been missed here in the Playback so. that the same can be accounted for.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,gunjan.tomar,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i31jtz:",9223372036854775807,,,,,,,,,,,0,,,,,,,,,TBD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,,,,8.0,No,,,,,,Functional,,,,,,,,,"'+Current Functionality+ 
+
+Currently, in the system the user can not add business and corporate credit cards (both unsecured and secured) in the omni loan package.
+
++Required Functionality+
+
+The user should be able to add multiple business and corporate credit cards (both secured and unsecured) in the omni-loan application when the user applies for an omni loan under the Omni Loan Product consisting of the same.",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+ATDD - GA 9.0 - Add on Applicant - Dynamic form Placeholder,CAS-270765,1109805,Story,Open,CAS,CAS,software,Shailja.Mishra,,,Major,,abhishek.verma,yuvraj.raghuwanshi,yuvraj.raghuwanshi,03/Mar/26 2:40 PM,11/Mar/26 11:49 AM,13/Mar/26 3:08 AM,,,,,,0,code_done_gwt_pending,PQM_ATDD,,,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-262309,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,GWT Merge Pending,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - Delayed,,,,,,,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_5,,,,,,,,,,,,anshima.tiwari,,Completed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Done - Delayed,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i31jhz:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202501060002NPD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,49.0,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,,,,3.0,,,,,,,,,,,,,,,,"* A dynamic form placeholder is required on the add on applicant's personal information screen of credit card application. Placeholder name: CAS_CUSTOM_FIELDS_SCREEN_ADD_ON_APPLICANT
+ * The placeholder should be available on the personal info screen of CDDE, recommendation, credit approval and stage.
+ * The dynamic fields in the personal info screen can be captured through create, update and GCD service as well.",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Backporting GA 7.0 - API to send back the application to previous stage,CAS-270604,1109285,Story,Open,CAS,CAS,software,Shailja.Mishra,,,Major,,ramesh.samanthula,yuvraj.raghuwanshi,yuvraj.raghuwanshi,02/Mar/26 12:12 PM,11/Mar/26 4:26 PM,13/Mar/26 3:08 AM,,,,,,0,,,As a user I want an API to send back the application so that user do not have to login to CAS to send back the application.,,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-262300,,,,,,,,,,,,,,,,,,,,,,,,,"11/Mar/26 12:51 PM;ramesh.samanthula;IAD_WBS_Req_ID-9_Story_ID_CAS-270604.xls;https://jira.nucleussoftware.com/secure/attachment/2296474/IAD_WBS_Req_ID-9_Story_ID_CAS-270604.xls",,,,,,,,,,,"Not Applicable (POC, Backporting, Design,NoCodeChange)",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Yes,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 7.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Not Done,,,,,,7.0,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_5,,,,,,,,,,,,,,Completed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,Not Done,Not Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i31ga7:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202506110026NPD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,6.0,,,,,,,,,,,,,,,,"A new API is required to send back the application to previous stage.
+
+Following will be the fields which are to be sent in the request.
+|S.No.|TECHNICAL NAME|DATA TYPE|OPTIONAL/MANDATORY|DESCRIPTION|SAMPLE VALUE|
+|1.1|ApplicationNumber|String|Mandatory|This field signifies the application number of the application|APPLXXXX|
+|1.2|SendbackFromStage|String|Mandatory|This field signifies the stage from which the application will be sent back|DDE|
+|1.3|SendbackToStage|String|Mandatory|This field signifies the stage to which the application will be sent back|Lead Details|
+|1.4|ReasonForSendback|List| | | |
+|1.4.1|ReasonCode|String|Mandatory|This field signifies the reason code for send back of the application|Others|
+|1.4.2|ReasonDescription|String|Optional|This field signifies the description of the reason  of the sendback. It is mandatory if reason code is 'Others'|XYZ|
+|1.5|Remarks|String|Optional|This field signifies the remarks to be added for sending back the application|XYZ|
+
+ 
+
+Response will have following fields:
+|S.No.|TECHNICAL NAME|DATA TYPE|OPTIONAL/MANDATORY|DESCRIPTION|SAMPLE VALUE|POSSIBLE VALUES|
+|1.1|Status|String|Mandatory|This field signifies the status of the request|Error|Success, Error|
+|1.2|Error Message|String|Conditional Mandatory|This field signifies the error message| | |
+
+ 
+
+Validations required:
+ # If no valid stage found to send back the application then a validation should occur stating 'No valid stage is available to send back the application'. Let's say if user tries to send back the application from lead details.
+ # If application number is not valid then display the error message stating 'Invalid Application No.'
+ # If SendbackFrom stage is invalid then display 'Invalid SendbackFrom Stage' 
+ # If SendbackTo stage is invalid then display 'Invalid SendbackTo Stage'
+ # If invalid reasoncode is passed then display 'Invalid reason code'
+ # If reason code is passed as 'Others' and reason description is not passed then display 'Reason description is mandatory when reason code is passed as 'Others'
+ # If send back from any stage is not allowed then display 'Application cannot be sent back from XYZ stage'. Let's say operations check.
+ # If some user is already working on the application and some other user tries to send back the application from API then display an error message 'Application cannot be sent back as the application is currently in use by another user.'
+ # If the user does not have the access of product, branch and scheme of the application which is being sent back then display a validation message stating 'User does not have access to the product, branch, or scheme of the application'
+
++*Requirement 3: API Documentation*+
+ # API Documentation for the service CAS_Appl_XXX should be available at API Portal under Application Pack along with the updated description attached in the story.
+
+|CAS |Application Pack|CAS_Appl_XXX|This API is used to send back the application to a previous stage. | |Rest |Outbound|Non-Licensable| |
+ * API documentation should be made available in Catalog and seeding in license manger should be done.",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Backporting GA 7.0 - Guarantor details capturing for Credit Card application,CAS-270588,1109267,Story,In Progress,CAS,CAS,software,Shailja.Mishra,,,Major,,prashant.nandan,yuvraj.raghuwanshi,yuvraj.raghuwanshi,02/Mar/26 12:07 PM,11/Mar/26 6:01 PM,13/Mar/26 3:08 AM,,,,,,0,code_done_gwt_pending,PQM_ATDD,"As a user, I want guarantor details to be captured for credit card application, so that loans for which primary collateral is not sufficient can be given through guarantor.",,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-256008,,,,,,,,,,,,,,,,,,,,,,,,,"11/Mar/26 6:01 PM;prashant.nandan;IAD_WBS_CAS-270588.xlsx;https://jira.nucleussoftware.com/secure/attachment/2297060/IAD_WBS_CAS-270588.xlsx",,,,,,,,,,,"Not Applicable (POC, Backporting, Design,NoCodeChange)",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Yes,,,,,No,,,,,New,,,,,,,,,,,,,A customer applies for a secured credit card but does not have sufficient personal collateral. The bank allows a guarantor (another individual) to provide collateral on behalf of the customer to ensure end-to-end processing and visibility of this relationship.,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Not Done,,,,,,,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_5,,,,,,,,,,,23/Feb/26 12:00 AM,anand.singh1,,Not Applicable,,,,,,,,,,,,,,,,,,,,,"# Sourcing Details
+ # Credit Approval
+ #  ",,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,Log in to FinnOne Neo>>CAS>>Aplications>>Credit Card Application,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,tarun.gupta,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,Not Done,Not Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i31g67:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202506110023,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,6.0,,,,,Review Done,,Functional,,,,,,,,,"'+*Current Process:-*+
+
+There is no provision to capture the guarantor details for credit card application.
+
++*New Process:-*+
+
+Provision to be made to capture the guarantor details for credit card application in the system. This should be application for all the request type(Add on Card, Business Credit card, {-}Card Limit Update{-}, Corporate Credit Credit, Individual business Credit card, Individual Corporate Credit Card, New Credit Card application, Prepaid Card ) available in sourcing details.
+ * Activity should be updated as per the details for any LOB in which guarantor is added on every screen as per the existing functionality.
+ * Customer communication history to be updated as per the existing functionality.
+
+1. Changes in Applicant Information page at CCDE stage
+ * Add Add-on applicant should be renamed to add another applicant
+ * When user click on this, applicant type should be enabled and 2 values(Add-on & Guarantor) should be displayed in the drop down. When Guarantor is selected, relationship field should be displayed as mandatory.
+ * Applicant type for New customer(Individual, non-individual) and existing customer should work as it is. Cascading fields corresponding should be displayed as it is.
+ * Remove button should be available to remove the applicant.
+ * Personal Information, employment details, financial details, Bank / Credit Card details & KYC details piano bars should be displayed to capture the guaranor details with all the existing fields, buttons and accordions to be displayed and saved as per the exisiting functionality.
+ * Customer swap, remove and customer refresh functionality to work as it is.
+ * -*Placeholder to be added for add-on applicant information page.*-
+
+In income details, following accordions are present for each employment type:-
+ * Agriculture: Agriculture income, crop income, agriculture, assets and liability details are present
+ * For others: Assets and liability details
+ * For Salaried: Assets and liabilities
+ * SENP: Income details, other income details,deductions, expense details, asset and liabilities
+ * SEP: Income details, other income details,deductions, expense details, asset and liability details.
+
+Also, fields are present for agriculture, salaried, others
+
+3. Changes in KYC/Video KYC
+ * Applicant type as guarantor should be present in KYC below primary applicant and add-on applicant. 
+ * Dedupe summary and KYC checklist should be same as per the existing functionality of the KYC.
+ * Video KYC can be initiated for guarantor as well.
+
+4. Changes in documents
+ * Documents related to guarantor should be available in the documents tab. All the existing functionalities should work as it is.
+ * Impact to be taken in view summary in documents tab as well for received, pending and deferred documents of guarantor. Also, in upper ribbon, guarantor name should be present as well as attached in the Screenshot. Same should be printed in the pdf & print also.
+ * In accept additional documents, when refernce type is selected as customer, then in entity type guarantor name shoule be visible & its corresponding documents should be visible in documents dropdown.
+ * In Available documents(Under Raise query), guarantor documents should be visible in the list. Also, in applicants list available in raise query, co-applicant along with the name should be visible.
+
+5. Changes in KYC (KYC check)
+ * KYC check should be applicable for guarantor as well. All other functionalities should be same as well.  Applicants, de dupe summary, kyc checklist should be visible as well. All interfaces applicable fro guarantor should be visible.
+
+6. Changes in FII, FIV, FIC
+ * FI should be initiated for guarantor as well. A separate column for gurantor should be visible. All other functionalities should work as it is. All type of verifications are applicable for guarantor as well. 
+
+7. Changes in recommendation
+ * In applicant information accordion, guarantor details should also be visible .Mock has been attached. When applicant details is clicked for guarantor, all the details should be present.
+ * In intent indicators, Field investigations, KYC check, Video KYC, Credit bureau check results should also be visible for guarantor.
+ * Exposure details should be applicable for guarantor also. All the functionalities as per the exposure details should be applicable for this also.
+
+8. Changes in credit approval
+ * All the policies and ratios which are run at backend should include guarantor details also for the result.
+ * In applicant's profile, guarantor details should also be visible. All the functionalities for this should work as it is.
+ * In CAM report, provision should be added to view guarantor details in applicant information section, employment details, financial details, Bank / Credit Card details, KYC details, verification details, document received for(include guarantor details)
+
+9. Miscellaneous Changes
+ * Activity impact to be taken.
+ * In enquiry, all the impact to be considered.
+
+10. Sent to Card management system
+ * In CMS, gurantor details should be visible in applicant information. 
+ * Eligibility policy ratios to include guranator details as in other product types. Also, in exposure details, guarantor details to be included
+
+Services Impact
+ # createApplication[CAS_Appl_01]
+ # UpdateApplication[CAS_Appl_2]
+ # createCustomer[GCD_01]
+ # updateCustomer[GCD_02]
+ # Copy application
+ # Search Application
+
+ 
+
+ ",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Backporting GA 7.0 - Add on Applicant - Dynamic form Placeholder,CAS-270583,1109261,Story,In Progress,CAS,CAS,software,Shailja.Mishra,,,Major,,abhishek.verma,yuvraj.raghuwanshi,yuvraj.raghuwanshi,02/Mar/26 12:01 PM,11/Mar/26 10:54 AM,13/Mar/26 3:08 AM,,,,,,0,code_done_gwt_pending,PQM_ATDD,,,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-262309,,,,,,,,,,,,,,,,,,,,,,,,,"11/Mar/26 10:54 AM;abhishek.verma;IAD_WBS_CAS-270583.xls;https://jira.nucleussoftware.com/secure/attachment/2296078/IAD_WBS_CAS-270583.xls",,,,,,,,,,,"Not Applicable (POC, Backporting, Design,NoCodeChange)",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 7.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Not Done,,,,,,,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_5,,,,,,,,,,,,anshima.tiwari,,Not Applicable,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,Not Done,Not Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i31g4v:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202501060002NPD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,,,,3.5,,,,,,,,,,,,,,,,"* A dynamic form placeholder is required on the add on applicant's personal information screen of credit card application. Placeholder name: CAS_CUSTOM_FIELDS_SCREEN_ADD_ON_APPLICANT
+ * The placeholder should be available on the personal info screen of CDDE, recommendation, credit approval and stage.
+ * The dynamic fields in the personal info screen can be captured through create, update and GCD service as well.",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Backporting GA 7.0 Committee Decision Logic Change,CAS-267360,1099243,Story,In Progress,CAS,CAS,software,Shailja.Mishra,,,Major,,yash.sharma,gaurav.khanna,gaurav.khanna,05/Feb/26 9:22 AM,10/Mar/26 3:51 PM,13/Mar/26 3:08 AM,,,,,,0,,,"As a user, I want documents of account aggregator to be stored in single document code , so that all the respective documents can be found at single place only.",,gaurav.khanna,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-247073,,,,,,,,,,,,,,,,,,,,,,,,,"05/Feb/26 9:22 AM;gaurav.khanna;IAD_WBS_CAS-247073.xlsx;https://jira.nucleussoftware.com/secure/attachment/2267959/IAD_WBS_CAS-247073.xlsx",,,,,,,,,,,Planned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Yes,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 7.0,,,,,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - On Time,,,,,,,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_5,,,,,,,,,,,,,,In Progress,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,tarun.gupta,,,,,,,,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,Story Developed ,Pending,,Pending,,,9223372036854775807,"1|i2zqqf:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202506110024,,,,,,,,,,,,,,,,,,,,,,,d2bc058e2a7c3cce557830350bce3e307fa5bbc1,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,5.0,,,,,Review Pending,,,,,,,,,,,"'+*Current Process*+
+
+Within the system, there are currently *three types of committee approval mechanisms* configured for decision-making on applications:
+|*Committee Type*|*Description*|
+|*Minimum Approvals*|A decision is considered final if *Minimum approval is provided*|
+|*Decision Maker* |A designated *single decision maker’s* input is treated as the *final verdict* of the committee.|
+|*General Majority*|The committee verdict is finalized based on *majority votes* from all configured members.|
+
+In the Minimum Approval Committee, the verdict is finalized prematurely when minimum members provide their decision (Approve/Reject), excluding the other member from the process entirely.
+
+Additionally, when mixed decisions are provided by the members (e.g., 3 approve, 1 reject in a 5-member committee), the final verdict remains pending indefinitely, causing confusion and delays.
+
+ 
+
++*New Process:-*+
+
+The *Minimum Approval Committee logic should be enhanced* to:
+ * Minimum Approval Committee
+ ** New Rule
+ *** Final verdict is derived post minimum approval but 100% member participation shall be ensured
+ *** Verdict Logic (After All Inputs)
+
+||Scenario (5 Members)||Votes||Final Verdict||
+|4 Approve, 1 Any|Minimum Approval|*APPROVED*|
+|4 Reject, 1 Any|Minimum Rejected|*REJECTED*|
+|3 Approve, 2 Reject|Minimum Approved|*Approved*|
+|Any Split|Mixed|*As per majority view*|
+ * The system should *not finalize or block* a verdict prematurely or indefinitely.
+
+*Decision Authority*
+ * *Decision Maker’s vote still determines the committee verdict*
+
+New Participation Rule
+ * Other members *must still submit their decisions*
+ ** Their votes are:
+ *** Stored for *audit*
+ *** Visible in *committee history*
+ *** Not used for verdict calculation
+ * Committee Status Flow
+ * Committee members tasks of other members remain open
+
+h3. Majority Approval Committee
+h4. Decision Logic
+ * Majority rule *unchanged*
+ * Participation Rule (New)
+ * All members must provide inputs *even after majority is achieved*
+
+h4. Status Flow
+ * Verdict: Declared as soon as majority is mathematically reached
+ * Committee Status remains open until:
+ ** *All member decisions are captured*
+
+*It needs to be build in configurable manner so as existing implementation don't get impacted, with by default nature to be as is working*",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Asset-wise Repayment Parameter Configuration for Multiple Asset Loans,CAS-262737,1084385,Story,In Progress,CAS,CAS,software,Shailja.Mishra,,,Major,,gaurav.agarwal,gaurav.khanna,gaurav.khanna,25/Dec/25 6:25 PM,11/Mar/26 1:12 PM,13/Mar/26 3:08 AM,,,,,,0,,,"*As a* Credit/Operations User
+*I want* to define and maintain repayment parameters separately for each asset within a Multiple Asset Loan application
+*So that* different assets with varying repayment terms can have customized, accurate, and flexible repayment structures instead of relying on common repayment parameters.",GA 9.0,aanchal.agarwal,gaurav.khanna,sulochana.gautam,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-270815,,,CAS-263151,CAS-263152,CAS-264568,CAS-264569,CAS-265481,CAS-265484,CAS-265485,CAS-265489,,,,,,,,,,,,,,,,,"05/Mar/26 7:01 PM;gaurav.khanna;HD Bank Multi Asset Parameter Behavior.xlsx;https://jira.nucleussoftware.com/secure/attachment/2291950/HD+Bank+Multi+Asset+Parameter+Behavior.xlsx","25/Dec/25 6:56 PM;gaurav.khanna;HD Bank_MA Screen Editable.png;https://jira.nucleussoftware.com/secure/attachment/2234772/HD+Bank_MA+Screen+Editable.png",,,,,,,,,,Planned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Not Applicable,,,,,,,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_5,,,,,,,,,,,,,,In Progress,In Progress,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,Not Done,Not Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i2x76n:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202402280040,,,,202402280040,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,15.0,,,,,,,,,,,,,,,,"Expected Process
+h4. Asset-wise Repayment Configuration
+ * Each asset captured in the Multiple Asset section have its *own Repayment Parameter screen*
+
+ * Repayment parameters defined at asset level shall override common repayment parameters (if any)
+
+h4. 2. Core Fields Available at Asset Level
+||Field Name||Editable||Remarks||
+|Repayment Type|Y| |
+|Repayment Frequency|Y| |
+|Tenure|Y| |
+|Tenure In|Y|New Field Addition|
+|Installment Type|Y|New Field Addition|
+|Installment Based On|Y| |
+|Installment Mode|Y|New Field Addition|
+|Number of Advanced Installments|Y|New Field Addition|
+|Interest Charge Method|Y|New Field Addition|
+|Interest Rate Type|Y|New Field Addition|
+|Moratorium|Y| |
+|Moratorium Handling|Y| |
+|Moratorium Type|Y| |
+|Moratorium Period (in Installments)|Y| |
+h4. 3. Dynamic Repayment Parameter Placeholder
+ * A dynamic form container shall be provided at the multi asset level",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,"02/Jan/26 9:37 AM;gaurav.khanna;Hi 
+ # CAS-263151: A new placeholder for dynamic form at MA Repayment Parameter screen shall have to be developed, it shall be used to capture details related to repayment but doesn't have impact on RPS. This shall be only till post approval stage post splitting this shall not be required
+ # CAS-264569: It has to be introduced through configuration i.e., if fields under MA repayment parameter screen are editable than consolidated RPS shall not come, if they are non-editable than consolidated RPS shall appear.
+ # CAS-264568: Impact only on individual RPS MA wise
+ # CAS-263152: Consolidated RPS will not be created in this form of MA 
+ # CAS-265489: In tiered below grid should come along with addition fields of Assesment rate and tiered rate type
+
+||From Installment||To Installment||Rate Type||Policy Rate||Anchor Type||Anchor Rate||Product Discount||Package Discount||Total Discount||Spread||Rate Percentage||
+
+In case of  balloon instalment type
+Balloon Amount and percentage should come
+ # In graded below grid should come
+
+||From Installment*||To Installment*||Percentage*||Action||
+| | | |
+
+In case of structured
+below option of structure upload should come
+
+6. CAS-265485:
+
+All the fields which have been stated in story shall remain editable only for the first time, so that default values can flow in to all the MA entries, once any changes have been made it shall become non editable, also if all the MA entries have been deleted it shall again become editable
+
+7. CAS-265484
+
+All the MA level RPS shall be shown in KFS,
+
+8. CAS-265481:  As discussed along with Kamal Sir, marking or identification has to be created wherein if MA repayment is of Graded than VAP of graded can be linked with them only
+
+ 
+
+ ;;;","16/Jan/26 11:02 AM;aanchal.agarwal;[~gaurav.khanna] Assigning the story back to you as per [~amit.goyal] sir's mail. Final GWTs have not been provided to the team at the end of week 1 of development. FYI [~astha.rastogi];;;","27/Feb/26 3:04 PM;sulochana.gautam;As discussed with Binnie , ATDD GWT writing to be done by PMG.;;;","05/Mar/26 7:00 PM;gaurav.khanna;Hi 
+
+In case of VAP parameters and value of Multi Asset Repayment should flow and restrictions applied for Multi Asset shall follow for VAP as well
+
+Multi Asset Parameters shall flow to VAP which has been mapped to that specific MA ID
+
+ 
+
+Please find the sheet attached of additional fields which are required against each parameter ;;;",,,
+GA 9.0 - Add on Applicant - Dynamic form Placeholder,CAS-262309,1082980,Story,Resolved,CAS,CAS,software,Shailja.Mishra,,,Major,Fixed,abhishek.verma,yuvraj.raghuwanshi,yuvraj.raghuwanshi,22/Dec/25 4:23 PM,12/Mar/26 2:45 PM,13/Mar/26 3:02 AM,03/Mar/26 3:42 PM,,,,,0,code_done_gwt_pending,PQM_ATDD,,,aanchal.agarwal,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-270583,CAS-270765,,CAS-263085,CAS-263086,CAS-265139,CAS-269532,CAS-270747,,,,,,,,,,,,,,,,,,,,"02/Mar/26 2:57 PM;anshima.tiwari;AddonApplicantDynamicformPlaceholder-1.feature;https://jira.nucleussoftware.com/secure/attachment/2289537/AddonApplicantDynamicformPlaceholder-1.feature","02/Feb/26 12:01 PM;anshima.tiwari;AddonApplicantDynamicformPlaceholder.feature;https://jira.nucleussoftware.com/secure/attachment/2264386/AddonApplicantDynamicformPlaceholder.feature","12/Mar/26 2:45 PM;abhishek.verma;CW_CAS-262309.xlsx;https://jira.nucleussoftware.com/secure/attachment/2297862/CW_CAS-262309.xlsx","25/Feb/26 12:50 PM;abhishek.verma;IAD_WBS_CAS-262309.xls;https://jira.nucleussoftware.com/secure/attachment/2285671/IAD_WBS_CAS-262309.xls",,,,,,,,Not Applicable (Story Extension of Previous Sprint Story),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - Delayed,,,,,,7.0,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_4,,,,,,,,,,,,anshima.tiwari,,Not Applicable,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Done - Delayed,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,NA,Pending,,Pending,,,9223372036854775807,"1|i2wyhj:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202501060002NPD,,,,,,,,,,,,,,,,,,,,7.0,,,b1354cc0beb02099f483791f7029de661cc5d544,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,,,,7.0,,,,,,,,,,,,,,,,"* A dynamic form placeholder is required on the add on applicant's personal information screen of credit card application. Placeholder name: CAS_CUSTOM_FIELDS_SCREEN_ADD_ON_APPLICANT
+ * The placeholder should be available on the personal info screen of CDDE, recommendation, credit approval and stage.
+ * The dynamic fields in the personal info screen can be captured through create, update and GCD service as well.",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,"31/Dec/25 11:02 AM;yuvraj.raghuwanshi;CAS-263085 - New Placeholder is required.
+
+CAS-263086 - GCD base is available;;;","19/Jan/26 12:38 PM;yuvraj.raghuwanshi;Placeholder name: CAS_CUSTOM_FIELDS_SCREEN_ADD_ON_APPLICANT;;;",,,,,
+GA 9.0 - API to send back the application to previous stage,CAS-262300,1082950,Story,In Progress,CAS,CAS,software,Shailja.Mishra,,,Major,,ramesh.samanthula,yuvraj.raghuwanshi,yuvraj.raghuwanshi,22/Dec/25 4:04 PM,06/Mar/26 11:14 AM,13/Mar/26 3:08 AM,,,,,,0,,,As a user I want an API to send back the application so that user do not have to login to CAS to send back the application.,,aanchal.agarwal,ramesh.samanthula,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-270604,,,CAS-263095,CAS-263098,CAS-263099,CAS-263850,CAS-264781,CAS-267991,CAS-267993,CAS-267994,CAS-268000,CAS-270883,CAS-270884,,,,,,,,,,,,,,"15/Jan/26 7:26 PM;yuvraj.raghuwanshi;GWT_CAS-262300.txt;https://jira.nucleussoftware.com/secure/attachment/2251185/GWT_CAS-262300.txt","06/Mar/26 11:14 AM;ramesh.samanthula;IAD_WBS_Req_ID-9_Story_ID_CAS-262300 (2).xls;https://jira.nucleussoftware.com/secure/attachment/2292203/IAD_WBS_Req_ID-9_Story_ID_CAS-262300+%282%29.xls",,,,,,,,,,GWT Merged,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - Delayed,,,,,,16.4,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_4,,,,,,,,,,,,,,Completed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Done - Delayed,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i2wyav:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202506110026NPD,,,,,,,,,,,,,,,,,,,,16.0,,,,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,16.0,,,,,,,,,,,,,,,,"A new API is required to send back the application to previous stage.
+
+Following will be the fields which are to be sent in the request.
+|S.No.|TECHNICAL NAME|DATA TYPE|OPTIONAL/MANDATORY|DESCRIPTION|SAMPLE VALUE|
+|1.1|ApplicationNumber|String|Mandatory|This field signifies the application number of the application|APPLXXXX|
+|1.2|SendbackFromStage|String|Mandatory|This field signifies the stage from which the application will be sent back|DDE|
+|1.3|SendbackToStage|String|Mandatory|This field signifies the stage to which the application will be sent back|Lead Details|
+|1.4|ReasonForSendback|List| | | |
+|1.4.1|ReasonCode|String|Mandatory|This field signifies the reason code for send back of the application|Others|
+|1.4.2|ReasonDescription|String|Optional|This field signifies the description of the reason  of the sendback. It is mandatory if reason code is 'Others'|XYZ|
+|1.5|Remarks|String|Optional|This field signifies the remarks to be added for sending back the application|XYZ|
+
+ 
+
+Response will have following fields:
+|S.No.|TECHNICAL NAME|DATA TYPE|OPTIONAL/MANDATORY|DESCRIPTION|SAMPLE VALUE|POSSIBLE VALUES|
+|1.1|Status|String|Mandatory|This field signifies the status of the request|Error|Success, Error|
+|1.2|Error Message|String|Conditional Mandatory|This field signifies the error message| | |
+
+ 
+
+Validations required:
+ # If no valid stage found to send back the application then a validation should occur stating 'No valid stage is available to send back the application'. Let's say if user tries to send back the application from lead details.
+ # If application number is not valid then display the error message stating 'Invalid Application No.'
+ # If SendbackFrom stage is invalid then display 'Invalid SendbackFrom Stage' 
+ # If SendbackTo stage is invalid then display 'Invalid SendbackTo Stage'
+ # If invalid reasoncode is passed then display 'Invalid reason code'
+ # If reason code is passed as 'Others' and reason description is not passed then display 'Reason description is mandatory when reason code is passed as 'Others'
+ # If send back from any stage is not allowed then display 'Application cannot be sent back from XYZ stage'. Let's say operations check.
+ # If some user is already working on the application and some other user tries to send back the application from API then display an error message 'Application cannot be sent back as the application is currently in use by another user.'
+ # If the user does not have the access of product, branch and scheme of the application which is being sent back then display a validation message stating 'User does not have access to the product, branch, or scheme of the application'
+
++*Requirement 3: API Documentation*+
+ # API Documentation for the service CAS_Appl_XXX should be available at API Portal under Application Pack along with the updated description attached in the story.
+
+|CAS |Application Pack|CAS_Appl_XXX|This API is used to send back the application to a previous stage. | |Rest |Outbound|Non-Licensable| |
+ * API documentation should be made available in Catalog and seeding in license manger should be done.",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,"30/Dec/25 4:00 PM;yuvraj.raghuwanshi;CAS-263099 - Reason description length will be 100 and Remarks length will be 4000 as per UI.
+
+CAS-263095 - Operation check, Disbursal Author, Sent to Ops, Parallel stages, App update approval, Tranche Approval, committee approval, waiver initiation, waiver approval, rejected, cancelled.
+
+CAS-263098 -
+ # If any tranche is disbursed then send back will not be allowed from disbursal maker stage.
+ # If the committee approval is initiated then send back from credit approval should not be allowed.
+ # If any of the tranche is disbursed in the omni application then send back will not be allowed from any stage. For eg. If any card tranche is sent to CMS then sendback will not be allowed from post approval stage as well.
+
+CAS-264781 - Done
+
+CAS-263850 - Done;;;","16/Jan/26 12:56 PM;ramesh.samanthula;[~yuvraj.raghuwanshi] Please mention API_CODE for this API;;;","16/Jan/26 2:40 PM;yuvraj.raghuwanshi;CAS_APPL_152;;;","22/Jan/26 3:26 PM;yuvraj.raghuwanshi;[~ramesh.samanthula] Final GWT draft was attached on 15th Jan and incorporated all the changes suggested. ;;;","02/Feb/26 11:45 AM;aanchal.agarwal;[~yuvraj.raghuwanshi] Please check-in the feature file and provide the revision number. FYI [~bhoomika.widhani] ;;;","02/Feb/26 4:26 PM;yuvraj.raghuwanshi;File committed. Revision no. b57dff0459e29b395712548e641870f7860cfb51;;;","04/Feb/26 11:03 AM;ramesh.samanthula;[~yuvraj.raghuwanshi] feature file is still not merged. Please check;;;"
+Backporting GA 7.0 - Branch-based authorization on the Document Collection Release Printing Screen,CAS-261063,1078724,Story,Closed,CAS,CAS,software,Shailja.Mishra,,,Major,Fixed,prashant.nandan,yuvraj.raghuwanshi,yuvraj.raghuwanshi,12/Dec/25 12:33 PM,11/Mar/26 9:48 PM,13/Mar/26 3:08 AM,26/Dec/25 4:43 PM,,,,,0,,,As an user I want access of application through document document collection release printing screen to be restricted so that user can only access application whose branch and product rights are given to the user.,,yuvraj.raghuwanshi,,,,,,,,,,,,,CAS-265587,,,,,,,,,,,,,,,,CAS-268799,,,CAS-256312,CAS-269820,,,,,,,,,,,,,,,,,,,,,,,,"16/Feb/26 3:39 PM;prashant.nandan;CAS-261063_IAD_WBS.xlsx;https://jira.nucleussoftware.com/secure/attachment/2277230/CAS-261063_IAD_WBS.xlsx","16/Feb/26 3:58 PM;prashant.nandan;CW_CAS-261063.xlsx;https://jira.nucleussoftware.com/secure/attachment/2277284/CW_CAS-261063.xlsx","06/Jan/26 2:09 PM;prashant.nandan;DML_CAS-256312_Rev-0000.sql;https://jira.nucleussoftware.com/secure/attachment/2241594/DML_CAS-256312_Rev-0000.sql","17/Dec/25 11:54 AM;yuvraj.raghuwanshi;GWT - Document Collection Release Printing Screen.txt;https://jira.nucleussoftware.com/secure/attachment/2227847/GWT+-+Document+Collection+Release+Printing+Screen.txt","11/Mar/26 9:48 PM;gaurav.khanna;RE_ Arab Bank and HD Bank__Requirements__Backporting Approval.msg;https://jira.nucleussoftware.com/secure/attachment/2297218/RE_+Arab+Bank+and+HD+Bank__Requirements__Backporting+Approval.msg","15/Feb/26 1:22 PM;sagar.varshney;ST_CAS-261063.xlsx;https://jira.nucleussoftware.com/secure/attachment/2276516/ST_CAS-261063.xlsx","11/Feb/26 5:53 PM;prashant.nandan;UT_CAS-261063.xlsx;https://jira.nucleussoftware.com/secure/attachment/2273429/UT_CAS-261063.xlsx",,,,,"Not Applicable (POC, Backporting, Design,NoCodeChange)",,PASS-RQCT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Yes,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 7.0,,,,Done - On Time,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - On Time,,,,,,3.0,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_2,,,,,,,,,,,,,,Not Applicable,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i2w8nj:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202506110025NPD,,,,,,,,,,,,,,,,,,,,2.0,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,2.0,,,,,,,Functional,,,,,,,,,"*Current Process:*
+
+Currently, the Document Collection Release Printing Screen allows users to view, upload, delete, or replace documents irrespective of the application’s associated branch and product.
+
+Example: A user configured for Branch A can currently access and modify documents belonging to applications from Branch B.
+
+*New Process:*
+ * A new authority Document_Release_Printing_All_Access will be added to access all the applications from the Document Collection Release Printing Screen.
+ * By default, user will only be able to access the application whose product and branch access is provided to the user in the user mater.
+ * If no applicable application comes in the result, then no records found should be displayed on the screen.",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Backporting GA 7.0 - Cancel Confirm days at LOB level,CAS-261057,1078714,Story,Closed,CAS,CAS,software,Shailja.Mishra,,,Major,Fixed,prashant.nandan,yuvraj.raghuwanshi,yuvraj.raghuwanshi,12/Dec/25 12:30 PM,11/Mar/26 9:49 PM,13/Mar/26 3:08 AM,26/Dec/25 4:43 PM,,,,,0,,,As an user I want application to be auto cancel confirm days to be maintained at LOB level so that user can maintain different cancel confirm days for different LOBs.,,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-256322,CAS-268333,CAS-270132,,,,,,,,,,,,,,,,,,,,,,,"11/Mar/26 10:31 AM;narendra.tiwari;CAS-261057.xlsx;https://jira.nucleussoftware.com/secure/attachment/2296052/CAS-261057.xlsx","16/Feb/26 3:42 PM;prashant.nandan;CAS-261057_IAD_WBS.xlsx;https://jira.nucleussoftware.com/secure/attachment/2277239/CAS-261057_IAD_WBS.xlsx","16/Feb/26 3:59 PM;prashant.nandan;CW_CAS-261057.xlsx;https://jira.nucleussoftware.com/secure/attachment/2277286/CW_CAS-261057.xlsx","06/Jan/26 2:12 PM;prashant.nandan;DDL-CAS-256322-Rev-9723e37ee638e8bec6486f3376ed3a1d2fbbb9f1.sql;https://jira.nucleussoftware.com/secure/attachment/2241599/DDL-CAS-256322-Rev-9723e37ee638e8bec6486f3376ed3a1d2fbbb9f1.sql","17/Dec/25 11:53 AM;yuvraj.raghuwanshi;GWT - Cancel Confirm Days.txt;https://jira.nucleussoftware.com/secure/attachment/2227846/GWT+-+Cancel+Confirm+Days.txt","11/Mar/26 9:49 PM;gaurav.khanna;RE_ Arab Bank and HD Bank__Requirements__Backporting Approval.msg;https://jira.nucleussoftware.com/secure/attachment/2297219/RE_+Arab+Bank+and+HD+Bank__Requirements__Backporting+Approval.msg","28/Jan/26 6:11 PM;aarushi.gupta;ST_CAS-261057.xlsx;https://jira.nucleussoftware.com/secure/attachment/2260766/ST_CAS-261057.xlsx","11/Feb/26 5:56 PM;prashant.nandan;UT_CAS-261057.xlsx;https://jira.nucleussoftware.com/secure/attachment/2273448/UT_CAS-261057.xlsx",,,,"Not Applicable (POC, Backporting, Design,NoCodeChange)",,PASS-RQCT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Yes,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 7.0,,,,Done - On Time,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - On Time,,,,,,1.5,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_2,,,,,,,,,,,,,,Not Applicable,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,Testing_Completed,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i2w8lb:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202505120023NPD,,,,,,,,,,,,,,,,,,,,1.5,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,1.5,,,,,,,Functional,,,,,,,,,"*Current Process:*
+
+The system currently relies on a configuration property (config.auto.cancel.days) that applies uniformly across all LOBs to cancel confirm the application.
+
+This approach does not allow flexibility for different product types that may require distinct cancellation timelines.
+
+*New Process:*
+
+This configuration is required to be modified now at LOB level where user can enter separate cancel confirm days for different LOBs.",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Cancel Confirm days at LOB level,CAS-256322,1064771,Story,Resolved,CAS,CAS,software,Shailja.Mishra,,,Major,Fixed,prashant.nandan,yuvraj.raghuwanshi,yuvraj.raghuwanshi,30/Oct/25 12:24 PM,11/Mar/26 4:25 PM,13/Mar/26 3:08 AM,28/Nov/25 1:13 PM,,,,,0,,,As an user I want application to be auto cancel confirm days to be maintained at LOB level so that user can maintain different cancel confirm days for different LOBs.,,prashant.nandan,yuvraj.raghuwanshi,,,,,,,,,,,,CAS-263018,CAS-264303,,,,,,,,,,,,,,,,CAS-261057,,,CAS-258267,CAS-258266,,,,,,,,,,,,,,,,,,,,,,,"01/Dec/25 4:52 PM;prashant.nandan;CAS-256322_IAD_WBS (1).xlsx;https://jira.nucleussoftware.com/secure/attachment/2215284/CAS-256322_IAD_WBS+%281%29.xlsx","28/Nov/25 3:08 PM;prashant.nandan;CW_CAS-256322.xlsx;https://jira.nucleussoftware.com/secure/attachment/2214115/CW_CAS-256322.xlsx","04/Nov/25 10:55 AM;yuvraj.raghuwanshi;GWT - Cancel Confirm Days.txt;https://jira.nucleussoftware.com/secure/attachment/2194845/GWT+-+Cancel+Confirm+Days.txt","28/Jan/26 3:52 PM;harsh.tayal;ST_CAS-256322.xlsx;https://jira.nucleussoftware.com/secure/attachment/2260433/ST_CAS-256322.xlsx","01/Dec/25 4:54 PM;prashant.nandan;UT_CAS-256322.xlsx;https://jira.nucleussoftware.com/secure/attachment/2215286/UT_CAS-256322.xlsx",,,,,,,Not Applicable (Deviation Approval from Build Head),,PASS-RQCT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Done - On Time,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - On Time,,,,,,5.5,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_1,,,,,,,,,,,,,,Completed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,Testing_Completed,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i2tv87:",9223372036854775807,,,,,,,,NO,Sprint_3,,0,,,,,,,,,202505120023NPD,,,,,,,,,,,,,,,,,,,,5.5,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,3.5,,,,,,,Functional,,,,,,,,,"*Current Process:*
+
+The system currently relies on a configuration property (config.auto.cancel.days) that applies uniformly across all LOBs to cancel confirm the application.
+
+This approach does not allow flexibility for different product types that may require distinct cancellation timelines.
+
+*New Process:*
+
+This configuration is required to be modified now at LOB level where user can enter separate cancel confirm days for different LOBs.",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,"07/Nov/25 2:53 PM;yuvraj.raghuwanshi;We have discussed with LMS team, Scheduler based ATDD GWTs are available.;;;","06/Jan/26 4:13 PM;prashant.nandan;As discussed with [~amit.goyal] /[~arshpreet.singh]  sir ATTD is not applicable in case of this story.
+
+FYI: [~yuvraj.raghuwanshi] ;;;",,,,,
+Branch-based authorization on the Document Collection Release Printing Screen,CAS-256312,1064744,Story,Resolved,CAS,CAS,software,Shailja.Mishra,,,Major,Fixed,prashant.nandan,yuvraj.raghuwanshi,yuvraj.raghuwanshi,30/Oct/25 11:46 AM,05/Mar/26 3:57 PM,13/Mar/26 3:08 AM,01/Dec/25 2:39 PM,,,,,0,,,As an user I want access of application through document document collection release printing screen to be restricted so that user can only access application whose branch and product rights are given to the user.,,prashant.nandan,yuvraj.raghuwanshi,,,,,,,,,,,,CAS-262824,CAS-263380,CAS-263645,CAS-264844,CAS-264953,CAS-270651,,,,,,,,,,,,CAS-261063,,,,,,,,,,,,,,,,,,,,,,,CAS-268830,,,,"28/Nov/25 2:50 PM;prashant.nandan;CAS-256312_IAD_WBS.xlsx;https://jira.nucleussoftware.com/secure/attachment/2214072/CAS-256312_IAD_WBS.xlsx","28/Nov/25 3:08 PM;prashant.nandan;CW_CAS-256312.xlsx;https://jira.nucleussoftware.com/secure/attachment/2214114/CW_CAS-256312.xlsx","01/Dec/25 5:53 PM;yuvraj.raghuwanshi;GWT_CAS-256312.txt;https://jira.nucleussoftware.com/secure/attachment/2215448/GWT_CAS-256312.txt","01/Dec/25 2:39 PM;prashant.nandan;UT_CAS-2563212.xlsx;https://jira.nucleussoftware.com/secure/attachment/2215092/UT_CAS-2563212.xlsx",,,,,,,,ATDD Implementation Completed,,PASS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Done - On Time,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - On Time,,,,,,6.5,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_1,,,,,,,,,,,,,,Completed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i2tv27:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202506110025NPD,,,,202506110025NPD,,,,,,,,,,,,,,,,6.5,,,,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,4.5,,,,,,,Functional,,,,,,,,,"*Current Process:*
+
+Currently, the Document Collection Release Printing Screen allows users to view, upload, delete, or replace documents irrespective of the application’s associated branch and product.
+
+Example: A user configured for Branch A can currently access and modify documents belonging to applications from Branch B.
+
+*New Process:*
+ * A new authority Document_Release_Printing_All_Access will be added to access all the applications from the Document Collection Release Printing Screen.
+ * By default, user will only be able to access the application whose product and branch access is provided to the user in the user mater.
+ * If no applicable application comes in the result, then no records found should be displayed on the screen.",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,"07/Nov/25 2:43 PM;yuvraj.raghuwanshi;Download comment: 
+ # Authority to be updated for all access.
+ # If access is not given then no application will be searched
+ # Validation is not required.
+ # GWT Scenarios: All product/branch access and their combination
+
+ ;;;","05/Jan/26 6:26 PM;prashant.nandan;authority name : 
+DOCUMENT_RELEASE_PRINTING_ALL_ACCESS;;;","29/Jan/26 3:45 PM;yuvraj.raghuwanshi;LOBs: PL, HL, AL, Omni
+
+Stages: DDE, Credit approval, disbursal
+
+FYI [~prashant.nandan] ;;;",,,,
+Guarantor details capturing for Credit Card application,CAS-256008,1063826,Story,Resolved,CAS,CAS,software,Shailja.Mishra,,,Major,Fixed,prashant.nandan,komal,komal,28/Oct/25 10:32 AM,10/Mar/26 5:48 PM,10/Mar/26 4:04 PM,03/Mar/26 3:41 PM,,,,,0,code_done_gwt_pending,PQM_ATDD,"As a user, I want guarantor details to be captured for credit card application, so that loans for which primary collateral is not sufficient can be given through guarantor.",,aanchal.agarwal,arshpreet.singh,komal,prashant.nandan,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-270588,CAS-270821,,CAS-261561,CAS-261564,CAS-261565,CAS-261566,CAS-261567,CAS-261570,CAS-268818,CAS-268819,,,,,,,,,,,,,CAS-266319,CAS-271249,,,"10/Mar/26 3:11 PM;prashant.nandan;IAD_WBS_CAS-256008 (2).xlsx;https://jira.nucleussoftware.com/secure/attachment/2295309/IAD_WBS_CAS-256008+%282%29.xlsx","15/Dec/25 4:29 PM;komal;RecommendationScreen.png;https://jira.nucleussoftware.com/secure/attachment/2225977/RecommendationScreen.png","28/Oct/25 2:43 PM;komal;screenshot-1.png;https://jira.nucleussoftware.com/secure/attachment/2186580/screenshot-1.png","28/Oct/25 3:23 PM;komal;screenshot-2.png;https://jira.nucleussoftware.com/secure/attachment/2186706/screenshot-2.png","21/Jan/26 12:05 PM;komal;screenshot-3.png;https://jira.nucleussoftware.com/secure/attachment/2255059/screenshot-3.png","21/Jan/26 1:14 PM;komal;screenshot-4.png;https://jira.nucleussoftware.com/secure/attachment/2255203/screenshot-4.png","29/Jan/26 10:41 AM;prashant.nandan;screenshot-5.png;https://jira.nucleussoftware.com/secure/attachment/2260995/screenshot-5.png",,,,,Not Applicable (Story Extension of Previous Sprint Story),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,A customer applies for a secured credit card but does not have sufficient personal collateral. The bank allows a guarantor (another individual) to provide collateral on behalf of the customer to ensure end-to-end processing and visibility of this relationship.,,,,,,,,,,,,,,,,,,1.0,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - On Time,,,,,,16.0,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_4,,,,,,,,,,,23/Feb/26 12:00 AM,anand.singh1,,In Progress,,,,,,,,,,,,,,,,,,,,,"# Sourcing Details
+ # Credit Approval
+ #  ",,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,Log in to FinnOne Neo>>CAS>>Aplications>>Credit Card Application,,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,tarun.gupta,,,,,,,,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,developed,Pending,,Pending,,,9223372036854775807,"1|i2tpev:",9223372036854775807,,,,,,,,NO,,,0,,,,,,,,,202506110023,,,,,,,,,,,,,,,,,,,,16.0,,,0000,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,16.0,,,,,Review Done,,Functional,,,,,,,,,"'+*Current Process:-*+
+
+There is no provision to capture the guarantor details for credit card application.
+
++*New Process:-*+
+
+Provision to be made to capture the guarantor details for credit card application in the system. This should be application for all the request type(Add on Card, Business Credit card, {-}Card Limit Update{-}, Corporate Credit Credit, Individual business Credit card, Individual Corporate Credit Card, New Credit Card application, Prepaid Card ) available in sourcing details.
+ * Activity should be updated as per the details for any LOB in which guarantor is added on every screen as per the existing functionality.
+ * Customer communication history to be updated as per the existing functionality.
+
+1. Changes in Applicant Information page at CCDE stage
+ * Add Add-on applicant should be renamed to add another applicant
+ * When user click on this, applicant type should be enabled and 2 values(Add-on & Guarantor) should be displayed in the drop down. When Guarantor is selected, relationship field should be displayed as mandatory.
+ * Applicant type for New customer(Individual, non-individual) and existing customer should work as it is. Cascading fields corresponding should be displayed as it is.
+ * Remove button should be available to remove the applicant.
+ * Personal Information, employment details, financial details, Bank / Credit Card details & KYC details piano bars should be displayed to capture the guaranor details with all the existing fields, buttons and accordions to be displayed and saved as per the exisiting functionality.
+ * Customer swap, remove and customer refresh functionality to work as it is.
+ * -*Placeholder to be added for add-on applicant information page.*-
+
+In income details, following accordions are present for each employment type:-
+ * Agriculture: Agriculture income, crop income, agriculture, assets and liability details are present
+ * For others: Assets and liability details
+ * For Salaried: Assets and liabilities
+ * SENP: Income details, other income details,deductions, expense details, asset and liabilities
+ * SEP: Income details, other income details,deductions, expense details, asset and liability details.
+
+Also, fields are present for agriculture, salaried, others
+
+3. Changes in KYC/Video KYC
+ * Applicant type as guarantor should be present in KYC below primary applicant and add-on applicant. 
+ * Dedupe summary and KYC checklist should be same as per the existing functionality of the KYC.
+ * Video KYC can be initiated for guarantor as well.
+
+4. Changes in documents
+ * Documents related to guarantor should be available in the documents tab. All the existing functionalities should work as it is.
+ * Impact to be taken in view summary in documents tab as well for received, pending and deferred documents of guarantor. Also, in upper ribbon, guarantor name should be present as well as attached in the Screenshot. Same should be printed in the pdf & print also.
+ * In accept additional documents, when refernce type is selected as customer, then in entity type guarantor name shoule be visible & its corresponding documents should be visible in documents dropdown.
+ * In Available documents(Under Raise query), guarantor documents should be visible in the list. Also, in applicants list available in raise query, co-applicant along with the name should be visible.
+
+5. Changes in KYC (KYC check)
+ * KYC check should be applicable for guarantor as well. All other functionalities should be same as well.  Applicants, de dupe summary, kyc checklist should be visible as well. All interfaces applicable fro guarantor should be visible.
+
+6. Changes in FII, FIV, FIC
+ * FI should be initiated for guarantor as well. A separate column for gurantor should be visible. All other functionalities should work as it is. All type of verifications are applicable for guarantor as well. 
+
+7. Changes in recommendation
+ * In applicant information accordion, guarantor details should also be visible .Mock has been attached. When applicant details is clicked for guarantor, all the details should be present.
+ * In intent indicators, Field investigations, KYC check, Video KYC, Credit bureau check results should also be visible for guarantor.
+ * Exposure details should be applicable for guarantor also. All the functionalities as per the exposure details should be applicable for this also.
+
+8. Changes in credit approval
+ * All the policies and ratios which are run at backend should include guarantor details also for the result.
+ * In applicant's profile, guarantor details should also be visible. All the functionalities for this should work as it is.
+ * In CAM report, provision should be added to view guarantor details in applicant information section, employment details, financial details, Bank / Credit Card details, KYC details, verification details, document received for(include guarantor details)
+
+9. Miscellaneous Changes
+ * Activity impact to be taken.
+ * In enquiry, all the impact to be considered.
+
+10. Sent to Card management system
+ * In CMS, gurantor details should be visible in applicant information. 
+ * Eligibility policy ratios to include guranator details as in other product types. Also, in exposure details, guarantor details to be included
+
+Services Impact
+ # createApplication[CAS_Appl_01]
+ # UpdateApplication[CAS_Appl_2]
+ # createCustomer[GCD_01]
+ # updateCustomer[GCD_02]
+ # Copy application
+ # Search Application
+
+ 
+
+ ",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,"16/Dec/25 2:16 PM;arshpreet.singh;[~komal] GWT are not attached, kindly do the same.
+
+ 
+
+FYI [~amit.goyal] ;;;","16/Dec/25 5:20 PM;komal;Pre-planning comments:-
+ # Card limit type and prepaid card to be checked.- *Not to be consider*
+ # Gurantor details to be removed from GST details.- *Done*
+ # Swap, customer refresh({*}inside application){*} and remove to be confirmed.- *To be considered*
+ # Mock for CAM report to be attached - *Done*
+ # Sent to ops impact to be taken - *DOne*
+ # In card details, guarantor name should not be added in card- *Not to consider*
+ # Add on applicant detail: In this whether guarantor details to be cionsidered or not.- copy application impact to be taken for guarantor
+ # Search service impact to be considered. - *To be considered*
+ # Batch processing impact - *No impact*
+ # Pre approved card search impact- *Not to consider*;;;","16/Dec/25 6:26 PM;komal;Story Review Comments:-
+
+CAS-261561- Impact of Guarantor details in GST has been removed.
+
+CAS-261565 - Send to CMS impact added . 
+
+10. Sent to Card management system
+ * In CMS, gurantor details should be visible in applicant information. 
+ * Eligibility policy ratios to include guranator details as in other product types. Also, in exposure details, guarantor details to be included
+
+CAS-261564: Impact Added (Customer swap, remove and customer refresh functionality to work as it is.)
+
+ CAS-261570 : Impact removed for card limit update
+
+CAS-261567: Impact to be taken for search customer and no impact to be considered for pre approved card service
+
+CAS-261566: Impact on copy application to be considered(In copy application, guarantor details to be added);;;","14/Jan/26 3:42 PM;komal;# Financial details is same as income details or not.- Impact added
+ # Credit approval difference for Credit card- Card Decision tab is present in underwriter which is specific to credit card;;;","22/Jan/26 2:54 PM;komal;3 Amigos Session(22-01-2026):
+ # Pre-requisite to be defined for each combination of credit cards
+ # Logical ID to be added 
+ # Use existing steps for scenario wiriting reuse- plugins not working
+ # Translation to be done from test cases writing team or implementation team
+ # Activity to be registered for guarantor;;;","29/Jan/26 9:38 AM;prashant.nandan;[~komal] guarantor capturing is not logged in activity for all LOBs.;;;",
+Committee Decision Logic Change,CAS-247073,1032298,Story,Resolved,CAS,CAS,software,Shailja.Mishra,,,Major,Fixed,yash.sharma,gaurav.khanna,komal,29/Jul/25 3:51 PM,10/Mar/26 5:44 PM,13/Mar/26 3:06 AM,03/Mar/26 3:48 PM,,,,,0,code_done_gwt_pending,PQM_ATDD,"As a user, I want documents of account aggregator to be stored in single document code , so that all the respective documents can be found at single place only.",,aanchal.agarwal,gaurav.khanna,komal,yash.sharma,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-267360,CAS-270826,CAS-247061,CAS-263994,CAS-263995,CAS-263997,CAS-265334,CAS-267306,CAS-267341,,,,,,,,,,,,,,,CAS-266318,CAS-266404,CAS-266415,CAS-266417,"29/Jan/26 2:40 PM;yash.sharma;IAD_WBS_CAS-247073.xlsx;https://jira.nucleussoftware.com/secure/attachment/2261909/IAD_WBS_CAS-247073.xlsx",,,,,,,,,,,Not Applicable (Story Extension of Previous Sprint Story),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,New,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Regular,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - On Time,,,,,,12.0,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_4,,,,,,,,,,,,anand.singh1,,Not Applicable,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,No,,,,Low,,,,,,,,,,,,,aanchal.agarwal,,,,,,Not applicable,,,,,,CAS,LA,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,tarun.gupta,,,,,,,,,,,,,,,,,,,,,,,,,,Done - On Time,,,,,Not Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,Story Developed ,Pending,,Pending,,,9223372036854775807,"1|i2ocin:",9223372036854775807,,,,,,,,NO,,,0,,aanchal.agarwal,,,,,,,TBD,,,,,,,,,,,,,,,,,,,,12.0,,,d2bc058e2a7c3cce557830350bce3e307fa5bbc1,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,Customer Commitment,,,12.0,,,,,Review Pending,,,,,,,,,,,"'+*Current Process*+
+
+Within the system, there are currently *three types of committee approval mechanisms* configured for decision-making on applications:
+|*Committee Type*|*Description*|
+|*Minimum Approvals*|A decision is considered final if *Minimum approval is provided*|
+|*Decision Maker* |A designated *single decision maker’s* input is treated as the *final verdict* of the committee.|
+|*General Majority*|The committee verdict is finalized based on *majority votes* from all configured members.|
+
+In the Minimum Approval Committee, the verdict is finalized prematurely when minimum members provide their decision (Approve/Reject), excluding the other member from the process entirely.
+
+Additionally, when mixed decisions are provided by the members (e.g., 3 approve, 1 reject in a 5-member committee), the final verdict remains pending indefinitely, causing confusion and delays.
+
+ 
+
++*New Process:-*+
+
+The *Minimum Approval Committee logic should be enhanced* to:
+ * Minimum Approval Committee
+ ** New Rule
+ *** Final verdict is derived post minimum approval but 100% member participation shall be ensured
+ *** Verdict Logic (After All Inputs)
+
+||Scenario (5 Members)||Votes||Final Verdict||
+|4 Approve, 1 Any|Minimum Approval|*APPROVED*|
+|4 Reject, 1 Any|Minimum Rejected|*REJECTED*|
+|3 Approve, 2 Reject|Minimum Approved|*Approved*|
+|Any Split|Mixed|*As per majority view*|
+ * The system should *not finalize or block* a verdict prematurely or indefinitely.
+
+*Decision Authority*
+ * *Decision Maker’s vote still determines the committee verdict*
+
+New Participation Rule
+ * Other members *must still submit their decisions*
+ ** Their votes are:
+ *** Stored for *audit*
+ *** Visible in *committee history*
+ *** Not used for verdict calculation
+ * Committee Status Flow
+ * Committee members tasks of other members remain open
+
+h3. Majority Approval Committee
+h4. Decision Logic
+ * Majority rule *unchanged*
+ * Participation Rule (New)
+ * All members must provide inputs *even after majority is achieved*
+
+h4. Status Flow
+ * Verdict: Declared as soon as majority is mathematically reached
+ * Committee Status remains open until:
+ ** *All member decisions are captured*
+
+*It needs to be build in configurable manner so as existing implementation don't get impacted, with by default nature to be as is working*",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,"16/Jan/26 11:01 AM;aanchal.agarwal;[~gaurav.khanna] Assigning the story back to you as per [~amit.goyal] sir's mail. Final GWTs have not been provided to the team at the end of week 1 of development. FYI [~astha.rastogi];;;","21/Jan/26 6:38 PM;gaurav.khanna;Hi 
+ # CAS-263994: This has been updated in story
+ # CAS-263995: In case of termination all the tasks get terminated and committee get closed, while in case at CA if auto approval is selected on approval it gets moved to next stage;;;","27/Jan/26 2:32 PM;yash.sharma;[~gaurav.khanna] Sir Gentle Reminder: Please provide GWT of this story.
+FYI [~aanchal.agarwal] ;;;",,,,
+Backporting - GA 7.0 - FIV Transaction & API changes,CAS-246170,1028955,Story,Closed,CAS,CAS,software,Shailja.Mishra,,,Critical,Fixed,prashant.nandan,yuvraj.raghuwanshi,yuvraj.raghuwanshi,21/Jul/25 10:37 AM,11/Mar/26 9:50 PM,13/Mar/26 3:08 AM,25/Nov/25 8:47 PM,,,,,0,,,As a system user I want to have an capability where user can fetch the assigned or pool record based on the user from the API of FIV so that third party.mobile applications can see the grid data and work on the application.,,yuvraj.raghuwanshi,,,,,,,,,,,,,CAS-259831,CAS-260154,CAS-260518,CAS-265429,CAS-265445,CAS-265453,CAS-265498,CAS-265691,CAS-265707,CAS-265781,CAS-265898,CAS-266668,CAS-266697,CAS-266724,CAS-266727,CAS-266941,CAS-260132,,,CAS-203304,CAS-258265,,,,,,,,,,,,,,,,,,,,CAS-203295,,,,"21/Jul/25 10:37 AM;yuvraj.raghuwanshi;CAS_APPL_43.xlsx;https://jira.nucleussoftware.com/secure/attachment/2089159/CAS_APPL_43.xlsx","11/Mar/26 6:04 PM;prashant.nandan;CW_CAS-246170.xlsx;https://jira.nucleussoftware.com/secure/attachment/2297067/CW_CAS-246170.xlsx","21/Jul/25 10:37 AM;yuvraj.raghuwanshi;GWT -FIV API Changes.xlsx;https://jira.nucleussoftware.com/secure/attachment/2089160/GWT+-FIV+API+Changes.xlsx","21/Jul/25 10:37 AM;yuvraj.raghuwanshi;GWTFIVAPIChanges.feature;https://jira.nucleussoftware.com/secure/attachment/2089161/GWTFIVAPIChanges.feature","28/Nov/25 3:14 PM;prashant.nandan;IAD_WBS_CAS-246170.xls;https://jira.nucleussoftware.com/secure/attachment/2214119/IAD_WBS_CAS-246170.xls","11/Mar/26 9:50 PM;gaurav.khanna;RE_ Arab Bank and HD Bank__Requirements__Backporting Approval.msg;https://jira.nucleussoftware.com/secure/attachment/2297222/RE_+Arab+Bank+and+HD+Bank__Requirements__Backporting+Approval.msg","21/Jul/25 10:37 AM;yuvraj.raghuwanshi;UD_2 Way Communication_FinnOne Neo CAS_V_4.0.doc;https://jira.nucleussoftware.com/secure/attachment/2089165/UD_2+Way+Communication_FinnOne+Neo+CAS_V_4.0.doc","25/Nov/25 8:49 PM;prashant.nandan;UT_CAS-246170-1.xlsx;https://jira.nucleussoftware.com/secure/attachment/2212122/UT_CAS-246170-1.xlsx",,,,"Not Applicable (POC, Backporting, Design,NoCodeChange)",,PASS,# As per GWT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Yes,,,,,No,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Regular,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,HIgh,,HD Bank,,,,HD BANK,,,,,,,,,,,,,,,,,NA,Yes,,,,Select,,,,,GA 7.0,,,,Done - On Time,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Done - On Time,,,,,,13.0,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,NOT DONE,,,,,,,Sprint_1,,,,,,,,,,,,,,Not Applicable,,,,,,,,,,,,,,,,,,,,,NA,,,,,,,,,,Editable,,,,,,,,,,,,,,,,,Low,,,,,,,,,,,,NA,,,,,,,,,,,,,CAS,LA,,,,,,,,"# Sonar to be tested for the code for each.
+ # API to be seeded along with their documentation.
+ # API must be REST based.
+ # Sample Request and Response must be attached in the document",,,,,,,,,,,,,,,,,,,,,,,,,,,,,Binnie.Sharma,,,,,,,,,,,,,,,,,,,,,,,,,GA-7.0,Done - On Time,,,,,Done,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,NA (Story),Pending,,Pending,,,9223372036854775807,"1|i2ns0n:",9223372036854775807,,,,,,,,,,,0,,,,,,,,,202501100003NPD,,,,,,,,,,,,,,,,,,,,13.0,0.0,,0000,,,,,,,,,,,,,,,,Done - On Time,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,1.0,,,,,,,,,Customer Commitment,,,13.0,,,,,Review Pending,,Functional,,,,,,,,,"*+Backporting of below two stories:+*
+ # CAS-203295
+ # CAS-203304 ",,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,NA,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,"07/Nov/25 2:37 PM;yuvraj.raghuwanshi;Approx code cut off date : 28 November;;;",,,,,,
+"Multiple Credit Card processing in Omni Loan | Req type - Business and Corporate credit card ",CAS-225545,959487,Story,In Progress,CAS,CAS,software,Shailja.Mishra,,,Major,,arshpreet.singh,yuvraj.raghuwanshi,yuvraj.raghuwanshi,13/Jan/25 9:36 AM,12/Mar/26 2:40 PM,17/Feb/26 7:05 PM,,,,,,0,,,"As a system user, I want that I should be able to attach one or more secured credit card or unsecured credit card for the same primary customer. so, that I should be able to add the same in the omni loan package and process them together so, that the processing time could be saved.",,arshpreet.singh,yuvraj.raghuwanshi,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS-270809,,CAS-219294,CAS-227664,CAS-270752,CAS-270753,CAS-270754,CAS-270805,CAS-270835,CAS-271259,CAS-271261,CAS-271266,CAS-271268,CAS-271270,CAS-271274,CAS-271289,CAS-271378,CAS-271546,CAS-271547,CAS-271548,CAS-271549,CAS-271550,CAS-271551,CAS-254234,,,,"12/Mar/26 12:35 PM;arshpreet.singh;WBS_CAS-225545.xlsx;https://jira.nucleussoftware.com/secure/attachment/2297662/WBS_CAS-225545.xlsx","27/Oct/25 4:52 PM;yuvraj.raghuwanshi;screenshot-1.png;https://jira.nucleussoftware.com/secure/attachment/2184716/screenshot-1.png","06/Feb/26 11:38 AM;yuvraj.raghuwanshi;screenshot-2.png;https://jira.nucleussoftware.com/secure/attachment/2269392/screenshot-2.png","06/Feb/26 11:42 AM;yuvraj.raghuwanshi;screenshot-3.png;https://jira.nucleussoftware.com/secure/attachment/2269393/screenshot-3.png","03/Mar/26 11:05 AM;yuvraj.raghuwanshi;screenshot-4.png;https://jira.nucleussoftware.com/secure/attachment/2290229/screenshot-4.png","03/Mar/26 11:06 AM;yuvraj.raghuwanshi;screenshot-5.png;https://jira.nucleussoftware.com/secure/attachment/2290230/screenshot-5.png","03/Mar/26 11:08 AM;yuvraj.raghuwanshi;screenshot-6.png;https://jira.nucleussoftware.com/secure/attachment/2290251/screenshot-6.png","03/Mar/26 11:09 AM;yuvraj.raghuwanshi;screenshot-7.png;https://jira.nucleussoftware.com/secure/attachment/2290254/screenshot-7.png","03/Mar/26 11:10 AM;yuvraj.raghuwanshi;screenshot-8.png;https://jira.nucleussoftware.com/secure/attachment/2290255/screenshot-8.png","03/Mar/26 11:18 AM;yuvraj.raghuwanshi;screenshot-9.png;https://jira.nucleussoftware.com/secure/attachment/2290287/screenshot-9.png",,Planned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No,,,,,No,,,,,,,,,,,,,,,,,,,"*{color:#172b4d}+OMNI PRODUCT POLICY MATSER:+{color}*
+ * Currently only individual type products are filtered in loan product autocomplete field. Now, non-individual credit cards (Business and corporate) can also be added in the omni product policy master.
+ * Filtration of business/corporate credit cards on transaction will be as per the master maintenance as working for individual credit cards.
+
+ 
+
+*{color:#172b4d}+LEAD DETAILS: LOAN DETAILS: SOURCING DETAILS+{color}*
+ * {color:#172b4d}Multiple Business/Corporate cards of same primary customer with different card types can be added in the Omni-loan application.{color}
+ * {color:#172b4d}When user selects the product type as credit card then application type will change to request type and values will be new credit card application, Business credit cards and corporate credit cards. {color}
+ * {color:#172b4d}When user selects the request type only then the add/view card details hyperlink will be visible.{color}
+ * When request type - new credit card application will be selected then there will be no change in the hyperlink except request type will be outside the hyperlink and product field will come in place of request type. 
+ * Requested amount field outside the modal window will be freezed in case of business/corporate credit cards. Requested amount at sourcing will show summation of the requested amount of all the products added in the business/corporate cards.
+ * When request type - business/corporate credit card will be selected and user clicks on the add/view credit card details hyperlink then header name will change to 'commercial card details' and multiple credit cards can be added as given in the screenshot (Refer screenshot 1).
+ * Calculation of total card limit requested field will remain as is and will consider the card limit of corporate/business card as well.
+ * Application purpose and application description field will be brought at sub loan level on sourcing and will be removed from omni level.
+ * At sourcing now user should be able to take multiple sub loans with same product type, product and scheme. However, the combination of product type, product, scheme and loan purpose should be unique. Validation is required to handle the same 'Sub-loan with the same Product Type, Product, Scheme, and Loan Purpose already exists.'
+ * In Omni product details accordion of sourcing details, Application type header will be changed to Application/Request Type.
+ * Request type filteration will be done as per applicant type. If individual applicant is added the in request type only new credit card application will be displayed. If non individual applicant is added then in request type only Business and corporate credit card will be displayed.
+ * Scheme will be hidden in case of credit card.
+
+ *+LEAD DETAILS: LOAN DETAILS: CARD DETAILS+*
+ * Request type for business/corporate card in card details will be as per the request type selected at sourcing.
+ * Add on cards and companion cards are not supported for business/corporate cards.
+ * Sorting is required in every column of card details grid.
+ * Currency of requested limit in card details will be as per mapping in product. Also, add on card currency will be same as of primary card and will be non-editable.
+
+*+DDE : COLLATERAL DETAILS+*
+ * The system should allow the user to take the relevant collateral for the Secured Credit Card tranches. Collateral for credit cards should adhere all the details mentioned in this story CAS-219307
+ * Collateral investigation stages are required to be seeded in product for credit cards and details should be visible on recommendation, credit approval and reconsideration stages like other LOBs.
+
+{color:#172b4d}*+RECOMMENDATION+*{color}
+ * Business/corporate credit cards will also be visible under product type decision list and the behaviour will be same as is working currently for other credit cards.
+ * In credit cards section, Request type column will be added after the tranche ID column.
+ * Max cards issued field to be added for business/corporate card. For new credit card application field will remain freezed.
+
+*{color:#172b4d}+CREDIT APPROVAL : PRODUCT TYPE DECISION LIST+{color}*
+ * Business/corporate credit cards will also be visible under product type decision list and the behaviour will be same as is working currently for other credit cards.
+ * In credit cards section, Request type column will be added after the tranche ID column.
+ * In credit card application only parent product's policies are calculated and shown on UI and same behavior will be present for OMNI application too.
+
+*{color:#172b4d}+CAM REPORT:+{color}*
+ * In CAM report under Credit card details, separate blocks of each cards of business/corporate card will be added.
+
+*{color:#172b4d}+RECONSIDERATION:+{color}*
+ * Behavior will be same as individual cards.
+
+*{color:#172b4d}+OPERATIONS CHECK:+{color}*
+ * Behavior will be same as individual cards.
+
++{color:#172b4d}*SEND TO CARD MANAGEMENT SYSTEM:*{color}+
+ *  Recommendation page of Omni loan should be visible. {+}**{+}{*}{*}
+
++{color:#172b4d}*APPLICATION CREATE:*{color}+
+ * {color:#172b4d}A separate block will be added in sourcing details of application create service where list of cards can be added for business/corporate credit cards.{color}
+
+ ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Regular,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,No Impact,,Not Started,,,,,,,HD Bank,,,,HD BANK,,,,,,,,,,,,,,,,,,Yes,,,,Select,,,,,GA 9.0,,,,Not Done,,,,,,,,No,Global Conventional,Product,,,,,,,,,,Not Done,,,,,,41.0,,CAS-246176,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Sprint_5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Editable,,,,,,,,,,,,,,,,,Low,,,,,,,,,,,,,,,,,,,,,,,,,CAS,LA,,,,,,,,Note : The impacted areas as analysed by PSG are as mentioned in the Story. Engineering to check and confirm regarding any other areas which have been missed here in the Playback so. that the same can be accounted for.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,gunjan.tomar,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Done,,,,Not a Bug,,,,,,,,,,,,,,,,,,,,Pending,,Pending,,,9223372036854775807,"1|i2by27:",9223372036854775807,,,,,,,,,,,0,,,,,,,,,TBD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Not Done,,,,,,,,,,,,,,,,,,,,,,,,IPMG,,,,,,,,,,,,,,,,18.0,No,,,,,,Functional,,,,,,,,,"'+Current Functionality+ 
+
+Currently, in the system the user can not add business and corporate credit cards (both unsecured and secured) in the omni loan package.
+
++Required Functionality+
+
+The user should be able to add multiple business and corporate credit cards (both secured and unsecured) in the omni-loan application when the user applies for an omni loan under the Omni Loan Product consisting of the same.",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CAS,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,No Impact,,,,,9.0,,,,,,,,,,,,,,,,,,,,,,,,"10/Mar/26 3:48 PM;arshpreet.singh;[~yuvraj.raghuwanshi] : Please revert on below points as well
+1. Impact on policies : in credit card application only parent product's policies are calculated and shown on UI and same behavior will be present for OMNI application too.
+2. Application create update service impact
+3. Impact on omni product master as well, currently only individual type are present in loan product autocomplete
+
+4. Impact of defaulting on primary product marking on basis of omni product master
+5. Impact of filtration logic in table for commercial/business credit card on basis of omni product master;;;","10/Mar/26 4:10 PM;yuvraj.raghuwanshi;# CAS-270753 - Story breakdown is not required.
+ # CAS-271259 - Scheme will be hidden in case of credit card
+ # CAS-271261 - Application purpose description field will also be removed from omni level and will be brought to sub loan level along with application purpose field.
+ # CAS-271266 - Requested amount field will be disabled and will also be added inside the modal window.
+ # CAS-271268 - Max cards issued field to be added for business/corporate card. For new credit card application field will remain freezed.
+ # CAS-271270 - In CAM report under Credit card details, separate blocks of each cards of business/corporate card will be added.
+ # CAS-271274 - Requested amount at sourcing will show summation of the requested amount of all the products added in the business/corporate cards.
+ # CAS-271289 - Omni islamic is out of scope
+ # CAS-270752 - Request type filteration will be done as per applicant type. If individual applicant is added the in request type only new credit card application will be displayed. If non individual applicant is added then in request type only Business and corporate credit card will be displayed.
+ # CAS-270754 -  Already added
+ # CAS-270805 - Done
+ # CAS-270835 - Request type field is needed at sourcing, recommendation and credit approval;;;",,,,,

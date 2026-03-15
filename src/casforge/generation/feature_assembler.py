@@ -12,10 +12,11 @@ import logging
 import re
 from typing import Any, Optional
 
+from casforge.generation.heuristic_config import load_assembler_hints, load_domain_knowledge
 from casforge.storage.connection import get_conn, get_cursor
 from casforge.parsing.jira_parser import JiraStory
 from casforge.retrieval.retrieval import search
-from casforge.shared.paths import TEMPLATES_DIR
+from casforge.shared.paths import TEMPLATES_DIR, PROMPTS_DIR
 from casforge.workflow.ordering import detect_stage, detect_sub_tags
 from casforge.generation.intent_extractor import coerce_intents, normalise_story_scope_defaults
 from casforge.generation.scenario_planner import build_scenario_plan_items, public_intent_records
@@ -24,13 +25,16 @@ _log = logging.getLogger(__name__)
 
 _ORDERED_TEMPLATE = TEMPLATES_DIR / "ordered.feature"
 _UNORDERED_TEMPLATE = TEMPLATES_DIR / "unordered.feature"
+_GENERATE_SCENARIO_PROMPT = PROMPTS_DIR / "generate_scenario.txt"
 
 _STEP_LINE = re.compile(r"^(\s*)(Given|When|Then|And|But)\s+(.*\S)\s*$")
 _PLACEHOLDER_RE = re.compile(r"<([^>]+)>")
 _ACTION_KEYWORDS = {"When", "And", "But"}
 _MAX_SETUP_STEPS = 6
-_MAX_ACTION_CONT = 3
-_MAX_ANCHOR_VARIANTS = 1
+_MAX_ACTION_CONT = 1
+_MAX_ANCHOR_VARIANTS = 3
+_ENABLE_POST_RENDER_STEP_REPLACEMENT = False
+_ALLOW_WEAK_FALLBACK_SCENARIOS = False
 
 _INTENT_STOPWORDS = {
     "user", "users", "system", "screen", "page", "field", "fields",
@@ -87,18 +91,6 @@ _SECTION_KEY_ORDER = {
     "core_flow": 10,
 }
 
-_LOB_SCOPE_ALIASES: dict[str, tuple[str, ...]] = {
-    "OMNI": ("omni loan", "omni"),
-    "HL": ("home loan",),
-    "PL": ("personal loan",),
-    "LAP": ("loan against property", "lap"),
-    "MHL": ("micro home loan", "mhl"),
-    "CV": ("commercial vehicle", "consumer vehicle", "cv"),
-    "EDU": ("education loan", "education", "edu"),
-    "PF": ("personal finance", "pf"),
-    "BL": ("business loan", "bl"),
-}
-
 _EXPECTED_OUTCOME_TERMS: dict[str, set[str]] = {
     "validation_error": {"validation", "error", "message", "mandatory", "popup"},
     "disabled": {"disabled", "disable", "readonly", "read", "only", "isenabled"},
@@ -121,11 +113,36 @@ _STRICT_ASSERTION_OUTCOMES = {
     "state_change",
 }
 
-_SPECIFICITY_CONFLICTS: tuple[tuple[tuple[str, ...], tuple[str, ...]], ...] = (
-    (("credit card", "primary card", "add on card", "addon card"), ("credit card", "card", "primary card", "add on card", "addon card")),
-    (("sub loan", "subloan"), ("sub loan", "subloan")),
-    (("checkbox",), ("checkbox", "check box", "checked")),
-)
+def _domain_knowledge() -> dict[str, Any]:
+    return load_domain_knowledge()
+
+
+def _assembler_hints() -> dict[str, Any]:
+    return load_assembler_hints()
+
+
+def _lob_scope_aliases() -> dict[str, tuple[str, ...]]:
+    return _domain_knowledge().get("lob_aliases", {})
+
+
+def _specificity_conflicts() -> tuple[dict[str, Any], ...]:
+    return tuple(_assembler_hints().get("specificity_conflicts", ()))
+
+
+def _family_terms() -> dict[str, set[str]]:
+    return _assembler_hints().get("family_terms", {})
+
+
+def _section_terms() -> dict[str, set[str]]:
+    return _assembler_hints().get("section_terms", {})
+
+
+def _matrix_terms() -> dict[str, set[str]]:
+    return _assembler_hints().get("matrix_terms", {})
+
+
+def _path_domain_stopwords() -> set[str]:
+    return set(_assembler_hints().get("path_domain_stopwords", set()))
 
 @dataclass
 class ScenarioPlan:
@@ -181,6 +198,7 @@ def assemble_feature_result(
     intents: list[Any],
     flow_type: str,
     story_scope_defaults: Optional[dict[str, Any]] = None,
+    enable_llm_fallback: bool = True,
 ) -> AssemblyResult:
     if flow_type not in {"ordered", "unordered"}:
         raise ValueError("flow_type must be 'ordered' or 'unordered'")
@@ -225,6 +243,7 @@ def assemble_feature_result(
 
     plans, scenario_debug, coverage_gaps, omitted_plan_items = _plan_scenarios(
         intents=internal_intents,
+        story=story if enable_llm_fallback else None,
         flow_type=flow_type,
         detected_stage=detected_stage,
         detected_sub_tags=detected_sub_tags,
@@ -273,8 +292,146 @@ def _load_template(flow_type: str) -> str:
         return f.read()
 
 
+def _parse_llm_scenario_steps(raw: str) -> tuple[list[str], list[str], list[str]]:
+    """Parse LLM output into (given_steps, when_steps, then_steps)."""
+    given: list[str] = []
+    when: list[str] = []
+    then: list[str] = []
+    current = None
+    kw_re = re.compile(r"^(Given|When|Then|And|But)\s+(.+)$", re.IGNORECASE)
+    for line in raw.splitlines():
+        line = line.strip()
+        m = kw_re.match(line)
+        if not m:
+            continue
+        kw = m.group(1).capitalize()
+        text = m.group(2).strip()
+        if not text:
+            continue
+        if kw == "Given":
+            current = "given"
+            given.append(text)
+        elif kw == "When":
+            current = "when"
+            when.append(text)
+        elif kw == "Then":
+            current = "then"
+            then.append(text)
+        elif kw in ("And", "But"):
+            if current == "given":
+                given.append(text)
+            elif current == "when":
+                when.append(text)
+            elif current == "then":
+                then.append(text)
+    return given, when, then
+
+
+def _generate_llm_scenario(
+    intent: dict[str, Any],
+    story: JiraStory,
+    family: str,
+    section_key: str,
+    section: str,
+    flow_type: str,
+    effective_scope: dict[str, Any],
+    detected_stage: Optional[str],
+    detected_sub_tags: list[str],
+    ordinal: int,
+    rejected_candidate_counts: Optional[dict[str, int]] = None,
+) -> Optional[ScenarioPlan]:
+    """DOOMSDAY fallback: LLM writes GWT steps directly when FAISS retrieval fails."""
+    from casforge.generation import llm_client
+
+    if story is None:
+        return None
+
+    if not _GENERATE_SCENARIO_PROMPT.is_file():
+        _log.warning("generate_scenario.txt prompt not found — LLM fallback unavailable")
+        return None
+
+    try:
+        raw_prompt = _GENERATE_SCENARIO_PROMPT.read_text(encoding="utf-8")
+        parts = raw_prompt.split("\nUSER:\n", 1)
+        if len(parts) != 2:
+            return None
+        system_prompt = parts[0].replace("SYSTEM:\n", "", 1).strip()
+        user_template = parts[1]
+
+        text = str(intent.get("text", "")).strip()
+        new_process = (story.new_process or "")[:500]
+        user_prompt = user_template.format(
+            key=story.issue_key,
+            summary=(story.summary or "")[:200],
+            new_process=new_process if new_process else "Not specified.",
+            intent_text=text,
+            family=family,
+        )
+
+        raw = llm_client.chat(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            max_tokens=512,
+            temperature=0.15,
+        )
+
+        given, when, then_steps = _parse_llm_scenario_steps(raw)
+
+        if not when or not then_steps:
+            _log.warning("LLM scenario for '%s' had no When/Then steps — skipping", text)
+            return None
+
+        # Ensure canonical CAS login setup steps are present
+        _login_given = 'user logged in CAS with valid username and password present in "LoginDetailsCAS.xlsx" under "LoginData" and 0'
+        if not given:
+            given = ["user is on CAS Login Page", _login_given]
+        elif not any("logged in" in s.lower() for s in given):
+            given = ["user is on CAS Login Page", _login_given] + [s for s in given if "login page" not in s.lower()]
+
+        then_step = then_steps[0]
+        then_and = then_steps[1] if len(then_steps) > 1 else None
+
+        tags = _build_plan_tags(
+            anchor={},
+            detected_stage=detected_stage,
+            detected_sub_tags=detected_sub_tags,
+            effective_scope=effective_scope,
+        )
+
+        all_steps = given + when + [then_step] + ([then_and] if then_and else [])
+
+        return ScenarioPlan(
+            intent_id=str(intent.get("id", f"intent_{ordinal:03d}")),
+            intent=text,
+            family=family,
+            section_key=section_key,
+            section=section,
+            title=text[:100],
+            given_steps=given,
+            when_steps=when,
+            then_step=then_step,
+            then_and_step=then_and,
+            placeholders=_extract_placeholders(all_steps),
+            tags=tags,
+            effective_scope=effective_scope,
+            unresolved_assertion=True,
+            confidence=0.72,
+            anchor_file=None,
+            anchor_title=None,
+            assertion_source="llm_generated",
+            rejected_candidate_counts=dict(rejected_candidate_counts or {}),
+            debug={"source": "llm_fallback"},
+        )
+
+    except Exception as exc:
+        _log.warning("LLM scenario generation failed for intent '%s': %s", intent.get("text", ""), exc)
+        return None
+
+
 def _plan_scenarios(
     intents: list[dict[str, Any]],
+    story: Optional[JiraStory] = None,
+    *,
     flow_type: str,
     detected_stage: Optional[str],
     detected_sub_tags: list[str],
@@ -306,21 +463,22 @@ def _plan_scenarios(
         quality["scope_relaxations"] += relaxed
 
         if not anchors:
-            scaffold = _build_scaffold_plan_from_related_hits(
+            llm_plan = _generate_llm_scenario(
                 intent=intent,
-                flow_type=flow_type,
+                story=story,
                 family=family,
                 section_key=section_key,
                 section=section,
+                flow_type=flow_type,
                 effective_scope=scope,
                 detected_stage=detected_stage,
                 detected_sub_tags=detected_sub_tags,
                 ordinal=ordinal,
                 rejected_candidate_counts=rejected_counts,
             )
-            if scaffold and _plan_confident_enough(scaffold):
-                plans.append(scaffold)
-                scenario_debug.append(_scenario_debug_entry(scaffold))
+            if llm_plan:
+                plans.append(llm_plan)
+                scenario_debug.append(_scenario_debug_entry(llm_plan))
                 continue
             coverage_gap = {
                 "intent_id": intent.get("id") or f"intent_{ordinal:03d}",
@@ -372,8 +530,9 @@ def _plan_scenarios(
             scenario_debug.append(_scenario_debug_entry(plan))
 
         if not accepted:
-            fallback = _build_fallback_plan(
+            llm_plan = _generate_llm_scenario(
                 intent=intent,
+                story=story,
                 family=family,
                 section_key=section_key,
                 section=section,
@@ -384,20 +543,20 @@ def _plan_scenarios(
                 ordinal=ordinal,
                 rejected_candidate_counts=rejected_counts,
             )
-            if fallback and _plan_confident_enough(fallback):
-                plans.append(fallback)
-                scenario_debug.append(_scenario_debug_entry(fallback))
-            else:
-                coverage_gap = {
-                    "intent_id": intent.get("id") or f"intent_{ordinal:03d}",
-                    "intent": text,
-                    "family": family,
-                    "reason": "omitted_after_confidence_gate",
-                    "rejected_candidate_counts": rejected_counts,
-                }
-                coverage_gaps.append(coverage_gap)
-                omitted_plan_items.append(coverage_gap)
-                scenario_debug.append(coverage_gap)
+            if llm_plan:
+                plans.append(llm_plan)
+                scenario_debug.append(_scenario_debug_entry(llm_plan))
+                continue
+            coverage_gap = {
+                "intent_id": intent.get("id") or f"intent_{ordinal:03d}",
+                "intent": text,
+                "family": family,
+                "reason": "omitted_after_confidence_gate",
+                "rejected_candidate_counts": rejected_counts,
+            }
+            coverage_gaps.append(coverage_gap)
+            omitted_plan_items.append(coverage_gap)
+            scenario_debug.append(coverage_gap)
 
     return _dedupe_plans(plans), scenario_debug, coverage_gaps, omitted_plan_items
 
@@ -737,7 +896,7 @@ def _scope_lob_aliases(values: list[str]) -> set[str]:
         upper = text.upper()
         out.add(_norm_token(text))
         out.add(_norm_token(upper))
-        for phrase in _LOB_SCOPE_ALIASES.get(upper, (text,)):
+        for phrase in _lob_scope_aliases().get(upper, (text,)):
             out.add(_norm_token(phrase))
     return {x for x in out if x}
 
@@ -749,7 +908,7 @@ def _hit_lob_aliases(hit: dict[str, Any]) -> set[str]:
         out.add(_norm_token(str(value).upper()))
     blob = _scenario_context_blob(hit)
     file_path = str(hit.get("file_path", "")).lower()
-    for canonical, phrases in _LOB_SCOPE_ALIASES.items():
+    for canonical, phrases in _lob_scope_aliases().items():
         if any((phrase in blob) or (phrase in file_path) for phrase in phrases):
             out.add(_norm_token(canonical))
             for phrase in phrases:
@@ -805,7 +964,11 @@ def _scenario_domain_ok(hit: dict[str, Any], context: dict[str, Any]) -> bool:
             str(hit.get("scenario_title", "")),
             str(hit.get("screen_context", "")),
         ]))
-        if context_domain_terms and candidate_domain_terms and not (context_domain_terms & candidate_domain_terms):
+        if (
+            len(context_domain_terms) >= 2
+            and len(candidate_domain_terms) >= 2
+            and not (context_domain_terms & candidate_domain_terms)
+        ):
             return False
 
     scenario_overlap = max(
@@ -907,37 +1070,31 @@ def _family_matches_context(hit: dict[str, Any], context: dict[str, Any]) -> boo
     section_key = str(context.get("section_key", "")).strip().lower()
     blob = _context_blob_for_candidate(hit)
     tokens = _tokenize(blob)
+    section_terms = _section_terms().get(section_key, set())
+    family_terms = _family_terms().get(family, set())
     if section_key == "ui_structure":
-        return bool(tokens & {"display", "visible", "show", "column", "availability", "grid", "screen"})
+        return bool(tokens & section_terms)
     if section_key == "checkbox_state":
         outcome = str(context.get("expected_outcome", "")).strip().lower()
         if outcome == "checked":
-            return bool(tokens & {"checked", "default", "selected", "auto", "populated"})
+            return bool(tokens & (section_terms | {"auto", "populated"}))
         if outcome == "enabled":
-            return bool(tokens & {"checkbox"}) and bool(tokens & {"enabled", "editable", "selected"})
+            return bool(tokens & {"checkbox"}) and bool(tokens & (section_terms | {"editable"}))
         if outcome == "disabled":
-            return bool(tokens & {"checkbox"}) and bool(tokens & {"disabled", "unchecked"})
-        return bool(tokens & {"checkbox"}) and bool(tokens & {"display", "visible", "show", "column", "availability", "checked", "enabled"})
+            return bool(tokens & {"checkbox"}) and bool(tokens & (section_terms | {"unchecked"}))
+        return bool(tokens & {"checkbox"}) and bool(tokens & section_terms)
     if section_key == "field_enablement":
-        return bool(tokens & {"enabled", "disabled", "editable", "readonly", "field", "limit", "amount"})
+        return bool(tokens & section_terms)
     if section_key == "decision_logic":
-        return bool(tokens & {"decision", "dropdown", "verdict", "recommended", "approved", "rejected"})
+        return bool(tokens & section_terms)
     if section_key == "state_movement":
-        return bool(tokens & {"move", "stage", "next", "credit", "recommendation", "approval", "reconsideration"})
+        return bool(tokens & section_terms)
     if section_key == "persistence":
-        return bool(tokens & {"save", "saved", "retain", "retained", "persist", "reopen"})
+        return bool(tokens & section_terms)
     if section_key == "data_combination":
-        return bool(tokens & {"any", "all", "none", "mixed", "combination"})
-    if family == "validation":
-        return bool(tokens & {"validation", "mandatory", "required", "error", "invalid", "zero", "reject"})
-    if family == "dependency":
-        return bool(tokens & {"based", "same", "derived", "enable", "disable", "selected", "decision"})
-    if family == "state_movement":
-        return bool(tokens & {"move", "stage", "next", "credit", "recommendation", "approval"})
-    if family == "persistence":
-        return bool(tokens & {"save", "saved", "retain", "retained", "persist", "reopen"})
-    if family == "negative":
-        return bool(tokens & {"error", "reject", "invalid", "prevent", "disabled"})
+        return bool(tokens & section_terms)
+    if family_terms:
+        return bool(tokens & family_terms)
     return True
 
 
@@ -972,19 +1129,7 @@ def _section_alignment_bonus(hit: dict[str, Any], context: dict[str, Any]) -> fl
     if not section_key:
         return 0.0
     blob = _context_blob_for_candidate(hit)
-    terms_by_section = {
-        "ui_structure": {"display", "visible", "show", "column", "availability", "grid", "screen"},
-        "checkbox_state": {"checkbox", "checked", "unchecked", "default", "selected", "enabled", "disabled"},
-        "dependency": {"derived", "based", "depends", "same", "selected", "if", "any", "all"},
-        "field_enablement": {"enabled", "disabled", "editable", "readonly", "field", "limit", "amount"},
-        "decision_logic": {"decision", "dropdown", "verdict", "recommended", "approved", "rejected"},
-        "validation": {"validation", "error", "invalid", "mandatory", "required", "zero"},
-        "state_movement": {"move", "stage", "next", "approval", "rejected", "credit"},
-        "persistence": {"save", "saved", "retain", "retained", "persist", "reopen"},
-        "data_combination": {"any", "all", "none", "mixed", "combination"},
-        "edge": {"zero", "blank", "duplicate", "none"},
-    }
-    terms = terms_by_section.get(section_key, set())
+    terms = _section_terms().get(section_key, set())
     if not terms:
         return 0.0
     return 0.14 if (_tokenize(blob) & terms) else 0.0
@@ -995,21 +1140,14 @@ def _matrix_alignment_bonus(hit: dict[str, Any], context: dict[str, Any]) -> flo
     if not matrix_signature or matrix_signature == "base":
         return 0.0
     blob = _context_blob_for_candidate(hit)
+    blob_tokens = _tokenize(blob)
     score = 0.0
-    if "any" in matrix_signature and (_tokenize(blob) & {"any", "least", "one"}):
-        score += 0.06
-    if "all" in matrix_signature and "all" in _tokenize(blob):
-        score += 0.06
-    if "none" in matrix_signature and (_tokenize(blob) & {"none", "unchecked", "not"}):
-        score += 0.06
-    if "mixed" in matrix_signature and (_tokenize(blob) & {"mixed", "combination", "split"}):
-        score += 0.06
-    if "dependent_card" in matrix_signature and (_tokenize(blob) & {"primary", "addon", "card"}):
-        score += 0.10
-    if "credit_card" in matrix_signature and (_tokenize(blob) & {"credit", "card", "primary", "addon"}):
-        score += 0.08
-    if "subloan" in matrix_signature and (_tokenize(blob) & {"sub", "loan", "product", "products"}):
-        score += 0.08
+    for label in (matrix_signature or "").split("+"):
+        if not label or label == "base":
+            continue
+        terms = _matrix_terms().get(label, set())
+        if terms and (blob_tokens & terms):
+            score += 0.06
     return score
 
 
@@ -1350,7 +1488,7 @@ def _build_plan_tags(anchor: dict[str, Any], detected_stage: Optional[str], dete
     return out
 
 def _plan_confident_enough(plan: ScenarioPlan) -> bool:
-    threshold = 0.58 if not plan.unresolved_assertion else 0.64
+    threshold = 0.68 if not plan.unresolved_assertion else 0.74
     if plan.assertion_source == "fallback":
         threshold += 0.02
     if plan.assertion_source == "fallback" and float(plan.debug.get("anchor_score", 0.0) or 0.0) <= 0.05:
@@ -1523,11 +1661,31 @@ def _retrieve_assertions(intent: dict[str, Any], anchor: dict, effective_scope: 
         scope_hint = f" at {detected_stage.lstrip('@').lower()} stage"
 
     query_parts = [context.get("search_text", ""), context.get("expected_outcome", ""), anchor_text]
+    query_base = " ".join(part for part in query_parts if part)
+    # Include target_field and entity explicitly to improve Then-step retrieval precision.
+    for extra in (str(context.get("target_field", "") or ""), str(context.get("entity", "") or "")):
+        extra = extra.strip()
+        if extra and _meaningful_overlap(extra, query_base) < 0.40:
+            query_parts.append(extra)
     query = " ".join(part for part in query_parts if part).strip() + scope_hint
     screen_filter = str(anchor.get("screen_context", "") or "").strip() or None
 
-    then_hits = search(query=query.strip(), top_k=8, screen_filter=screen_filter, keyword_filter="Then")
+    then_hits = search(query=query.strip(), top_k=16, screen_filter=screen_filter, keyword_filter="Then")
     then_hits = [h for h in then_hits if _assertion_candidate_ok(h, context, anchor, effective_scope)]
+    # Fallback: if screen-filtered search found nothing, retry without screen filter.
+    # _assertion_candidate_ok still gates on domain family and relevance.
+    if not then_hits and screen_filter:
+        then_hits_broad = search(query=query.strip(), top_k=16, keyword_filter="Then")
+        then_hits = [h for h in then_hits_broad if _assertion_candidate_ok(h, context, anchor, effective_scope)]
+    # Last-resort: if both passes found nothing, try a short focused query
+    # (target + outcome keyword only) to find exact-phrasing matches in the repo.
+    if not then_hits:
+        target = str(context.get("target_field") or context.get("entity") or "").strip()
+        outcome_terms = _expected_outcome_terms(context)
+        if target and outcome_terms:
+            focused_query = f"{target} {' '.join(sorted(outcome_terms)[:2])}"
+            then_hits_focused = search(query=focused_query, top_k=24, keyword_filter="Then")
+            then_hits = [h for h in then_hits_focused if _assertion_candidate_ok(h, context, anchor, effective_scope)]
     then_best = _pick_assertion_by_context(then_hits, context, anchor)
     if not then_best:
         return None, None
@@ -1536,7 +1694,7 @@ def _retrieve_assertions(intent: dict[str, Any], anchor: dict, effective_scope: 
     if not then_text:
         return None, None
 
-    and_hits = search(query=query.strip(), top_k=8, screen_filter=screen_filter, keyword_filter="And")
+    and_hits = search(query=query.strip(), top_k=16, screen_filter=screen_filter, keyword_filter="And")
     and_hits = [h for h in and_hits if _assertion_candidate_ok(h, context, anchor, effective_scope)]
     and_best = _pick_assertion_by_context(and_hits, context, anchor)
 
@@ -1560,9 +1718,14 @@ def _assertion_candidate_ok(hit: dict[str, Any], context: dict[str, Any], anchor
 
 
 def _same_domain_family(candidate: dict[str, Any], anchor: dict[str, Any]) -> bool:
+    anchor_screen = str(anchor.get("screen_context", ""))
+    candidate_screen = str(candidate.get("screen_context", ""))
+    screen_overlap = _meaningful_overlap(anchor_screen, candidate_screen) if anchor_screen and candidate_screen else 0.0
+
     anchor_terms = _path_domain_terms(str(anchor.get("file_path", "")))
     candidate_terms = _path_domain_terms(str(candidate.get("file_path", "")))
-    if anchor_terms and candidate_terms and not (anchor_terms & candidate_terms):
+    path_terms_aligned = bool(anchor_terms and candidate_terms and (anchor_terms & candidate_terms))
+    if anchor_terms and candidate_terms and not path_terms_aligned and screen_overlap < 0.18:
         return False
 
     anchor_sub = {_norm_token(v) for v in (anchor.get("scope_sub_tags") or [])}
@@ -1570,16 +1733,18 @@ def _same_domain_family(candidate: dict[str, Any], anchor: dict[str, Any]) -> bo
     if anchor_sub and candidate_sub and not (anchor_sub & candidate_sub):
         return False
 
-    anchor_screen = str(anchor.get("screen_context", ""))
-    candidate_screen = str(candidate.get("screen_context", ""))
-    if anchor_screen and candidate_screen and _meaningful_overlap(anchor_screen, candidate_screen) < 0.10:
+    # Only require screen overlap when path terms don't already confirm same domain.
+    # Same-directory files share domain context; cross-screen steps are still gated
+    # by _is_assertion_relevant in _assertion_candidate_ok.
+    if not path_terms_aligned and anchor_screen and candidate_screen and screen_overlap < 0.10:
         return False
     return True
 
 
 def _path_domain_terms(path_text: str) -> set[str]:
     terms = _meaningful_terms(path_text.replace("\\", " ").replace("/", " "))
-    return {t for t in terms if t not in {"feature", "features", "screen", "details", "validation", "viewer"}}
+    stopwords = _path_domain_stopwords()
+    return {t for t in terms if t not in stopwords}
 
 
 def _pick_assertion_by_context(cands: list[dict], context: dict[str, Any], anchor: dict) -> Optional[dict]:
@@ -1607,12 +1772,19 @@ def _pick_assertion_by_context(cands: list[dict], context: dict[str, Any], ancho
         score += 0.16 * _overlap_ratio(anchor_step, txt)
         if expected_terms and (_tokenize(txt) & expected_terms):
             score += 0.08
+        must_terms = [t for t in (context.get("must_assert_terms") or []) if len(str(t)) >= 3]
+        if must_terms and any(t.lower() in txt.lower() for t in must_terms):
+            score += 0.12
         return score
 
     best = max(cands, key=_rank)
     txt = _normalize_step_text(str(best.get("step_text", "")))
     if not txt:
         return None
+    # Same-file candidates were already validated by _assertion_candidate_ok;
+    # skip the final overlap gate to avoid over-filtering in-domain steps.
+    if anchor_file and best.get("file_path") == anchor_file:
+        return best
     if _meaningful_overlap(context.get("search_text", ""), txt) < 0.08 and _meaningful_overlap(anchor_step, txt) < 0.08:
         return None
     return best
@@ -1710,8 +1882,20 @@ def _is_assertion_relevant(then_text: str, intent: str, anchor_text: str, contex
         return True
     if expected_terms and (_tokenize(then_text) & expected_terms):
         return True
+    # Final generic-word check: accept if a known assertion signal word is present,
+    # but only when the then_text also shares at least one specific target token with the
+    # context.  This prevents cross-entity assertions (e.g. about a different field) from
+    # passing purely because they contain "enabled" or "disabled".
     words = {"success", "error", "failed", "display", "visible", "updated", "saved", "mandatory", "enabled", "disabled"}
-    return any(w in _tokenize(then_text) for w in words)
+    if not any(w in _tokenize(then_text) for w in words):
+        return False
+    if context:
+        specific = _specific_target_terms(" ".join(
+            str(part) for part in (context.get("target_field", ""), context.get("entity", "")) if part
+        ))
+        if specific and not (specific & _tokenize(then_text)):
+            return False
+    return True
 
 
 def _requires_strict_expected_terms(context: Optional[dict[str, Any]]) -> bool:
@@ -1733,7 +1917,9 @@ def _has_specificity_conflict(blob: str, context: dict[str, Any]) -> bool:
             " ".join(context.get("must_anchor_terms") or []),
         )
     ).lower()
-    for candidate_markers, intent_markers in _SPECIFICITY_CONFLICTS:
+    for conflict in _specificity_conflicts():
+        candidate_markers = conflict.get("candidate_markers") or ()
+        intent_markers = conflict.get("intent_markers") or ()
         if any(marker in blob_lower for marker in candidate_markers) and not any(marker in context_text for marker in intent_markers):
             return True
     return False
@@ -1776,13 +1962,27 @@ def _tokenize(text: str) -> set[str]:
 
 
 def _domain_specific_terms(text: str) -> set[str]:
-    generic = set(_INTENT_STOPWORDS) | {
-        "move", "next", "stage", "credit", "approval", "recommendation", "application",
-        "decision", "checkbox", "column", "field", "dropdown", "screen", "list", "product",
-        "products", "type", "display", "enabled", "disabled", "checked", "unchecked",
-        "recommended", "limit", "amount", "value", "validation", "save", "saved",
+    generic = set(_INTENT_STOPWORDS) | _configured_hint_terms() | {
+        "application",
+        "screen",
+        "value",
+        "workspace",
+        "reference",
+        "repo",
+        "feature",
+        "features",
+        "generated",
     }
     return {token for token in _tokenize(text) if token not in generic}
+
+
+def _configured_hint_terms() -> set[str]:
+    terms: set[str] = set()
+    for bucket in (_family_terms(), _section_terms(), _matrix_terms()):
+        for values in bucket.values():
+            for value in values:
+                terms.update(_tokenize(str(value)))
+    return terms
 
 
 def _meaningful_terms(text: str) -> set[str]:
@@ -1862,27 +2062,34 @@ def _fallback_then_step(intent: Any, anchor: dict[str, Any]) -> str:
     else:
         intent_text = str(intent or "").strip()
 
-    anchor_bits = [
-        str(anchor.get("step_text", "")),
-        str(anchor.get("scenario_title", "")),
-        str(anchor.get("screen_context", "")),
-    ]
-    query = " ".join(part for part in [intent_text, "expected result", *anchor_bits] if part).strip()
-    screen_filter = str(anchor.get("screen_context", "") or "").strip() or None
-    cands = [c for c in search(query, top_k=5, screen_filter=screen_filter, keyword_filter="Then") if _same_domain_family(c, anchor)]
-    for cand in cands:
-        txt = _normalize_step_text(str(cand.get("step_text", "")))
-        if txt and _is_assertion_relevant(txt, intent_text, str(anchor.get("step_text", "")), context):
-            return txt
-    fallback = [c for c in search(intent_text, top_k=5, screen_filter=screen_filter, keyword_filter="Then") if _same_domain_family(c, anchor)]
-    for cand in fallback:
-        txt = _normalize_step_text(str(cand.get("step_text", "")))
-        if txt and _is_assertion_relevant(txt, intent_text, str(anchor.get("step_text", "")), context):
-            return txt
+    # By the time this fallback is reached, both local and direct assertion retrieval failed.
+    # Keep the gap explicit instead of doing another loose assertion search.
     generated = _generated_fallback_then(context, anchor)
     if generated:
-        return generated
-    return "expected behaviour should be observed"
+        return _mark_new_step_not_in_repo(generated)
+    return _mark_new_step_not_in_repo(_unresolved_assertion_hint(context, intent_text))
+
+
+def _mark_new_step_not_in_repo(step_text: str) -> str:
+    text = _normalize_step_text(step_text)
+    if not text:
+        text = "assertion requires manual resolution"
+    if text.startswith("NEW_STEP_NOT_IN_REPO:"):
+        return text
+    return f"NEW_STEP_NOT_IN_REPO: {text}"
+
+
+def _unresolved_assertion_hint(context: Optional[dict[str, Any]], intent_text: str) -> str:
+    if context:
+        target = str(context.get("target_field") or context.get("entity") or "").strip()
+        outcome = str(context.get("expected_outcome") or context.get("expected_state") or "").strip().replace("_", " ")
+        if target and outcome:
+            return f"expected outcome for {target}: {outcome}"
+        if target:
+            return f"expected outcome for {target}"
+    if intent_text:
+        return f"expected outcome for {intent_text}"
+    return "assertion requires manual resolution"
 
 
 def _generated_fallback_then(context: Optional[dict[str, Any]], anchor: dict[str, Any]) -> Optional[str]:
@@ -2186,12 +2393,14 @@ def _ground_steps_to_repo(feature_text: str) -> tuple[str, list[dict[str, Any]],
                 if exists:
                     grounded += 1
                     continue
-                repl_key = f"{keyword.lower()}::{canonical}"
-                if repl_key in replacement_cache:
-                    repl = replacement_cache[repl_key]
-                else:
-                    repl = _best_replacement(step_text, keyword)
-                    replacement_cache[repl_key] = repl
+                repl = None
+                if _ENABLE_POST_RENDER_STEP_REPLACEMENT:
+                    repl_key = f"{keyword.lower()}::{canonical}"
+                    if repl_key in replacement_cache:
+                        repl = replacement_cache[repl_key]
+                    else:
+                        repl = _best_replacement(step_text, keyword)
+                        replacement_cache[repl_key] = repl
                 if repl:
                     fixed[i] = f"{indent}{keyword} {repl}"
                     grounded += 1

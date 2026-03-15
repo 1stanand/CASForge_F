@@ -14,14 +14,35 @@ const state = {
   feature: null,
   quality: {},
   unresolvedSteps: [],
+  omittedItems: [],
+  coverageGaps: [],
   page: 'intake',
   remapIndex: null,
   synthesisTimer: null,
+  directFlowType: 'unordered',
 };
 
-const FAMILY_ORDER = ['positive', 'validation', 'negative', 'dependency', 'state_movement', 'persistence', 'data_combination', 'edge'];
-const LOB_PRESETS = ['All LOBs', 'OMNI', 'HL', 'PL', 'LAP', 'MHL', 'CV', 'EDU', 'PF', 'BL'];
-const STAGE_PRESETS = ['All Stages', 'Lead Details', 'DDE', 'Recommendation', 'Credit Approval', 'Committee Approval', 'Reconsideration', 'Disbursal Initiation'];
+// LOBs, stages, and families are loaded from /api/config (driven by config/domain_knowledge.json).
+// Edit that file to add new options — no code change needed here.
+let FAMILY_ORDER = [];
+let LOB_PRESETS = [];
+let STAGE_PRESETS = [];
+
+async function loadConfig() {
+  try {
+    const res = await fetch('/api/config');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const cfg = await res.json();
+    LOB_PRESETS = cfg.lobs || [];
+    STAGE_PRESETS = cfg.stages || [];
+    FAMILY_ORDER = cfg.families || [];
+  } catch (e) {
+    console.warn('Could not load /api/config:', e);
+    LOB_PRESETS = ['All LOBs'];
+    STAGE_PRESETS = ['All Stages'];
+    FAMILY_ORDER = [];
+  }
+}
 const SYNTHESIS_LINES = [
   'Reading Jira logic... Who wrote this? Interesting choice.',
   'Scanning Llama repository... Found some gems.',
@@ -215,6 +236,8 @@ function renderStoryInsight() {
     <div class="insight-field"><strong>Description</strong><div>${escapeHtml(detail.description || detail.story_description || 'No description supplied.')}</div></div>
     <div class="insight-field"><strong>Impacted Areas</strong><div>${escapeHtml(detail.impacted_areas || 'Not specified')}</div></div>
     <div class="insight-field"><strong>Acceptance Criteria</strong><div>${escapeHtml(detail.acceptance_criteria || 'No acceptance criteria supplied.')}</div></div>
+    ${detail.new_process ? `<div class="insight-field"><strong>System Process</strong><div>${escapeHtml(detail.new_process)}</div></div>` : ''}
+    ${detail.supplemental_comments ? `<div class="insight-field"><strong>Comments</strong><div>${escapeHtml(detail.supplemental_comments)}</div></div>` : ''}
   `;
 }
 
@@ -403,10 +426,28 @@ function renderUnresolved() {
   `).join('');
 }
 
+function renderOmittedList() {
+  const el = document.getElementById('omitted-list');
+  if (!el) return;
+  const items = [...(state.omittedItems || []), ...(state.coverageGaps || [])];
+  if (!items.length) {
+    el.innerHTML = '<div class="card-copy">All intents produced scenarios.</div>';
+    return;
+  }
+  el.innerHTML = items.map(item => `
+    <div class="unresolved-item">
+      <span class="mono" style="font-size:0.78rem;opacity:0.6">${escapeHtml(item.intent_id || item.gap_id || '')}</span>
+      <div>${escapeHtml(item.intent || item.description || '')}</div>
+      <div style="font-size:0.78rem;opacity:0.5;margin-top:4px">Reason: ${escapeHtml(item.reason || 'low retrieval confidence')}</div>
+    </div>
+  `).join('');
+}
+
 function renderArtifact() {
   renderFeatureEditor();
   renderArtifactOverview();
   renderUnresolved();
+  renderOmittedList();
   wireEdgeLighting();
 }
 
@@ -446,6 +487,51 @@ function closeRemapModal() {
   remapModalEl.classList.remove('active');
   document.getElementById('remap-custom-lob').value = '';
   document.getElementById('remap-custom-stage').value = '';
+}
+
+function openManualModal() {
+  document.getElementById('manual-status').textContent = '';
+  document.getElementById('manual-modal').classList.add('active');
+}
+
+function closeManualModal() {
+  document.getElementById('manual-modal').classList.remove('active');
+}
+
+async function submitManualStory() {
+  const key = (document.getElementById('manual-key').value || '').trim().toUpperCase();
+  const summary = (document.getElementById('manual-summary').value || '').trim();
+  const statusEl = document.getElementById('manual-status');
+
+  if (!key) { statusEl.textContent = 'JIRA ID is required.'; return; }
+  if (!summary) { statusEl.textContent = 'Summary is required.'; return; }
+
+  statusEl.textContent = 'Adding...';
+  try {
+    const res = await fetch('/api/story/manual', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        issue_key:           key,
+        summary:             summary,
+        description:         document.getElementById('manual-description').value || '',
+        new_process:         document.getElementById('manual-system-process').value || '',
+        acceptance_criteria: document.getElementById('manual-acceptance').value || '',
+        impacted_areas:      document.getElementById('manual-impacted').value || '',
+      }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      statusEl.textContent = err.detail || `Error ${res.status}`;
+      return;
+    }
+    state.csvPath = 'manual';
+    document.getElementById('csv-path').value = 'manual';
+    closeManualModal();
+    await loadStories();
+  } catch (e) {
+    statusEl.textContent = `Network error: ${e.message}`;
+  }
 }
 
 function updateRemapPreview() {
@@ -545,6 +631,8 @@ async function loadStories() {
     state.feature = null;
     state.quality = {};
     state.unresolvedSteps = [];
+    state.omittedItems = [];
+    state.coverageGaps = [];
     renderIntake();
     renderRefinement();
     renderArtifact();
@@ -674,6 +762,8 @@ async function commenceGeneration() {
           };
           state.quality = data.quality || {};
           state.unresolvedSteps = data.unresolved_steps || [];
+          state.omittedItems = data.omitted_plan_items || [];
+          state.coverageGaps = data.coverage_gaps || [];
           renderArtifact();
           setPage('artifact');
         } else if (event === 'error') {
@@ -688,9 +778,89 @@ async function commenceGeneration() {
   }
 }
 
+async function submitDirectForge() {
+  const title = document.getElementById('direct-title').value.trim();
+  const intentsText = document.getElementById('direct-intents').value.trim();
+  if (!intentsText) {
+    setStatus('direct-status', 'Add at least one intent line.', 'err');
+    return;
+  }
+  openSynthesis('Direct Forge in progress...');
+  try {
+    const response = await fetch('/api/forge/direct', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title,
+        intents_text: intentsText,
+        flow_type: state.directFlowType,
+      }),
+    });
+    if (!response.ok) throw new Error(await response.text());
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const chunks = buffer.split('\n\n');
+      buffer = chunks.pop();
+      for (const chunk of chunks) {
+        if (!chunk.startsWith('data:')) continue;
+        let payload;
+        try { payload = JSON.parse(chunk.slice(5).trim()); } catch { continue; }
+        const { event, data } = payload;
+        if (event === 'status') {
+          document.getElementById('synthesis-status').textContent = data;
+        } else if (event === 'feature') {
+          state.feature = { text: data.text, filename: `${(title || 'direct_forge').replace(/\s+/g, '_')}.feature` };
+          state.quality = data.quality || {};
+          state.unresolvedSteps = data.unresolved_steps || [];
+          state.omittedItems = data.omitted_plan_items || [];
+          state.coverageGaps = data.coverage_gaps || [];
+          renderArtifact();
+          setPage('artifact');
+        } else if (event === 'error') {
+          throw new Error(data);
+        }
+      }
+    }
+  } catch (error) {
+    setStatus('direct-status', `Forge failed: ${error.message}`, 'err');
+  } finally {
+    closeSynthesis();
+  }
+}
+
 function copyFeature() {
   if (!state.feature) return;
-  navigator.clipboard.writeText(state.feature.text).then(() => setStatus('intake-status', 'Feature copied to clipboard.', 'ok'));
+  const btn = document.getElementById('copy-btn');
+  const original = btn.textContent;
+  const doCopy = () => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = original; }, 1500);
+  };
+  const onFail = () => {
+    btn.textContent = 'Copy failed';
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  };
+  navigator.clipboard.writeText(state.feature.text)
+    .then(doCopy)
+    .catch(() => {
+      try {
+        const ta = Object.assign(document.createElement('textarea'), {
+          value: state.feature.text, style: 'position:fixed;opacity:0'
+        });
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        doCopy();
+      } catch { onFail(); }
+    });
 }
 
 function downloadFeature() {
@@ -748,6 +918,10 @@ function attachEvents() {
   document.getElementById('add-custom-stage').addEventListener('click', () => addCustomScope('stage'));
   document.getElementById('close-remap').addEventListener('click', closeRemapModal);
   document.querySelector('[data-close-remap]').addEventListener('click', closeRemapModal);
+  document.getElementById('add-manually-btn').addEventListener('click', openManualModal);
+  document.getElementById('close-manual').addEventListener('click', closeManualModal);
+  document.querySelector('[data-close-manual]').addEventListener('click', closeManualModal);
+  document.getElementById('manual-submit').addEventListener('click', submitManualStory);
   document.getElementById('remap-inherit').addEventListener('change', (event) => {
     const intent = state.currentIntents[state.remapIndex];
     if (!intent) return;
@@ -762,6 +936,23 @@ function attachEvents() {
   document.getElementById('remap-add-custom').addEventListener('click', addCustomRemapValues);
   document.getElementById('remap-save').addEventListener('click', saveRemap);
   document.getElementById('footer-mail').addEventListener('click', () => { window.location.href = 'mailto:anand.singh1@nucleussoftware.com'; });
+  document.getElementById('direct-forge-entry').addEventListener('click', () => setPage('direct'));
+  document.getElementById('back-to-intake-direct').addEventListener('click', () => setPage('intake'));
+  document.getElementById('direct-forge-btn').addEventListener('click', submitDirectForge);
+  document.getElementById('direct-flow-ordered').addEventListener('click', () => {
+    state.directFlowType = 'ordered';
+    document.getElementById('direct-flow-ordered').classList.add('active');
+    document.getElementById('direct-flow-unordered').classList.remove('active');
+  });
+  document.getElementById('direct-flow-unordered').addEventListener('click', () => {
+    state.directFlowType = 'unordered';
+    document.getElementById('direct-flow-unordered').classList.add('active');
+    document.getElementById('direct-flow-ordered').classList.remove('active');
+  });
+  document.getElementById('direct-intents').addEventListener('input', () => {
+    const lines = document.getElementById('direct-intents').value.split('\n').filter((l) => l.trim() && !l.trim().startsWith('#'));
+    document.getElementById('direct-intent-count').textContent = `${lines.length} intent${lines.length !== 1 ? 's' : ''}`;
+  });
 
   const dropzone = document.getElementById('dropzone');
   ['dragenter', 'dragover'].forEach((eventName) => {
@@ -782,15 +973,17 @@ function attachEvents() {
   });
 }
 
-attachEvents();
-renderIntake();
-renderRefinement();
-renderArtifact();
-setPage('intake');
+loadConfig().then(() => {
+  attachEvents();
+  renderIntake();
+  renderRefinement();
+  renderArtifact();
+  setPage('intake');
 
-const params = new URLSearchParams(window.location.search);
-if (params.get('csv')) {
-  document.getElementById('csv-path').value = params.get('csv');
-  state.csvPath = params.get('csv');
-  loadStories();
-}
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('csv')) {
+    document.getElementById('csv-path').value = params.get('csv');
+    state.csvPath = params.get('csv');
+    loadStories();
+  }
+});

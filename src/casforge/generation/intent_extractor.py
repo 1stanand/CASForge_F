@@ -27,6 +27,7 @@ from typing import Any, Iterable, Optional
 
 from casforge.parsing.jira_parser import JiraStory
 from casforge.generation import llm_client
+from casforge.generation.heuristic_config import load_domain_knowledge
 from casforge.generation.scenario_planner import build_scenario_plan_items, public_intent_records
 from casforge.generation.story_facts import extract_story_facts
 from casforge.shared.paths import PROMPTS_DIR
@@ -113,17 +114,10 @@ _INTENT_VERBS = {
     "remove", "add", "select", "submit", "approve", "reject", "capture",
 }
 
-_LOB_SCOPE_HINTS: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("OMNI", ("omni loan", "omni")),
-    ("HL", ("home loan",)),
-    ("PL", ("personal loan",)),
-    ("LAP", ("loan against property", "lap")),
-    ("MHL", ("micro home loan", "mhl")),
-    ("CV", ("commercial vehicle", "consumer vehicle", "cv")),
-    ("EDU", ("education loan", "education", "edu")),
-    ("PF", ("personal finance", "pf")),
-    ("BL", ("business loan", "bl")),
-)
+def _lob_scope_hints() -> tuple[tuple[str, tuple[str, ...]], ...]:
+    """Return (canonical, phrases) pairs from domain_knowledge.json lob_aliases."""
+    lob_aliases = load_domain_knowledge().get("lob_aliases") or {}
+    return tuple((canonical, phrases) for canonical, phrases in lob_aliases.items())
 
 
 def _load_prompt() -> tuple[str, str]:
@@ -138,15 +132,74 @@ def _load_prompt() -> tuple[str, str]:
     return system, user_template
 
 
+def _call_extract_intents_llm(
+    story: JiraStory,
+    defaults: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """
+    Call the LLM with extract_intents.txt to get direct one-liner test-case intents.
+
+    The prompt asks for 8-12 intents in plain test-case language (6-14 words each)
+    with optional planning hints (action_target, screen_hint, polarity, etc.).
+    This is the preferred path: LLM thinks in test cases, not structured business rules.
+    """
+    try:
+        system_prompt, user_template = _load_prompt()
+
+        def _blk(header: str, text: str, limit: int) -> str:
+            t = (text or "").strip()[:limit]
+            return f"{header}:\n{t}\n\n" if t else ""
+
+        scope_lines = []
+        for scope_key, label in (("lob_scope", "LOB"), ("stage_scope", "Stage")):
+            sc = defaults.get(scope_key, {})
+            if sc.get("mode") == "specific" and sc.get("values"):
+                scope_lines.append(f"{label}: {', '.join(sc['values'])}")
+        scope_block = (
+            "Story Scope Defaults:\n" + "\n".join(f"- {ln}" for ln in scope_lines) + "\n\n"
+            if scope_lines else ""
+        )
+
+        user_prompt = user_template.format(
+            key=story.issue_key,
+            summary=story.summary,
+            description=(story.description or story.story_description or "").strip()[:1200],
+            new_process_block=_blk("New Behavior to Implement", story.new_process, 1600),
+            business_scenarios_block=_blk("Business Scenarios / Exceptions", story.business_scenarios, 900),
+            impacted_areas_block=_blk("Impacted CAS Areas / Stages", story.impacted_areas, 500),
+            key_ui_block=_blk("Key UI Navigation", story.key_ui_steps, 500),
+            acceptance_criteria_block=_blk("Acceptance Criteria", story.acceptance_criteria, 900),
+            story_scope_block=scope_block,
+        )
+        raw = llm_client.chat(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            temperature=min(LLM_TEMPERATURE, 0.15),
+            max_tokens=max(640, min(LLM_MAX_TOKENS, 1400)),
+        )
+        records = _parse_intent_records(raw)
+        return _dedupe_records(_normalise_records(records))
+    except Exception as exc:
+        _log.warning("Direct intent LLM extraction failed for %s: %s", story.issue_key, exc)
+        return []
+
+
 def extract_intents(
     story: JiraStory,
     story_scope_defaults: Optional[dict[str, Any]] = None,
 ) -> list[dict[str, Any]]:
     """
-    Extract concise, structured intents via story facts + deterministic planning.
+    Extract concise, structured intents using the extract_intents.txt prompt.
 
-    The LLM is used only to emit structured story facts. Final intent planning is
-    deterministic so the assembler can consume richer metadata than plain text.
+    The LLM is asked directly for test-case-style one-liner intents (6-14 words,
+    one behavior each) with optional planning hints. This is cleaner than going
+    through story_facts → deterministic planning.
+
+    Flow:
+      1. LLM direct extraction via extract_intents.txt
+      2. If too few intents, augment with a coverage expansion pass
+      3. Enrich with section_key / pattern_terms via scenario planner
+      4. Fallback to old story_facts path only if everything above produces nothing
     """
     defaults = normalise_story_scope_defaults(story_scope_defaults)
     inferred = infer_story_scope_defaults(story)
@@ -154,13 +207,36 @@ def extract_intents(
         if defaults.get(key, {}).get("mode") != "specific" and inferred.get(key, {}).get("mode") == "specific":
             defaults[key] = inferred[key]
 
-    facts = extract_story_facts(story, story_scope_defaults=defaults)
+    # Step 1: direct LLM intent extraction
+    llm_intents = _call_extract_intents_llm(story, defaults)
+
+    # Step 2: augment if thin
+    if len(llm_intents) < _MIN_INTENTS_TARGET:
+        extra = _expand_intents_for_coverage(story, llm_intents)
+        llm_intents = _dedupe_records(llm_intents + extra)
+
+    # Step 3: enrich with section_key, pattern_terms via planner (intents= path)
     planned = build_scenario_plan_items(
         story=story,
         story_scope_defaults=defaults,
-        story_facts=facts,
-        intents=None,
+        story_facts=None,
+        intents=llm_intents or None,
     )
+
+    # Step 4: fallback to old story_facts path if nothing produced
+    if not planned:
+        _log.warning(
+            "Direct intent extraction produced nothing for %s — falling back to story_facts path",
+            story.issue_key,
+        )
+        facts = extract_story_facts(story, story_scope_defaults=defaults)
+        planned = build_scenario_plan_items(
+            story=story,
+            story_scope_defaults=defaults,
+            story_facts=facts,
+            intents=None,
+        )
+
     intents = public_intent_records(planned)[:_MAX_INTENTS_TARGET]
     _log.info("Planned %d intents for %s", len(intents), story.issue_key)
     return intents
@@ -187,6 +263,8 @@ def _expand_intents_for_coverage(
         context_parts.append(f"New Process: {story.new_process[:1200]}")
     if story.business_scenarios:
         context_parts.append(f"Business Scenarios: {story.business_scenarios[:700]}")
+    if story.supplemental_comments:
+        context_parts.append(f"Comments / Final Approach: {story.supplemental_comments[:700]}")
     if story.impacted_areas:
         context_parts.append(f"Impacted Areas: {story.impacted_areas[:400]}")
     if story.acceptance_criteria:
@@ -382,7 +460,7 @@ def infer_story_scope_defaults(story: JiraStory) -> dict[str, Any]:
         if part and part.strip()
     ).lower()
     lob_matches: list[str] = []
-    for canonical, phrases in _LOB_SCOPE_HINTS:
+    for canonical, phrases in _lob_scope_hints():
         if any(re.search(r"\b" + re.escape(phrase) + r"\b", scope_blob, flags=re.I) for phrase in phrases):
             lob_matches.append(canonical)
     lob_matches = list(dict.fromkeys(lob_matches))

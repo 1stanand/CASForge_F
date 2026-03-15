@@ -38,6 +38,7 @@ from typing import List
 from casforge.web.models import (
     StoryRef, StoryInfo, StorySummary,
     IntentsResponse, GenerateRequest, GenerateResponse,
+    DirectForgeRequest,
     UploadCsvRequest, UploadCsvResponse,
     SearchRequest, StepResult, OutputFile,
 )
@@ -348,6 +349,79 @@ def generate_feature_stream(req: GenerateRequest):
         yield _event("done", None)
 
     return StreamingResponse(_stream(), media_type="text/event-stream")
+
+
+# Direct Forge - skip JIRA intake, assemble directly from user-written intents
+
+@app.post("/api/forge/direct")
+def forge_direct(req: DirectForgeRequest):
+    """
+    Accepts raw intent lines and assembles a .feature file directly.
+    Skips JIRA parsing and LLM extraction. Streams the same SSE events.
+    """
+    from casforge.parsing.jira_parser import JiraStory
+    from casforge.generation.feature_assembler import assemble_feature_result
+
+    def _event(event: str, data) -> str:
+        return f"data: {json.dumps({'event': event, 'data': data})}\n\n"
+
+    def _stream():
+        raw_lines = [
+            l.strip() for l in req.intents_text.splitlines()
+            if l.strip() and not l.strip().startswith('#')
+        ]
+        if not raw_lines:
+            yield _event("error", "No intents provided - add at least one line.")
+            return
+
+        intents = [
+            {"id": f"direct_{i:03d}", "text": line, "family": "positive", "inherit_story_scope": True}
+            for i, line in enumerate(raw_lines, 1)
+        ]
+
+        yield _event("status", f"Assembling {len(intents)} intents via retrieval...")
+
+        story = JiraStory(
+            issue_key="DIRECT",
+            summary=req.title or "Direct Forge",
+            issue_type="Story",
+            description="",
+            current_process="",
+            new_process="",
+            business_scenarios="",
+            impacted_areas="",
+            key_ui_steps="",
+            acceptance_criteria="",
+            story_description="",
+        )
+
+        try:
+            assembly = assemble_feature_result(
+                story=story,
+                intents=intents,
+                flow_type=req.flow_type,
+                enable_llm_fallback=False,
+            )
+        except Exception as e:
+            yield _event("error", f"Assembly failed: {e}")
+            return
+
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
+        out_path = os.path.join(OUTPUT_DIR, "direct_forge.feature")
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write(assembly.feature_text + "\n")
+
+        yield _event("feature", {
+            "text": assembly.feature_text,
+            "quality": assembly.quality,
+            "unresolved_steps": assembly.unresolved_steps,
+            "coverage_gaps": assembly.coverage_gaps,
+            "omitted_plan_items": assembly.omitted_plan_items,
+        })
+        yield _event("done", None)
+
+    return StreamingResponse(_stream(), media_type="text/event-stream")
+
 
 
 # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

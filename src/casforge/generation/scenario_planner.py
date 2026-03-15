@@ -4,6 +4,7 @@ import re
 from difflib import SequenceMatcher
 from typing import Any, Optional
 
+from casforge.generation.heuristic_config import load_domain_knowledge, load_planner_hints
 from casforge.generation.story_facts import extract_story_facts, infer_story_facts_heuristically
 from casforge.parsing.jira_parser import JiraStory
 
@@ -42,62 +43,39 @@ _POLARITY_TO_FORBIDDEN = {
     "zero_not_allowed": ["allowed", "accepted"],
 }
 
-_MATRIX_HINT_TERMS = {
-    "any": ["any", "at least one"],
-    "all": ["all"],
-    "none": ["none", "no"],
-    "mixed": ["mixed", "tie", "combination"],
-    "dependent_card": ["primary card", "add-on card", "addon card"],
-    "zero_value": ["zero"],
-    "multi_grid": ["grid", "credit card", "sub loan"],
-}
+def _domain_knowledge() -> dict[str, Any]:
+    return load_domain_knowledge()
 
-_SECTION_SPECS: dict[str, dict[str, Any]] = {
-    "ui_structure": {
-        "title": "UI Structure Validation",
-        "terms": ["display", "visible", "show", "column", "availability", "grid", "screen"],
-    },
-    "checkbox_state": {
-        "title": "Checkbox Availability & Default State",
-        "terms": ["checkbox", "checked", "unchecked", "default", "selected", "enabled"],
-    },
-    "dependency": {
-        "title": "Dependency Behaviour",
-        "terms": ["dependency", "based", "derived", "same", "depends", "selected", "if any", "if all"],
-    },
-    "field_enablement": {
-        "title": "Field Enablement Behaviour",
-        "terms": ["enabled", "disabled", "editable", "readonly", "field", "limit", "amount"],
-    },
-    "decision_logic": {
-        "title": "Decision Logic Behaviour",
-        "terms": ["decision", "dropdown", "verdict", "approved", "rejected", "recommended", "not recommended"],
-    },
-    "validation": {
-        "title": "Validation Coverage",
-        "terms": ["validation", "error", "invalid", "mandatory", "required", "zero"],
-    },
-    "state_movement": {
-        "title": "Move To Next Stage Validations",
-        "terms": ["move", "stage", "next", "mtns", "approval", "reject"],
-    },
-    "persistence": {
-        "title": "Persistence / Save Behaviour",
-        "terms": ["save", "saved", "persist", "retained", "reopen"],
-    },
-    "data_combination": {
-        "title": "Data Combination Coverage",
-        "terms": ["any", "all", "none", "mixed", "combination", "matrix"],
-    },
-    "edge": {
-        "title": "Edge Coverage",
-        "terms": ["zero", "blank", "duplicate", "none", "edge"],
-    },
-    "core_flow": {
-        "title": "Core Flow Coverage",
-        "terms": ["display", "open", "save", "flow"],
-    },
-}
+
+def _planner_hints() -> dict[str, Any]:
+    return load_planner_hints()
+
+
+def _section_specs() -> dict[str, dict[str, Any]]:
+    return _domain_knowledge().get("sections", {})
+
+
+def _section_spec(key: str) -> dict[str, Any]:
+    spec = _section_specs().get(key, {})
+    display_name = str(spec.get("display_name") or _normalize_visible_text(key.replace("_", " "))).strip()
+    terms = tuple(spec.get("terms") or ())
+    return {"display_name": display_name, "terms": terms}
+
+
+def _matrix_hint_terms() -> dict[str, tuple[str, ...]]:
+    return _domain_knowledge().get("matrix_terms", {})
+
+
+def _target_aliases() -> tuple[dict[str, Any], ...]:
+    return tuple(_planner_hints().get("target_aliases", ()))
+
+
+def _synthetic_entity_blocklist() -> set[str]:
+    return set(_planner_hints().get("synthetic_entity_blocklist", set()))
+
+
+def _synthetic_templates() -> dict[str, tuple[str, ...]]:
+    return _planner_hints().get("synthetic_templates", {})
 
 
 def build_scenario_plan_items(
@@ -169,15 +147,25 @@ def _plan_items_from_facts(
     if not items:
         items.extend(_synthetic_items_from_signals(story, facts, defaults, default_screen, start_index=1))
     elif len(items) < 6:
-        covered = {item.get("family") for item in items}
         extras = _synthetic_items_from_signals(story, facts, defaults, default_screen, start_index=len(items) + 1)
-        for extra in extras:
-            if extra.get("family") not in covered or extra.get("matrix_signature") not in {item.get("matrix_signature") for item in items}:
-                items.append(extra)
+        items.extend(_uncovered_family_items(items, extras))
 
     if len(items) < 5 and coverage_signals:
-        items.extend(_synthetic_items_from_signals(story, facts, defaults, default_screen, start_index=len(items) + 1, fill_shortfall=True))
+        extras = _synthetic_items_from_signals(story, facts, defaults, default_screen, start_index=len(items) + 1, fill_shortfall=True)
+        items.extend(_uncovered_family_items(items, extras))
     return items
+
+
+def _uncovered_family_items(existing: list[dict[str, Any]], extras: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    covered = {item.get("family") for item in existing if item.get("family")}
+    out: list[dict[str, Any]] = []
+    for extra in extras:
+        family = extra.get("family")
+        if not family or family in covered:
+            continue
+        covered.add(family)
+        out.append(extra)
+    return out
 
 
 def _plan_item_from_rule(
@@ -256,34 +244,34 @@ def _synthetic_items_from_signals(
     fill_shortfall: bool = False,
 ) -> list[dict[str, Any]]:
     primary_entity = _best_entity_from_facts(facts) or "business behavior"
+    if not _synthetic_entity_specific_enough(primary_entity):
+        return []
     signals = list(facts.get("coverage_signals") or [])
     matrix_signals = list(facts.get("matrix_signals") or [])
     synthetic_specs = []
 
     if "ui_structure" in signals:
-        synthetic_specs.append(("positive", f"Display {primary_entity}", "display", "positive"))
+        synthetic_specs.extend(_synthetic_specs("generic_visibility", primary_entity, "positive", "display", "positive"))
     if "default_state" in signals:
-        synthetic_specs.append(("positive", f"Keep {primary_entity} checked by default", "default_state", "checked"))
+        synthetic_specs.extend(_synthetic_specs("generic_default_state", primary_entity, "positive", "default_state", "checked"))
     if "field_enablement" in signals or "dependency" in signals:
-        synthetic_specs.append(("dependency", f"Resolve {primary_entity} enablement from sub selection", "enable", "enabled"))
+        synthetic_specs.extend(_synthetic_specs("generic_enablement", primary_entity, "dependency", "enable", "enabled"))
     if "derived_decision" in signals:
-        synthetic_specs.append(("dependency", f"Derive {primary_entity} from selected sub products", "derive", "derived"))
+        synthetic_specs.extend(_synthetic_specs("generic_derivation", primary_entity, "dependency", "derive", "derived"))
     if "validation" in signals:
-        synthetic_specs.append(("validation", f"Validate {primary_entity} for invalid values", "validate", "negative"))
+        synthetic_specs.extend(_synthetic_specs("generic_validation", primary_entity, "validation", "validate", "negative"))
     if "state_movement" in signals:
-        synthetic_specs.append(("state_movement", f"Move application with {primary_entity} to next stage", "state_move", "moved"))
+        synthetic_specs.extend(_synthetic_specs("generic_transition", primary_entity, "state_movement", "state_move", "moved"))
     if "persistence" in signals:
-        synthetic_specs.append(("persistence", f"Retain {primary_entity} after save and reopen", "persistence", "retained"))
+        synthetic_specs.extend(_synthetic_specs("generic_persistence", primary_entity, "persistence", "persistence", "retained"))
     if "data_combination" in signals or matrix_signals:
-        synthetic_specs.append(("data_combination", f"Handle mixed {primary_entity} combinations correctly", "selection_dependency", "positive"))
+        synthetic_specs.extend(_synthetic_specs("generic_combination", primary_entity, "data_combination", "selection_dependency", "positive"))
     if "edge" in signals:
-        synthetic_specs.append(("edge", f"Handle edge state for {primary_entity}", "validate", "negative"))
+        synthetic_specs.extend(_synthetic_specs("generic_edge", primary_entity, "edge", "validate", "negative"))
 
     if fill_shortfall and not synthetic_specs:
-        synthetic_specs = [
-            ("positive", f"Display {primary_entity}", "display", "positive"),
-            ("validation", f"Validate {primary_entity}", "validate", "negative"),
-        ]
+        synthetic_specs.extend(_synthetic_specs("generic_visibility", primary_entity, "positive", "display", "positive"))
+        synthetic_specs.extend(_synthetic_specs("generic_validation", primary_entity, "validation", "validate", "negative"))
 
     items = []
     seen = set()
@@ -326,6 +314,22 @@ def _synthetic_items_from_signals(
             "pattern_terms": _pattern_terms_for_plan(section_key, primary_entity, effect, matrix_signature, default_screen),
         })
     return items
+
+
+def _synthetic_specs(
+    template_key: str,
+    target: str,
+    family: str,
+    effect: str,
+    polarity: str,
+) -> list[tuple[str, str, str, str]]:
+    templates = _synthetic_templates().get(template_key, ())
+    out: list[tuple[str, str, str, str]] = []
+    for template in templates:
+        rendered = _normalize_visible_text(template.format(target=target))
+        if rendered:
+            out.append((family, rendered, effect, polarity))
+    return out
 
 
 def _enrich_existing_intent(
@@ -467,66 +471,65 @@ def _action_target_for_rule(effect: str, target: str) -> str:
     if effect in {"enable", "disable", "default_state", "validate", "zero_validation"}:
         return target
     if effect == "state_move":
-        target_lower = target.lower()
-        if "stage" in target_lower:
-            return "move to next stage"
-        return f"{target} stage movement"
+        # Use the specific stage target directly (e.g., "credit approval stage")
+        # to improve anchor retrieval specificity over the generic "move to next stage".
+        return target
     return target
 
 
 def _title_from_rule(target: str, effect: str, polarity: str, condition: str, scope: Optional[dict[str, Any]] = None) -> str:
     condition_hint = _condition_suffix(condition)
-    target_lower = target.lower()
-    stage_value = _scope_stage_value((scope or {}).get("stage_scope"))
-
-    if target_lower == "decision column":
-        return "Display Decision column in Product Type Decision List"
-    if target_lower == "decision checkbox":
-        if effect == "default_state":
-            return "Keep Decision checkboxes checked by default"
-        return "Display Decision checkbox for sub products"
-    if target_lower == "decision checkbox for sub loan grid":
-        return "Display Decision checkbox for sub loan products"
-    if target_lower == "decision checkbox for credit card grid":
-        return "Display Decision checkbox for credit card products"
-    if target_lower == "recommendation decision dropdown":
-        if effect == "disable":
-            return "Keep Recommendation Decision dropdown disabled"
-        if effect in {"derive", "selection_dependency"} and polarity == "recommended":
-            return "Set Recommendation Decision to Recommended when any checkbox is checked"
-        if effect in {"derive", "selection_dependency"} and polarity == "not_recommended":
-            return "Set Recommendation Decision to Not Recommended when all checkboxes are unchecked"
-    if target_lower == "recommended limit field" and effect == "disable":
-        return "Disable Recommended Limit when any subloan is not recommended"
+    title_target = _title_target(target, effect)
     if effect == "display":
-        return _normalize_visible_text(f"Display {target}{condition_hint}")
+        return _normalize_visible_text(f"Display {title_target}{condition_hint}")
     if effect == "default_state":
         state = "unchecked" if polarity == "unchecked" else "checked"
-        return _normalize_visible_text(f"Keep {target} {state} by default{condition_hint}")
+        return _normalize_visible_text(f"Keep {title_target} {state} by default{condition_hint}")
     if effect == "enable":
-        return _normalize_visible_text(f"Enable {target}{condition_hint}")
+        return _normalize_visible_text(f"Enable {title_target}{condition_hint}")
     if effect == "disable":
-        return _normalize_visible_text(f"Disable {target}{condition_hint}")
+        return _normalize_visible_text(f"Disable {title_target}{condition_hint}")
     if effect in {"derive", "selection_dependency"}:
-        return _normalize_visible_text(f"Derive {target}{condition_hint}")
+        derived_state = _derived_state_phrase(polarity)
+        if derived_state:
+            return _normalize_visible_text(f"Set {title_target} to {derived_state}{condition_hint}")
+        return _normalize_visible_text(f"Derive {title_target}{condition_hint}")
     if effect in {"validate", "zero_validation"}:
         if "zero" in condition.lower() or polarity.startswith("zero"):
-            return _normalize_visible_text(f"Validate zero value for {target}{condition_hint}")
-        return _normalize_visible_text(f"Validate {target}{condition_hint}")
+            return _normalize_visible_text(f"Validate zero value for {title_target}{condition_hint}")
+        return _normalize_visible_text(f"Validate {title_target}{condition_hint}")
     if effect == "state_move":
-        if "credit approval" in target_lower or (stage_value == "Recommendation" and "next stage" in condition.lower()):
-            return "Move application to Credit Approval from Recommendation"
-        return _normalize_visible_text(f"Move application with {target}{condition_hint}")
+        return _normalize_visible_text(f"Move application to {title_target}{condition_hint}")
     if effect == "persistence":
-        return _normalize_visible_text(f"Retain {target} after save and reopen")
-    return _normalize_visible_text(f"Resolve {target}{condition_hint}")
+        return _normalize_visible_text(f"Retain {title_target} after save and reopen")
+    return _normalize_visible_text(f"Resolve {title_target}{condition_hint}")
+
+
+def _title_target(target: str, effect: str) -> str:
+    cleaned = _normalize_visible_text(target)
+    if effect == "default_state" and cleaned.lower().endswith("checkbox"):
+        return f"{cleaned}es"
+    return cleaned
+
+
+def _derived_state_phrase(polarity: str) -> Optional[str]:
+    lowered = str(polarity or "").strip().lower()
+    mapping = {
+        "recommended": "Recommended",
+        "not_recommended": "Not Recommended",
+        "checked": "Checked",
+        "unchecked": "Unchecked",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+    }
+    return mapping.get(lowered)
 
 
 def _condition_suffix(condition: str) -> str:
     if not condition:
         return ""
     lower = condition.lower()
-    for marker in ("if ", "when ", "after ", "once "):
+    for marker in ("if ", "when ", "after ", "once ", "on "):
         idx = lower.find(marker)
         if idx >= 0:
             suffix = condition[idx:]
@@ -542,23 +545,9 @@ def _condition_suffix(condition: str) -> str:
 
 def _canonical_plan_target(target: str, condition: str, effect: str, scope: Optional[dict[str, Any]]) -> str:
     lowered = target.lower()
-    stage_value = _scope_stage_value((scope or {}).get("stage_scope"))
-    if lowered in {"application level decision", "application decision", "recommendation decision dropdown"} and stage_value == "Recommendation":
-        return "Recommendation Decision dropdown"
-    if lowered in {"decision checkbox", "decision checkbox for sub loan grid"} and "credit card" in condition.lower():
-        return "Decision checkbox for credit card grid"
-    if lowered in {"decision checkbox", "decision checkbox for sub loan grid"} and ("subloan" in condition.lower() or "sub loan" in condition.lower()):
-        return "Decision checkbox for sub loan grid"
-    if lowered == "decision checkbox":
-        return "Decision checkbox"
-    if lowered == "decision column":
-        return "Decision column"
-    if lowered == "recommended limit field":
-        return "Recommended Limit field"
-    if lowered == "recommended amount field":
-        return "Recommended Amount field"
-    if lowered == "credit approval stage":
-        return "Credit Approval stage"
+    for entry in _target_aliases():
+        if lowered == str(entry.get("match", "")).lower():
+            return str(entry.get("canonical", "")).strip() or target
     return target
 
 
@@ -566,11 +555,6 @@ def _screen_hint_for_rule(rule: dict[str, Any], target: str, scope: Optional[dic
     explicit = str(rule.get("screen_hint") or "").strip()
     if explicit:
         return explicit
-    target_lower = target.lower()
-    if "recommendation decision" in target_lower:
-        return "Recommendation Decisions"
-    if any(term in target_lower for term in ("decision column", "decision checkbox", "recommended limit", "recommended amount", "credit approval stage")):
-        return "Product Type Decision List"
     return default_screen
 
 
@@ -582,28 +566,36 @@ def _scope_stage_value(scope: Optional[dict[str, Any]]) -> Optional[str]:
 
 
 def _best_entity(target: str, facts: dict[str, Any]) -> Optional[str]:
-    canonical = {
-        "Decision column": "decision column",
-        "Decision checkbox": "decision checkbox",
-        "Decision checkbox for sub loan grid": "decision checkbox",
-        "Decision checkbox for credit card grid": "decision checkbox",
-        "Recommendation Decision dropdown": "recommendation decision dropdown",
-        "Recommended Limit field": "recommended limit",
-        "Recommended Amount field": "recommended amount",
-        "Credit Approval stage": "credit approval stage",
-    }.get(target)
-    if canonical:
-        return canonical
     entities = facts.get("entities") or []
+    fallback = _target_entity_label(target)
     if not entities:
-        return target or None
-    ranked = sorted(entities, key=lambda entity: _token_overlap(entity, target), reverse=True)
-    return ranked[0] if ranked and _token_overlap(ranked[0], target) > 0 else target or None
+        return fallback or target or None
+    ranked = sorted(
+        entities,
+        key=lambda entity: (
+            _token_overlap(entity, target),
+            _entity_rule_support(entity, facts),
+            _entity_specificity_score(entity),
+        ),
+        reverse=True,
+    )
+    return ranked[0] if ranked and _token_overlap(ranked[0], target) > 0 else fallback or target or None
 
 
 def _best_entity_from_facts(facts: dict[str, Any]) -> Optional[str]:
     entities = list(facts.get("entities") or [])
-    return entities[0] if entities else None
+    if not entities:
+        return None
+    ranked = sorted(
+        entities,
+        key=lambda entity: (
+            1 if _synthetic_entity_specific_enough(entity) else 0,
+            _entity_rule_support(entity, facts),
+            _entity_specificity_score(entity),
+        ),
+        reverse=True,
+    )
+    return ranked[0] if ranked else None
 
 
 def _infer_entity_from_text(text: str, facts: dict[str, Any]) -> Optional[str]:
@@ -661,13 +653,9 @@ def _infer_polarity_from_text(text: str) -> Optional[str]:
 def _matrix_signature(rule: dict[str, Any], facts: dict[str, Any], text: str, target: str) -> str:
     lowered = " ".join(str(part or "") for part in (rule.get("condition"), rule.get("target"), text, target)).lower()
     labels = []
-    for signal, terms in _MATRIX_HINT_TERMS.items():
+    for signal, terms in _matrix_hint_terms().items():
         if any(term in lowered for term in terms):
             labels.append(signal)
-    if "credit card" in lowered:
-        labels.append("credit_card")
-    if "sub loan" in lowered or "subloan" in lowered:
-        labels.append("subloan")
     return "+".join(sorted(set(labels))) if labels else "base"
 
 
@@ -680,36 +668,33 @@ def _section_for_plan(
     screen_hint: Optional[str],
 ) -> tuple[str, str]:
     target_lower = (target or "").lower()
-    screen_lower = (screen_hint or "").lower()
     matrix_labels = {label for label in (matrix_signature or "").split("+") if label and label != "base"}
 
     if effect == "display" and "column" in target_lower:
-        return "ui_structure", _SECTION_SPECS["ui_structure"]["title"]
+        return "ui_structure", _section_spec("ui_structure")["display_name"]
     if "checkbox" in target_lower and effect in {"display", "default_state"}:
-        return "checkbox_state", _SECTION_SPECS["checkbox_state"]["title"]
+        return "checkbox_state", _section_spec("checkbox_state")["display_name"]
     if effect in {"enable", "disable"} and any(term in target_lower for term in ("field", "limit", "amount")):
-        return "field_enablement", _SECTION_SPECS["field_enablement"]["title"]
+        return "field_enablement", _section_spec("field_enablement")["display_name"]
     if effect == "default_state":
-        return "checkbox_state", _SECTION_SPECS["checkbox_state"]["title"]
+        return "checkbox_state", _section_spec("checkbox_state")["display_name"]
     if any(term in target_lower for term in ("dropdown", "verdict")) or effect == "derive":
-        return "decision_logic", _SECTION_SPECS["decision_logic"]["title"]
+        return "decision_logic", _section_spec("decision_logic")["display_name"]
     if effect in {"validate", "zero_validation"} or family in {"validation", "negative"}:
         key = "edge" if ("zero" in target_lower or polarity.startswith("zero")) and family == "edge" else "validation"
-        return key, _SECTION_SPECS[key]["title"]
+        return key, _section_spec(key)["display_name"]
     if effect == "state_move" or family == "state_movement":
-        return "state_movement", _SECTION_SPECS["state_movement"]["title"]
+        return "state_movement", _section_spec("state_movement")["display_name"]
     if effect == "persistence" or family == "persistence":
-        return "persistence", _SECTION_SPECS["persistence"]["title"]
+        return "persistence", _section_spec("persistence")["display_name"]
     if family == "data_combination" and not any(term in target_lower for term in ("dropdown", "decision", "verdict")):
-        return "data_combination", _SECTION_SPECS["data_combination"]["title"]
+        return "data_combination", _section_spec("data_combination")["display_name"]
     if family == "dependency":
         if any(term in target_lower for term in ("limit", "amount", "field")):
-            return "field_enablement", _SECTION_SPECS["field_enablement"]["title"]
+            return "field_enablement", _section_spec("field_enablement")["display_name"]
         if any(term in matrix_labels for term in {"dependent_card", "any", "all", "none", "mixed"}) or "decision" in target_lower:
-            return "dependency", _SECTION_SPECS["dependency"]["title"]
-    if "decision" in target_lower and "product type decision list" in screen_lower:
-        return "decision_logic", _SECTION_SPECS["decision_logic"]["title"]
-    return "core_flow", _SECTION_SPECS["core_flow"]["title"]
+            return "dependency", _section_spec("dependency")["display_name"]
+    return "core_flow", _section_spec("core_flow")["display_name"]
 
 
 def _pattern_terms_for_plan(
@@ -719,7 +704,7 @@ def _pattern_terms_for_plan(
     matrix_signature: str,
     screen_hint: Optional[str],
 ) -> list[str]:
-    terms = list(_SECTION_SPECS.get(section_key, {}).get("terms") or [])
+    terms = list(_section_spec(section_key).get("terms") or [])
     target_text = _normalize_visible_text(target)
     screen_text = _normalize_visible_text(screen_hint)
     if target_text:
@@ -782,6 +767,49 @@ def _normalize_visible_text(text: Any) -> str:
     if len(words) > 14:
         cleaned = " ".join(words[:14])
     return cleaned
+
+
+def _target_entity_label(target: str) -> str:
+    text = _normalize_visible_text(target).lower()
+    replacements = (
+        " for sub loan grid",
+        " for credit card grid",
+        " field",
+        " dropdown",
+        " column",
+    )
+    for suffix in replacements:
+        if text.endswith(suffix):
+            text = text[: -len(suffix)].strip()
+    return text
+
+
+def _entity_rule_support(entity: str, facts: dict[str, Any]) -> int:
+    candidate = _normalize_visible_text(entity).lower()
+    score = 0
+    for rule in facts.get("rules") or []:
+        target = str(rule.get("target") or "")
+        condition = str(rule.get("condition") or "")
+        score += int(_token_overlap(candidate, target) >= 0.34) * 2
+        score += int(_token_overlap(candidate, condition) >= 0.34)
+    return score
+
+
+def _entity_specificity_score(entity: str) -> tuple[int, int]:
+    tokens = [token for token in re.findall(r"[a-z0-9]+", str(entity).lower()) if len(token) > 2]
+    return (len(tokens), sum(len(token) for token in tokens))
+
+
+def _synthetic_entity_specific_enough(entity: Optional[str]) -> bool:
+    text = _normalize_visible_text(entity or "").lower()
+    if not text or text in _synthetic_entity_blocklist():
+        return False
+    tokens = {token for token in re.findall(r"[a-z0-9]+", text) if len(token) > 2}
+    if tokens & {"checkbox", "column", "dropdown", "field", "amount", "limit", "verdict"}:
+        return True
+    if "decision" in tokens and "list" not in tokens:
+        return True
+    return False
 
 
 def _token_overlap(a: str, b: str) -> float:

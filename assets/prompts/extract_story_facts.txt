@@ -9,6 +9,56 @@ Rules:
 - Preserve polarity exactly as written.
 - If the story is ambiguous, omit the fact instead of guessing.
 - Focus on business behavior, not setup or navigation.
+- Split compound "and" sentences into separate rules BEFORE extracting.
+  Example: "X should be displayed and Y should be enabled" → two rules, one per clause.
+  Do NOT merge two distinct behaviors into a single rule.
+
+Effect disambiguation:
+- derive: a field's value is computed or auto-populated from other data. Polarity = "derived".
+  Example: "Total amount is calculated from all subloan amounts." → effect=derive, polarity=derived
+- validate: an explicit constraint check (must/cannot/should not). Polarity = "positive" or "negative".
+  Example: "Amount must not exceed limit." → effect=validate, polarity=negative
+- enable: a field or control becomes interactive/editable when a condition is met. Polarity = "enabled".
+  Example: "Rate field is enabled when type is variable." → effect=enable, polarity=enabled
+- display: a field, section, or row becomes visible. Polarity = "positive" (visible) or "negative" (hidden).
+  Example: "Collateral section is shown for secured loans." → effect=display, polarity=positive
+- disable: field becomes read-only or hidden when condition. Polarity = "disabled".
+- default_state: initial/default value or state, not triggered by user action. Polarity = "checked"/"unchecked"/"positive"/"negative".
+- state_move: application/item moves to a new workflow stage. Target MUST be the destination stage name (e.g. "credit approval stage"). Polarity = "moved".
+- persistence: data is saved or retained. Polarity = "retained".
+- selection_dependency: one dropdown/radio selection gates another field's options. Polarity = "dependent".
+- zero_validation: a zero or empty value is explicitly allowed or disallowed. Polarity = "zero_allowed" or "zero_not_allowed".
+
+Polarity must be one of: positive, negative, enabled, disabled, checked, unchecked, recommended, not_recommended, allowed, not_allowed, derived, retained, moved, zero_allowed, zero_not_allowed
+
+Family hint guide:
+- positive: normal happy-path display or enable rule
+- negative: hiding, disabling, or blocking rule
+- validation: explicit must/cannot constraint
+- dependency: A controls B
+- state_movement: workflow stage transition
+- persistence: save/retain behavior
+- data_combination: aggregate or combined-value rule
+- edge: boundary, zero, or exceptional case
+
+Few-shot examples (do not copy — illustrate structure only):
+
+Input clause: "If all subnloans are recommended, the application should move to credit approval stage."
+→ { "condition": "all subloans are recommended", "target": "credit approval stage", "effect": "state_move", "polarity": "moved", "family_hint": "state_movement" }
+
+Input clause: "The rate field should be derived from the base rate and margin."
+→ { "condition": "", "target": "rate field", "effect": "derive", "polarity": "derived", "family_hint": "data_combination" }
+
+Input clause: "The override checkbox should be enabled when status is pending."
+→ { "condition": "status is pending", "target": "override checkbox", "effect": "enable", "polarity": "enabled", "family_hint": "dependency" }
+
+Input clause: "Interest rate must not be zero."
+→ { "condition": "", "target": "interest rate", "effect": "zero_validation", "polarity": "zero_not_allowed", "family_hint": "edge" }
+
+Input clause: "The collateral section should be displayed and the valuation field should be enabled."
+→ Two rules:
+   { "condition": "", "target": "collateral section", "effect": "display", "polarity": "positive", "family_hint": "positive" }
+   { "condition": "", "target": "valuation field", "effect": "enable", "polarity": "enabled", "family_hint": "positive" }
 
 Required JSON shape:
 {
@@ -37,4 +87,4 @@ Title: {summary}
 User Story:
 {description}
 
-{new_process_block}{business_scenarios_block}{impacted_areas_block}{key_ui_block}{acceptance_criteria_block}{story_scope_block}Return ONLY the JSON object.
+{new_process_block}{business_scenarios_block}{comments_block}{impacted_areas_block}{key_ui_block}{acceptance_criteria_block}{story_scope_block}Return ONLY the JSON object.

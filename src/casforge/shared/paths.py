@@ -7,6 +7,7 @@ from typing import Optional
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 SRC_ROOT = PROJECT_ROOT / "src"
 ASSETS_ROOT = PROJECT_ROOT / "assets"
+CONFIG_DIR = PROJECT_ROOT / "config"
 TOOLS_ROOT = PROJECT_ROOT / "tools"
 WORKSPACE_ROOT = PROJECT_ROOT / "workspace"
 DOCS_ROOT = PROJECT_ROOT / "docs"
@@ -15,6 +16,7 @@ TEST_ROOT = PROJECT_ROOT / "test"
 TEMPLATES_DIR = ASSETS_ROOT / "templates"
 PROMPTS_DIR = ASSETS_ROOT / "prompts"
 WORKFLOW_ASSETS_DIR = ASSETS_ROOT / "workflow"
+GENERATION_ASSETS_DIR = CONFIG_DIR
 ORDER_JSON_PATH = WORKFLOW_ASSETS_DIR / "order.json"
 
 REFERENCE_REPO_ROOT = WORKSPACE_ROOT / "reference_repo"

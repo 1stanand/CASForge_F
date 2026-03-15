@@ -208,6 +208,18 @@ textarea { resize: vertical; }
   gap: 22px;
 }
 .scope-span { grid-column: span 2; }
+.direct-wrap {
+  padding: 0 32px;
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+}
+.direct-textarea {
+  min-height: 280px;
+  font-size: 0.87rem;
+  line-height: 1.75;
+  margin-top: 10px;
+}
 .refine-band,
 .artifact-grid {
   display: grid;
@@ -418,14 +430,14 @@ textarea { resize: vertical; }
 .coverage-chip span { color: var(--ink-soft); font-size: 0.8rem; }
 
 .gallery-grid {
-  column-count: 3;
-  column-gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 .intent-card {
-  display: inline-block;
+  display: block;
   width: 100%;
-  break-inside: avoid;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   padding: 20px;
   border-radius: 24px;
   border: 1px solid rgba(148, 163, 184, 0.16);
@@ -548,6 +560,8 @@ textarea { resize: vertical; }
 .modal-card {
   position: relative;
   width: min(640px, 100%);
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
   border-radius: 28px;
   border: 1px solid rgba(148, 163, 184, 0.18);
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.88));
