@@ -86,15 +86,31 @@ _SYNONYM_GROUPS: list[tuple[re.Pattern, list[str]]] = [
     # ── Pending / waiting ───────────────────────────────────────────────────
     (re.compile(r'\b(pending|wait|waiting|hold|on hold|not yet)\b', re.I),
      ['pending', 'wait', 'hold']),
+
+    # ── Checkbox / toggle state ──────────────────────────────────────────────
+    # Covers intent phrases like "default all checkboxes to checked" or
+    # "decision checkbox unchecked by default" that otherwise miss CAS corpus matches.
+    (re.compile(r'\b(checked|unchecked|checkbox|check box|ticked|unticked|toggled)\b', re.I),
+     ['checked', 'unchecked', 'checkbox', 'selected']),
+
+    # ── Disabled / read-only field state ────────────────────────────────────
+    (re.compile(r'\b(disabled|readonly|read only|non.editable|grayed|greyed)\b', re.I),
+     ['disabled', 'readonly', 'read only', 'non-editable']),
+
+    # ── Default state ────────────────────────────────────────────────────────
+    (re.compile(r'\bdefault\b', re.I),
+     ['default', 'by default', 'initial', 'pre-selected']),
 ]
 
 # Maximum number of synonym words appended per group (keeps queries tight)
 _MAX_EXTRA_PER_GROUP = 3
 
 # Only expand queries shorter than this word count.
-# Short "verb + object" queries (≤3 words) benefit most — e.g. "Delete Guarantor".
-# Longer queries have enough context and expansion dilutes precision.
-_MAX_WORDS_TO_EXPAND = 3
+# Intent texts from the LLM are typically 8–12 words; capping at 3 prevented
+# most real queries from getting any expansion. Raised to 10 so medium-length
+# intents like "Default all decision checkboxes to checked at Recommendation"
+# still get synonym enrichment.
+_MAX_WORDS_TO_EXPAND = 10
 
 
 def normalise_query_text(query: str) -> str:

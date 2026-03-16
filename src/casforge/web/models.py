@@ -40,7 +40,6 @@ class IntentsResponse(BaseModel):
     summary:              str
     story_scope_defaults: "StoryScopeDefaults"
     intents:              List["IntentItem"]
-    legacy_intents:       List[str] = Field(default_factory=list)
 
 
 class ScopeSelection(BaseModel):
@@ -88,7 +87,6 @@ class GenerateResponse(BaseModel):
     flow_type:      Literal["ordered", "unordered"]
     story_scope_defaults: StoryScopeDefaults
     intents:        List[IntentItem]
-    legacy_intents: List[str] = Field(default_factory=list)
     feature_text:   str
     file_path:      str
     stage:          Optional[str] = None

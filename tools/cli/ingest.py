@@ -23,7 +23,7 @@ import sys
 import time
 
 # â”€â”€ Make project root importable â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-from casforge.storage.connection import get_conn, get_cursor, run_sql_file
+from casforge.storage.connection import get_conn, release_conn, get_cursor, run_sql_file
 from casforge.parsing.feature_parser import parse_file
 from casforge.shared.paths import resolve_user_path
 from casforge.shared.settings import FEATURES_REPO_PATH, SCHEMA_PATH
@@ -318,7 +318,7 @@ def run_ingest(repo_path: str, full_rebuild: bool = False) -> None:
         "Next step: python tools/cli/build_index.py   (to rebuild vector index)"
     )
 
-    conn.close()
+    release_conn(conn)
 
 
 # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

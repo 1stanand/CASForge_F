@@ -1,29 +1,31 @@
-﻿"""
-scripts/generate_feature.py
----------------------------
-Phase 2 CLI: JIRA story â†’ Gherkin .feature file.
+"""
+tools/cli/generate_feature.py
+------------------------------
+CLI: JIRA story → Gherkin .feature file via forge_feature().
 
 Pipeline
 --------
-    JIRA CSV  â†’  parse story fields
-              â†’  Llama: extract testable intents
-              â†’  CASForge retrieval: find matching steps per intent
-              â†’  Llama: assemble .feature file from intents + step candidates
-              â†’  write .feature file to output/
+    JIRA CSV  →  parse story fields
+              →  LLM: extract testable intents
+              →  forge_feature: retrieval + LLM scenario pick/prune per intent
+              →  write .feature file to output/
 
 Usage
 -----
-    # Generate for a single story (requires --csv to locate the story)
-    python scripts/generate_feature.py --csv SampleJira/sampleJira/HD_Bank_Epic.csv --story CAS-256008
+    # Single story
+    python tools/cli/generate_feature.py --csv workspace/samples/sampleJira/HD_BANK_EPIC.csv \
+        --story CAS-256008 --flow-type unordered
 
-    # Generate for all stories in a CSV
-    python scripts/generate_feature.py --csv SampleJira/sampleJira/HD_Bank_Epic.csv --all
+    # All stories in a CSV
+    python tools/cli/generate_feature.py --csv workspace/samples/sampleJira/HD_BANK_EPIC.csv \
+        --all --flow-type ordered
 
-    # Dry-run: show extracted intents without calling the assembler
-    python scripts/generate_feature.py --csv ... --story CAS-256008 --intents-only
+    # Intents only (no feature file, no forge LLM)
+    python tools/cli/generate_feature.py --csv ... --story CAS-256008 --intents-only
 
-    # Override output directory
-    python scripts/generate_feature.py --csv ... --story CAS-256008 --output D:\\MyOutput
+    # Custom output directory
+    python tools/cli/generate_feature.py --csv ... --story CAS-256008 \
+        --flow-type ordered --output workspace/generated/custom
 """
 
 from __future__ import annotations
@@ -40,20 +42,20 @@ logging.basicConfig(
 _log = logging.getLogger("generate_feature")
 
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-# Imports (after sys.path fix)
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
+# Imports
+# ---------------------------------------------------------------------------
 
 from casforge.parsing.jira_parser import load_story, load_all_stories
 from casforge.generation.intent_extractor import extract_intents, infer_story_scope_defaults
-from casforge.generation.feature_assembler import assemble_feature_result
+from casforge.generation.forge import forge_feature
 from casforge.shared.paths import resolve_user_path
 from casforge.shared.settings import OUTPUT_DIR
 
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 # Core generation logic
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 
 def generate(
     csv_path: str,
@@ -64,9 +66,9 @@ def generate(
 ) -> str | None:
     """
     Generate a .feature file for one JIRA story.
-
-    Returns the path of the written file, or None if intents_only=True.
+    Returns the path of the written file, or None if intents_only=True or error.
     """
+    sep = "-" * 60
     print(f"\n{'='*60}")
     print(f"  Story: {story_key}")
     print(f"{'='*60}")
@@ -76,92 +78,99 @@ def generate(
     story = load_story(csv_path, story_key)
     print(f"        Title   : {story.summary}")
     print(f"        Type    : {story.issue_type}")
-    print(f"        Stage(s): {story.impacted_areas[:80] if story.impacted_areas else 'â€”'}")
-    defaults = infer_story_scope_defaults(story)
-    lob_scope = defaults.get("lob_scope", {})
-    stage_scope = defaults.get("stage_scope", {})
-    if lob_scope.get("mode") == "specific" and lob_scope.get("values"):
-        print(f"        LOB Scope (inferred): {', ' .join(lob_scope['values'])}")
-    if stage_scope.get("mode") == "specific" and stage_scope.get("values"):
-        print(f"        Stage Scope (inferred): {', ' .join(stage_scope['values'])}")
+    print(f"        Stage(s): {story.impacted_areas[:80] if story.impacted_areas else '—'}")
 
-    # 2. Extract intents
+    # 2. Extract intents via LLM
     print("  [2/3] Extracting test intents via LLM...")
+    defaults = infer_story_scope_defaults(story)
     intents = extract_intents(story, story_scope_defaults=defaults)
     if not intents:
-        print("  ERROR: LLM returned no intents â€” check model output.")
+        print("  ERROR: LLM returned no intents — check model output.")
         return None
 
     print(f"        {len(intents)} intents extracted:")
     for i, intent in enumerate(intents, 1):
-        text = intent.get("text", "") if isinstance(intent, dict) else str(intent)
-        family = intent.get("family", "positive") if isinstance(intent, dict) else "positive"
-        print(f"          {i}. [{family}] {text}")
+        text   = intent.get("text", "")   if isinstance(intent, dict) else str(intent)
+        family = intent.get("family", "") if isinstance(intent, dict) else ""
+        print(f"          {i:2d}. [{family}] {text}")
 
     if intents_only:
         return None
 
-    # 3. Assemble feature file
-    print("  [3/3] Assembling .feature file via LLM (+ retrieval)...")
+    # 3. Forge feature file (retrieval + LLM per intent)
+    print("  [3/3] Forging .feature file (retrieval + LLM)...")
     if flow_type not in {"ordered", "unordered"}:
-        raise ValueError("flow_type must be explicitly set to 'ordered' or 'unordered'")
-    result = assemble_feature_result(story, intents, flow_type=flow_type, story_scope_defaults=defaults)
-    feature_text = result.feature_text
+        raise ValueError("flow_type must be 'ordered' or 'unordered'")
+
+    result = forge_feature(
+        story,
+        intents,
+        flow_type=flow_type,
+        on_progress=lambda msg: print(f"        {msg}"),
+    )
 
     # 4. Write to disk
     os.makedirs(output_dir, exist_ok=True)
     safe_key = story_key.replace("-", "_")
     out_path = os.path.join(output_dir, f"{safe_key}.feature")
     with open(out_path, "w", encoding="utf-8") as f:
-        f.write(feature_text)
-        f.write("\n")
+        f.write(result.feature_text)
+        if not result.feature_text.endswith("\n"):
+            f.write("\n")
 
-    print(f"\n  Written: {out_path}")
+    print(f"\n  Written : {out_path}")
     print(f"  Quality : {result.quality}")
-    if result.unresolved_steps:
-        print(f"  Unresolved steps: {len(result.unresolved_steps)}")
-        for s in result.unresolved_steps[:5]:
-            print(f"    - [{s.get('keyword','?')}] {s.get('step_text','')}")
-    print()
-    print(feature_text)
-    print()
+
+    total_steps = result.quality.get("total_steps", 0)
+    grounded    = result.quality.get("grounded_steps", 0)
+    unresolved  = result.quality.get("unresolved_steps", 0)
+    omitted     = len(result.omitted_plan_items)
+    scenarios   = result.quality.get("scenario_count", 0)
+
+    print(f"  Scenarios      : {scenarios}")
+    print(f"  Total steps    : {total_steps}")
+    print(f"  Grounded steps : {grounded}  ({grounded*100//total_steps if total_steps else 0}%)")
+    print(f"  New/ungrounded : {unresolved}  ({unresolved*100//total_steps if total_steps else 0}%)")
+    print(f"  Omitted intents: {omitted}")
+    if result.omitted_plan_items:
+        for o in result.omitted_plan_items[:5]:
+            reason = o.get("reason", "") if isinstance(o, dict) else str(o)
+            text   = o.get("text", "")   if isinstance(o, dict) else ""
+            print(f"    - {text[:60]}  [{reason}]")
+
+    print(f"\n{sep}")
+    # Print feature text safely (Windows console may not support all Unicode)
+    try:
+        print(result.feature_text)
+    except UnicodeEncodeError:
+        print(result.feature_text.encode("ascii", errors="replace").decode("ascii"))
+    print(f"{sep}\n")
 
     return out_path
 
 
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 # CLI
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ---------------------------------------------------------------------------
 
 def _parse_args():
     p = argparse.ArgumentParser(
-        description="CASForge Phase 2 â€” generate Gherkin .feature files from JIRA stories"
+        description="CASForge — generate Gherkin .feature files from JIRA stories"
     )
+    p.add_argument("--csv",   required=True,  help="Path to JIRA CSV file")
+    p.add_argument("--story", default=None,   help="JIRA issue key (e.g. CAS-256008)")
+    p.add_argument("--all",   action="store_true", help="Process all stories in the CSV")
     p.add_argument(
-        "--csv", required=True,
-        help="Path to JIRA CSV export file",
-    )
-    p.add_argument(
-        "--story", default=None,
-        help="JIRA issue key to process (e.g. CAS-256008)",
-    )
-    p.add_argument(
-        "--all", action="store_true",
-        help="Process all stories in the CSV",
-    )
-    p.add_argument(
-        "--flow-type",
-        choices=("ordered", "unordered"),
-        default=None,
-        help="Mandatory for feature generation: choose ordered or unordered flow",
+        "--flow-type", choices=("ordered", "unordered"), default=None,
+        help="Flow type for feature generation",
     )
     p.add_argument(
         "--output", default=None,
-        help=f"Output directory for .feature files (default: {OUTPUT_DIR})",
+        help=f"Output directory (default: {OUTPUT_DIR})",
     )
     p.add_argument(
         "--intents-only", action="store_true",
-        help="Only extract and print intents â€” skip feature file assembly",
+        help="Only extract and print intents — skip feature assembly",
     )
     return p.parse_args()
 
@@ -190,8 +199,8 @@ def main():
         success = 0
         for s in stories:
             try:
-                result = generate(csv_path, s.issue_key, output_dir, args.flow_type, args.intents_only)
-                if result or args.intents_only:
+                r = generate(csv_path, s.issue_key, output_dir, args.flow_type, args.intents_only)
+                if r or args.intents_only:
                     success += 1
             except Exception as exc:
                 _log.error("Failed for %s: %s", s.issue_key, exc, exc_info=True)
@@ -206,8 +215,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-

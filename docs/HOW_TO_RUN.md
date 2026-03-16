@@ -36,7 +36,6 @@ workspace/
   generated/            generated .feature outputs
   index/                FAISS index artifacts
 
-agent/                  AI agent notes, diagnostics, reports
 casforge/               import stub (redirects to src/casforge/)
 ```
 

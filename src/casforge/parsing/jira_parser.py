@@ -12,7 +12,7 @@ Usage
 
     story = load_story("workspace/samples/sampleJira/HD_BANK_EPIC.csv", "CAS-256008")
     print(story.summary)
-    print(story.new_process)
+    print(story.system_process)
 """
 
 import csv
@@ -31,8 +31,8 @@ class JiraStory:
     summary:             str
     issue_type:          str
     description:         str          # raw user-story text ("As a user, I want...")
-    current_process:     str          # what the system does today
-    new_process:         str          # what the system should do after the change
+    legacy_process:      str          # what the system does today (pre-change)
+    system_process:      str          # the new/target system process (primary source)
     business_scenarios:  str          # exceptions / edge-cases from JIRA
     impacted_areas:      str          # CAS stages / modules affected
     key_ui_steps:        str          # navigation path, e.g. "CAS >> Applications >> CCDE"
@@ -131,7 +131,7 @@ def _clean(text: str) -> str:
 
 def _split_process(raw: str) -> tuple[str, str]:
     """
-    Split 'System processes' field into (current_process, new_process).
+    Split 'System processes' field into (legacy_process, system_process).
 
     The field typically looks like:
         +*Current Process:-*+
@@ -139,6 +139,9 @@ def _split_process(raw: str) -> tuple[str, str]:
 
         +*New Process:-*+
         Provision to be made ...
+
+    Returns (legacy_process, system_process). If no headers, whole text goes
+    into system_process (the common case for CAS-262309-style stories).
     """
     text = _clean(raw)
     lower = text.lower()
@@ -242,8 +245,8 @@ def _parse_row(row: dict) -> JiraStory:
         summary             = _clean(_get(row, _COL_SUMMARY)),
         issue_type          = _get(row, _COL_TYPE),
         description         = _clean(_get(row, _COL_DESCRIPTION)),
-        current_process     = current,
-        new_process         = new,
+        legacy_process      = current,
+        system_process      = new,
         business_scenarios  = biz,
         impacted_areas      = _clean(_get(row, _COL_IMPACTED)),
         key_ui_steps        = _clean(_get(row, _COL_KEY_UI)),

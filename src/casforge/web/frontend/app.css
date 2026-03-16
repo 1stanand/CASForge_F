@@ -432,14 +432,15 @@ textarea { resize: vertical; }
 .gallery-grid {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  width: 70%;
 }
-.intent-card {
+.gallery-grid .intent-card {
   display: block;
   width: 100%;
   margin-bottom: 0;
-  padding: 20px;
-  border-radius: 24px;
+  padding: 14px 18px;
+  border-radius: 10px;
   border: 1px solid rgba(148, 163, 184, 0.16);
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.84), rgba(15, 23, 42, 0.76));
   color: var(--ink-strong);
@@ -468,15 +469,15 @@ textarea { resize: vertical; }
 .family-badge.data_combination { background: rgba(248, 113, 113, 0.14); color: #fecaca; }
 .family-badge.edge { background: rgba(148, 163, 184, 0.16); color: #e2e8f0; }
 .intent-id { color: rgba(226, 232, 240, 0.48); font-size: 0.8rem; }
-.intent-input {
-  min-height: 132px;
+.gallery-grid .intent-input {
+  min-height: 64px;
   background: transparent;
   padding: 0;
   border: none;
   box-shadow: none;
   line-height: 1.7;
 }
-.intent-input:focus { box-shadow: none; }
+.gallery-grid .intent-input:focus { box-shadow: none; }
 .scope-note { margin-top: 12px; color: var(--ink-soft); line-height: 1.6; }
 .intent-actions {
   display: flex;
@@ -632,7 +633,6 @@ textarea { resize: vertical; }
   .artifact-grid { grid-template-columns: 1fr; }
   .scope-span { grid-column: span 1; }
   .coverage-grid { grid-template-columns: repeat(4, 1fr); }
-  .gallery-grid { column-count: 2; }
 }
 @media (max-width: 840px) {
   .topbar-inner,
@@ -641,6 +641,5 @@ textarea { resize: vertical; }
   .page-stack { width: min(100vw - 24px, 100%); }
   .custom-scope-grid,
   .coverage-grid { grid-template-columns: 1fr; }
-  .gallery-grid { column-count: 1; }
   .editor-line { grid-template-columns: 46px minmax(0, 1fr); gap: 12px; padding: 0 12px; }
 }

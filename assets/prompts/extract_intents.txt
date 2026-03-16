@@ -36,6 +36,26 @@ Coverage rules:
 - If two intents describe the same behavior with different wording, keep only one.
 - Stop when no additional unique behaviors can be derived from the story text.
 
+Entity expansion rules:
+- If a behavior is stated to apply to multiple entity types (e.g., "applicable for both sub loans and credit card"), generate separate intents for each entity type.
+- If a behavior has distinct sub-cases (e.g., Primary Card vs Add-On Card, Enabled vs Disabled), generate one intent per distinct sub-case.
+- Do NOT merge two distinct behaviors into one intent.
+
+Derived-field rules:
+- If a field is described as "derived", "auto-populated", "calculated", or "will be disabled" (meaning the user cannot edit it), generate an intent for that field's disabled/derived state.
+- A field that changes its VALUE based on logic is different from a field that is always disabled. Generate separate intents if both apply.
+
+Stage-transition rules:
+- Capture EXACTLY what triggers stage movement: "regardless of decision", "only when all are X", "when any is Y".
+- Do NOT generalise or narrow the trigger condition. Use the exact scope from the story.
+- If the story says the application always moves to the next stage, generate that as an unconditional state_movement intent.
+
+Validation expansion rules:
+- If 0-amount (or similar edge validation) is mentioned, generate two intents: one for the "recommend with 0" case and one for the "not-recommend with 0" case, because both are separately testable.
+
+OR/AND logic rules:
+- If the story describes OR/AND logic across multiple inputs (e.g., "if ANY subloan is checked → Recommended"), generate a data_combination intent that names the rule explicitly.
+
 Classification rules:
 Each intent must include a "family" field with one of:
 ["positive","negative","validation","dependency","state_movement","persistence","data_combination","edge"]
@@ -63,20 +83,20 @@ Important:
 ---
 
 USER:
-JIRA Story: {key}
+JIRA Story: {{ key }}
 
 Title:
-{summary}
+{{ summary }}
 
+{{ system_process_block }}
 User Story:
-{description}
+{{ description }}
 
-{new_process_block}
-{business_scenarios_block}
-{impacted_areas_block}
-{key_ui_block}
-{acceptance_criteria_block}
-{story_scope_block}
+{{ business_scenarios_block }}
+{{ impacted_areas_block }}
+{{ key_ui_block }}
+{{ acceptance_criteria_block }}
+{{ story_scope_block }}
 
 ---
 

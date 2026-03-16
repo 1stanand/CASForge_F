@@ -21,7 +21,7 @@ import sys
 from difflib import SequenceMatcher
 
 
-from casforge.storage.connection import get_conn, get_cursor
+from casforge.storage.connection import get_conn, release_conn, get_cursor
 from casforge.shared.paths import resolve_user_path
 from casforge.shared.settings import OUTPUT_DIR
 from casforge.retrieval.retrieval import search
@@ -212,7 +212,7 @@ def main() -> int:
                 else:
                     print(f"[OK]   {os.path.basename(path)}")
     finally:
-        conn.close()
+        release_conn(conn)
 
     print(f"\nChecked {len(files)} file(s). Total issues: {total_errors}")
     return 0 if total_errors == 0 else 1

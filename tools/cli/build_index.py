@@ -16,7 +16,7 @@ import logging
 import os
 import sys
 
-from casforge.storage.connection import get_conn, get_cursor
+from casforge.storage.connection import get_conn, release_conn, get_cursor
 from casforge.retrieval.embedder import build_index
 
 logging.basicConfig(
@@ -36,7 +36,7 @@ def main():
             rows = cur.fetchall()
         logger.info("Loaded %d unique steps.", len(rows))
     finally:
-        conn.close()
+        release_conn(conn)
 
     if not rows:
         logger.error("No steps found in DB. Run ingest.py first.")

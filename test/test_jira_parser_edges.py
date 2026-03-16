@@ -41,7 +41,7 @@ class JiraParserEdgeTests(unittest.TestCase):
         story = load_story(str(TEST_ROOT / "resources" / "test-specs" / "tiny_messy.csv"), "TINY-2")
         merged = " ".join([
             story.description,
-            story.new_process,
+            story.system_process,
             story.business_scenarios,
             story.acceptance_criteria,
             story.story_description,
